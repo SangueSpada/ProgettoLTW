@@ -97,7 +97,7 @@
                             var checkin = document.getElementById("CheckInDate");
                             var checkout = document.getElementById("CheckOutDate");
 
-                            if (checkin.valueAsNumber > checkout.valueAsNumber) {
+                            if (checkin.valueAsNumber >= checkout.valueAsNumber) {
                                 checkout.value = new Date();
                                 alert("data non valida!");
                             }
