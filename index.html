@@ -88,22 +88,10 @@
             <div class="input-daterange input-group-append" id="datepicker">
                 <div class="form-group offset-md-1">
                     <label class="active" for="dateStandard">Da</label>
-                    <input type="date" id="CheckInDate" name="CheckIn">
+                    <input type="date" id="CheckInDate" onchange="checkin_fun();" name="CheckIn">
                     <label class="active" for="dateStandard">A</label>
-                    <input type="date" id="CheckOutDate" onchange="handler(event);" name="CheckOut">
-                    <script>
-                        function handler(e) {
+                    <input type="date" id="CheckOutDate" onchange="checkout_fun();" name="CheckOut">
 
-                            var checkin = document.getElementById("CheckInDate");
-                            var checkout = document.getElementById("CheckOutDate");
-
-                            if (checkin.valueAsNumber >= checkout.valueAsNumber) {
-                                checkout.value = new Date();
-                                alert("data non valida!");
-                            }
-
-                        }
-                    </script>
                 </div>
             </div>
         </div>
@@ -115,5 +103,41 @@
         <h3>Qualcos'altro</h3>
     </div>
 </body>
+
+
+<script>
+    function checkin_fun() {
+
+        var checkin = document.getElementById("CheckInDate");
+        var today = new Date();
+        var current_date = today.getTime();
+        var checkout = document.getElementById("CheckOutDate");
+
+
+        if (checkin.valueAsNumber <= current_date || (checkin.valueAsNumber >= 0 && checkin.valueAsNumber >= checkout.valueAsNumber)) {
+            checkin.value = new Date();
+
+            alert("data non valida!");
+        }
+    }
+
+
+
+
+    function checkout_fun() {
+
+        var checkin = document.getElementById("CheckInDate");
+        var checkout = document.getElementById("CheckOutDate");
+
+        var today = new Date();
+        var current_date = today.getTime();
+
+        if (checkin.valueAsNumber >= checkout.valueAsNumber || checkout.valueAsNumber <= current_date) {
+            checkout.value = new Date();
+            alert("data non valida!");
+        }
+
+    }
+</script>
 
 </html>
