@@ -1,0 +1,30 @@
+{
+  "name": "progettoltw",
+  "version": "1.0.0",
+  "description": "Composto dai magnifici ragazzacci di SanBa WanBa che smanettano per fare cose brutte assai",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SangueSpada/ProgettoLTW.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SangueSpada/ProgettoLTW/issues"
+  },
+  "homepage": "https://github.com/SangueSpada/ProgettoLTW#readme",
+  "dependencies": {
+    "cookie": "^0.5.0",
+    "ejs": "^3.1.6",
+    "escape-html": "^1.0.3",
+    "express": "^4.17.3",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "path": "^0.12.7",
+    "url": "^0.11.0"
+  }
+}
