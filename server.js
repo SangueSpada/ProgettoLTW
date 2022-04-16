@@ -18,14 +18,14 @@ var database;
 
 
 app.get('/', function(req, res) {
-
+    console.log('get /');
     res.sendFile(path.join(__dirname, '/index.html'));
 
 });
 
 
 app.get('/offerte', function(req, res) {
-
+    console.log('get /offerte');
     //  res.sendFile(path.join(__dirname, '/offerte.html'));
     db = fs.readFileSync('offerte.json');
     database = JSON.parse(db);
