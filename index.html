@@ -19,30 +19,39 @@
     <script>
         $("#nav-placeholder").load("navbar.html");
     </script>
-    <br>
-    <div class="col-lg-12 text-center mt-5">
-        <h3>Migliorare sta barra e mettere il bottone delle persone</h3>
-    </div>
-    <nav class="navbar navbar-expand-sm shadow">
-        <div class="nav container-fluid mb-auto col-auto">
-            <input type="text" class="nav-item form-control" placeholder="Dove vuoi andare?..." aria-label="Recipient's username">
-            <span class="nav-item input-group-text"><i class="bi bi-search"></i></span>
-            <div class="input-group" id="datepicker">
-                <div class="navbar-expand-sm">
-                    <label class="active" for="dateStandard">Da</label>
-                    <input type="date" id="CheckInDate" onchange="checkin_fun();" name="CheckIn">
-                    <label class="active" for="dateStandard">A</label>
-                    <input type="date" id="CheckOutDate" onchange="checkout_fun();" name="CheckOut">
-
-                </div>
+    <div style="padding: 40pt;"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-10">    
+    <nav class="navbar navbar navbar-expand shadow container-fluid"style="background-color: #e3f2fd;">
+        <div class="row">
+            <div class="col-auto mb-3 input-group">
+            <input type="text" class="form-control" placeholder="Hotel o Città" aria-label="Recipient's username" required>
             </div>
-            <div class="me-auto input-group-sm btn-group">
-                <button type="button" id="lessBtn" class="btn btn-light text-center" onclick="lessBtnRange()">-</button>
-                <span><input type="number" value="1" min="1" id="partecipants" class="form-control-plaintext text-center" readonly></span>
-                <button type="button" id="moreBtn" class="btn btn-light text-center" onclick="moreBtnRange()">+</button>
+            <div class="col-auto">
+                    <label class="active" for="dateStandard">Check-in:</label>
+                    <input type="date" id="CheckInDate" onchange="checkin_fun();" name="CheckIn">
+            </div>
+            <div class="col-auto">
+                    <label class="active" for="dateStandard">Check-out:</label>
+                    <input type="date" id="CheckOutDate" onchange="checkout_fun();" name="CheckOut">
+            </div>
+            <div class="col-auto btn-group">
+                <label class="active me-3">Partecipanti:</label>
+                <button type="button" id="lessBtn" class="btn btn-light rounded-circle" onclick="lessBtnRange()">-</button>
+                <input type="number" value="1" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
+                <button type="button" id="moreBtn" class="btn btn-light rounded-circle" onclick="moreBtnRange()">+</button>
+            </div>
+            <div class="col-auto mt-auto">
+                <button class="button input-group-text rounded ms-4">Cerca <i class="ms-2 bi bi-search"></i></button>
             </div>
         </div>
-</nav>
+    </nav>
+            </div>
+    <div class="col"></div>
+        </div>
+    </div>
     <div class="col-lg-12 text-center mt-5">
         <h3>Le offerte del momento</h3>
     </div>
