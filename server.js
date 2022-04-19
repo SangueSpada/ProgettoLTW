@@ -32,8 +32,9 @@ app.get('/offerte', function(req, res) {
 
 app.get('/offerta', urlencodedParser, function(req, res) {
     //console.log(req.query.id);
+
     console.log('get /offerta');
-    res.render('titolo.ejs', { data: database, id: req.query.id });
+    res.render('titolo.ejs', { offerta: database[req.query.id] });
 
 });
 
