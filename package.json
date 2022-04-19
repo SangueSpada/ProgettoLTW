@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/SangueSpada/ProgettoLTW#readme",
   "dependencies": {
+    "body-parser": "^1.20.0",
     "cookie": "^0.5.0",
     "ejs": "^3.0.2",
     "escape-html": "^1.0.3",
