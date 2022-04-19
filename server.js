@@ -10,30 +10,31 @@ var fs = require('fs');
 var path = require('path');
 var port = 3334;
 app.set('view engine', 'ejs');
-var db;
-var database;
+app.use(express.static(__dirname));
 
-//CON QUESTO METODO FUNzIONA IL CSS, MA NON IL TASTO LOGIN E NON FUNZIONA IL APP.GET
-//app.use(express.static(__dirname));
+var database=JSON.parse(fs.readFileSync('offerte.json')); //legge il contenuto di offerte json
 
+//  res.sendFile(path.join(__dirname, '/offerte.html')); per la visualizzazione statica
 
 app.get('/', function(req, res) {
     console.log('get /');
-    res.sendFile(path.join(__dirname, '/index.html'));
+    res.render('index.ejs', { data: database });
 
 });
 
 
 app.get('/offerte', function(req, res) {
     console.log('get /offerte');
-    //  res.sendFile(path.join(__dirname, '/offerte.html'));
-    db = fs.readFileSync('offerte.json');
-    database = JSON.parse(db);
-    //console.log(database);
-
     res.render('offerte.ejs', { data: database });
 
 });
+
+app.get('/titolo', function(req, res) {
+    console.log('get /titolo');
+      res.render('offerte.ejs', { data: database });
+
+});
+
 
 
 

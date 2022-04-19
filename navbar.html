@@ -32,20 +32,26 @@
                     <a class="nav-link" href="#">Contattaci</a>
                 </li>
             </ul>
-            <ul class="navbar-nav">
+            <ul class="navbar-nav me-1">
                 <li class="nav-item dropdown">
                     <button class=" btn btn-outline-light dropdown-toggle me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="true">
                         Login
                     </button>
-                    <form class="dropdown-menu p-4" aria-labelledby="dropdownMenuButton" style="width: 40pt;">
+                    <form class="dropdown-menu p-4 needs-validation" aria-labelledby="dropdownMenuButton" novalidate >
                         <div class="mb-3">
                             <label for="exampleDropdownFormEmail2" class="form-label">Email</label>
                             <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="email@example.com">
                         </div>
+                        <div class="invalid-feedback">
+                            Inserisci una email valida.
+                          </div>
                         <div class="mb-3">
                             <label for="exampleDropdownFormPassword2" class="form-label">Password</label>
                             <input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Password">
                         </div>
+                        <div class="invalid-feedback">
+                            Inserisci una password valida.
+                          </div>
                         <div class="mb-3">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="dropdownCheck2">
@@ -60,5 +66,27 @@
           </div>
         </div>
       </nav>
+      <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+  (function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+          }
+
+      form.classList.add('was-validated')
+      }, false)
+  })
+  })()
+  </script>
 </body>
 </html>
