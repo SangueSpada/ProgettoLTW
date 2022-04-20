@@ -67,7 +67,7 @@ app.post('/login', urlencodedParser, function(req, res) {
 
         if (error) { console.log(error); }
 
-        console.log(result);
+        console.log(result.rows[0].nome + result.rows[0].storico_offerte + result.rows[0].foto_profilo + result.rows[0].cognome);
 
 
     });
