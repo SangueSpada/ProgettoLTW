@@ -63,9 +63,7 @@ app.post('/login', urlencodedParser, function(req, res) {
     var mail = req.body.mail;
     var password = req.body.passw;
 
-    ;
-
-    client.query('select * from utente where email=mail and password=password', function(error, result) {
+    client.query('select * from utente where email=' + '\'' + mail + '\'' + ' and password=' + '\'' + password + '\'', function(error, result) {
 
         if (error) { console.log(error); }
 
