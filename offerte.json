@@ -7,7 +7,8 @@
         "descrizione": "questa è la descrizione esempio",
         "checkin": "02/05/2022",
         "checkout": "07/05/2022",
-        "in_evidenza": true
+        "in_evidenza": true,
+        "scaduta": false
 
     },
     {
@@ -19,7 +20,9 @@
         "descrizione": "questa è la descrizione plaza",
         "checkin": "01/05/2022",
         "checkout": "06/05/2022",
-        "in_evidenza": true
+        "in_evidenza": true,
+        "scaduta": false
+
     },
     {
         "id": 2,
@@ -30,9 +33,11 @@
         "descrizione": "questa è la descrizione christus",
         "checkin": "05/05/2022",
         "checkout": "10/05/2022",
-        "in_evidenza": false
+        "in_evidenza": false,
+        "scaduta": false
+
     },
-	{
+    {
         "id": 3,
         "titolo": "hotel_maremma",
         "citta": "firenze",
@@ -41,9 +46,11 @@
         "descrizione": "questa è la maremma maiala",
         "checkin": "01/05/2022",
         "checkout": "06/05/2022",
-        "in_evidenza": true
+        "in_evidenza": true,
+        "scaduta": false
+
     },
-	{
+    {
         "id": 4,
         "titolo": "hotel_jesus",
         "citta": "roma",
@@ -52,7 +59,9 @@
         "descrizione": "questa è la descrizione jesus",
         "checkin": "01/06/2022",
         "checkout": "06/07/2022",
-        "in_evidenza": false
+        "in_evidenza": false,
+        "scaduta": false
+
     }
 
 

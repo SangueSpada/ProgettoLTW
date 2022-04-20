@@ -2,12 +2,13 @@ var cookie = require('cookie');
 var escapeHtml = require('escape-html');
 var http = require('http');
 var url = require('url');
-//var math = require("mathjs");
+const { Client } = require('pg');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var path = require('path');
+const { response } = require('express');
 var port = 3334;
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname));
@@ -15,7 +16,18 @@ app.use(express.static(__dirname));
 var database = JSON.parse(fs.readFileSync('offerte.json')); //legge il contenuto di offerte json
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-//  res.sendFile(path.join(__dirname, '/offerte.html')); per la visualizzazione statica
+const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'Anulare',
+    password: 'root',
+    port: 5432,
+});
+
+client.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+});
 
 app.get('/', function(req, res) {
     console.log('get /');
@@ -31,10 +43,49 @@ app.get('/offerte', function(req, res) {
 });
 
 app.get('/offerta', urlencodedParser, function(req, res) {
-    //console.log(req.query.id);
 
     console.log('get /offerta');
     res.render('titolo.ejs', { offerta: database[req.query.id] });
+
+});
+
+app.get('/signin', function(req, res) {
+    console.log('get /signin');
+    res.sendFile(path.join(__dirname, '/sigin.html'));
+
+
+});
+
+app.post('/signin', urlencodedParser, function(req, res) {
+
+    console.log('post /signin');
+
+    var nome = req.body.firstName;
+    var cognome = req.body.lastName;
+    var mail = req.body.email;
+    var pass = req.body.password;
+
+
+    client.query('insert into utente(email,password,storico_offerte,foto_profilo,nome,cognome) values (' + '\'' + mail + '\',' + '\'' + pass + '\',' + '\'{}\',' + '\'' + String('https://cdn.calciomercato.com/images/2019-05/Whatsapp.senza.immagine.2019.1400x840.jpg') + '\',' + '\'' + nome + '\',' + '\'' + cognome + '\');', function(error, result) {
+
+        if (error) {
+
+            if (error.code === '23505') {
+
+
+                res.sendFile(path.join(__dirname, '/sigin.html'));
+
+
+
+            } else {
+                throw error;
+            }
+        }
+
+    });
+
+    res.render('index.ejs', { data: database });
+
 
 });
 
