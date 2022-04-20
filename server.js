@@ -14,14 +14,15 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname));
 
 var database = JSON.parse(fs.readFileSync('offerte.json')); //legge il contenuto di offerte json
+var credenziali = JSON.parse(fs.readFileSync('credenziali.json'));
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const client = new Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'Anulare',
-    password: 'root',
-    port: 5432,
+    user: credenziali.user,
+    host: credenziali.host,
+    database: credenziali.database,
+    password: credenziali.password,
+    port: credenziali.port,
 });
 
 client.connect(function(err) {
