@@ -39,17 +39,17 @@
                         <button class=" btn btn-outline-light dropdown-toggle me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="true">
                         Login
                     </button>
-                        <form class="dropdown-menu p-4 needs-validation" aria-labelledby="dropdownMenuButton" novalidate>
+                        <form method="POST" action="/login" class="dropdown-menu p-4 needs-validation" aria-labelledby="dropdownMenuButton" novalidate>
                             <div class="mb-3">
                                 <label for="exampleDropdownFormEmail2" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="email@example.com">
+                                <input type="email" name="mail" class="form-control" id="exampleDropdownFormEmail2" placeholder="email@example.com">
                             </div>
                             <div class="invalid-feedback">
                                 Inserisci una email valida.
                             </div>
                             <div class="mb-3">
                                 <label for="exampleDropdownFormPassword2" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Password">
+                                <input type="password" name="passw" class="form-control" id="exampleDropdownFormPassword2" placeholder="Password">
                             </div>
                             <div class="invalid-feedback">
                                 Inserisci una password valida.
