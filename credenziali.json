@@ -1,0 +1,8 @@
+{
+    "user": "postgres",
+    "host": "localhost",
+    "database": "Anulare",
+    "password": "maremma",
+    "port": 5432
+
+}
