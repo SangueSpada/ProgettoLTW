@@ -14,15 +14,14 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname));
 
 var database = JSON.parse(fs.readFileSync('offerte.json')); //legge il contenuto di offerte json
-var credenziali = JSON.parse(fs.readFileSync('credenziali.json'));
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const client = new Client({
-    user: credenziali.user,
-    host: credenziali.host,
-    database: credenziali.database,
-    password: credenziali.password,
-    port: credenziali.port,
+    user: 'postgres',
+    host: 'localhost',
+    database: 'Anulare',
+    password: 'root',
+    port: 5432,
 });
 
 client.connect(function(err) {
@@ -57,7 +56,14 @@ app.get('/signin', function(req, res) {
 
 });
 
+app.post('/login', urlencodedParser, function(req, res) {
 
+    console.log('post /login');
+    var mail = req.body.mail;
+    var password = req.body.passw;
+    console.log(mail + password);
+
+});
 
 app.post('/signin', urlencodedParser, function(req, res) {
 
