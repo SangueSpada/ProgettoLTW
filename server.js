@@ -57,14 +57,7 @@ app.get('/signin', function(req, res) {
 
 });
 
-app.post('/login', urlencodedParser, function(req, res) {
 
-    console.log('post /login');
-    var mail = req.body.mail;
-    var password = req.body.passw;
-    console.log(mail + password);
-
-});
 
 app.post('/signin', urlencodedParser, function(req, res) {
 
