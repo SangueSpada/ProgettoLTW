@@ -8,6 +8,8 @@ var app = express();
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var path = require('path');
+//var url = require('url');
+
 const { response } = require('express');
 var port = 3334;
 app.set('view engine', 'ejs');
@@ -32,18 +34,49 @@ client.connect(function(err) {
 
 app.get('/', function(req, res) {
     console.log('get /');
+    var cookies = cookie.parse(req.headers.cookie || '');
+
+    var email_cookie = cookies.email_cookie;
+    //    console.log(String(req.body));
+
+
+
+    if (email_cookie) {
+
+    } else {}
+
+
+
+
+
+
     res.render('index.ejs', { data: database });
 
 });
 
 
 app.get('/offerte', function(req, res) {
+
+    var cookies = cookie.parse(req.headers.cookie || '');
+
+    var email_cookie = cookies.email_cookie;
+
+
+    if (email_cookie) {} else {}
+
+
     console.log('get /offerte');
     res.render('offerte.ejs', { data: database });
 
 });
 
 app.get('/offerta', urlencodedParser, function(req, res) {
+
+    var cookies = cookie.parse(req.headers.cookie || '');
+
+    var email_cookie = cookies.email_cookie;
+
+    if (email_cookie) {} else {}
 
     console.log('get /offerta');
     res.render('titolo.ejs', { offerta: database[req.query.id] });
@@ -57,20 +90,88 @@ app.get('/signin', function(req, res) {
 
 });
 
+app.get('/profilo', urlencodedParser, function(req, res) {
+
+    console.log('get /profilo');
+
+    var cookies = cookie.parse(req.headers.cookie || '');
+
+    var email_cookie = cookies.email_cookie;
+
+    if (email_cookie) {
+
+        var n;
+        var c;
+        var s;
+        var p;
+
+
+        client.query('select * from utente where email=\'' + email_cookie + '\'', function(error, result) {
+            if (error) { console.log(error); return; }
+            n = String(result.rows[0].nome);
+            c = String(result.rows[0].cognome);
+            s = String(result.rows[0].storico_offerte);
+            p = String(result.rows[0].foto_profilo);
+            res.render('profile.ejs', { nome: n, cognome: c, mail: email_cookie, storico: s, profilo: p });
+
+        });
+
+    } else { res.sendFile(path.join(__dirname, '/sigin.html')); }
+
+    //res.sendFile(path.join(__dirname, '/profile.html'));
+
+
+});
+
+
+
 app.post('/login', urlencodedParser, function(req, res) {
 
     console.log('post /login');
     var mail = req.body.mail;
-    var password = req.body.passw;
+    var password = req.body.password;
 
     client.query('select * from utente where email=' + '\'' + mail + '\'' + ' and password=' + '\'' + password + '\'', function(error, result) {
 
-        if (error) { console.log(error); }
 
-        console.log(result.rows[0].nome + result.rows[0].storico_offerte + result.rows[0].foto_profilo + result.rows[0].cognome);
-
+        if (error) { console.log(error); return; }
+        //  console.log(result);
+        // console.log(result.rows[0].nome + result.rows[0].storico_offerte + result.rows[0].foto_profilo + result.rows[0].cognome);
 
     });
+
+
+
+
+
+    //qua setto i cookie
+    //var query = url.parse(req.url, true, true).query;
+    var email_cookie;
+    //    console.log(String(req.body));
+    try {
+
+        email_cookie = req.body.email_cookie;
+
+    } catch (error) {}
+
+    if (!email_cookie) {
+
+        // Set a new cookie with the name
+        res.setHeader('Set-Cookie', cookie.serialize('email_cookie', mail, {
+            httpOnly: true,
+            maxAge: 60 * 60 // 1 hour
+        }));
+
+        // Redirect back after setting cookie
+        res.statusCode = 302;
+        res.setHeader('Location', req.headers.referer || '/');
+
+        res.end();
+
+        return;
+    }
+
+
 
 });
 
@@ -91,7 +192,11 @@ app.post('/signin', urlencodedParser, function(req, res) {
             if (error.code === '23505') {
 
 
-                res.sendFile(path.join(__dirname, '/sigin.html'));
+                res.send('<p>mail gia presa </p> ');
+                res.end();
+
+
+                // res.sendFile(path.join(__dirname, '/sigin.html'));
 
 
 
