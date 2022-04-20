@@ -62,7 +62,17 @@ app.post('/login', urlencodedParser, function(req, res) {
     console.log('post /login');
     var mail = req.body.mail;
     var password = req.body.passw;
-    console.log(mail + password);
+
+    ;
+
+    client.query('select * from utente where email=mail and password=password', function(error, result) {
+
+        if (error) { console.log(error); }
+
+        console.log(result);
+
+
+    });
 
 });
 
