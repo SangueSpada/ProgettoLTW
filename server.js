@@ -1,5 +1,5 @@
 var cookie = require('cookie');
-var escapeHtml = require('escape-html');
+//var escapeHtml = require('escape-html');
 var http = require('http');
 var url = require('url');
 const { Client } = require('pg');
@@ -8,12 +8,11 @@ var app = express();
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var path = require('path');
-//var url = require('url');
 
 const { response } = require('express');
 var port = 3334;
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname));
+app.use(express.static(__dirname)); //per elaborare il css
 
 var database = JSON.parse(fs.readFileSync('offerte.json')); //legge il contenuto di offerte json
 var credenziali = JSON.parse(fs.readFileSync('credenziali.json'));
@@ -35,7 +34,6 @@ client.connect(function(err) {
 app.get('/', function(req, res) {
     console.log('get /');
     var cookies = cookie.parse(req.headers.cookie || '');
-
     var email_cookie = cookies.email_cookie;
     //    console.log(String(req.body));
 
@@ -80,6 +78,11 @@ app.get('/offerta', urlencodedParser, function(req, res) {
 
     console.log('get /offerta');
     res.render('titolo.ejs', { offerta: database[req.query.id] });
+
+});
+app.get('/navbar',function(req, res) {
+    console.log('get /navbar');
+    res.render('navbar.ejs');
 
 });
 
@@ -183,14 +186,14 @@ app.post('/signin', urlencodedParser, function(req, res) {
     var cognome = req.body.lastName;
     var mail = req.body.email;
     var pass = req.body.password;
-
+    
 
     client.query('insert into utente(email,password,storico_offerte,foto_profilo,nome,cognome) values (' + '\'' + mail + '\',' + '\'' + pass + '\',' + '\'{}\',' + '\'' + String('https://cdn.calciomercato.com/images/2019-05/Whatsapp.senza.immagine.2019.1400x840.jpg') + '\',' + '\'' + nome + '\',' + '\'' + cognome + '\');', function(error, result) {
 
         if (error) {
 
             if (error.code === '23505') {
-
+                
 
                 res.send('<p>mail gia presa </p> ');
                 res.end();
@@ -220,4 +223,4 @@ app.post('/signin', urlencodedParser, function(req, res) {
 
 
 var server = app.listen(port, function() {});
-console.log('listen at port ' + port);
+console.log('listen at  http://127.0.0.1:' + port);

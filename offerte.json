@@ -33,7 +33,7 @@
         "descrizione": "questa è la descrizione christus",
         "checkin": "05/05/2022",
         "checkout": "10/05/2022",
-        "in_evidenza": false,
+        "in_evidenza": true,
         "scaduta": false
 
     },
