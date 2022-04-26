@@ -151,25 +151,21 @@ app.post('/login', urlencodedParser, function(req, res) {
 
         } catch (error) {
             console.log(error);
+            return;
         }
+
+        set_cookie();
 
 
     });
-    setTimeout(function() {
-        //qua setto i cookie
-        //var query = url.parse(req.url, true, true).query;
-        var email_cookie;
-        var profile_cookie;
-        //    console.log(String(req.body));
-        try {
-            email_cookie = req.body.email_cookie;
-            profile_cookie = req.body.profile_cookie;
-            console.log(email_cookie + ' ' + profile_cookie);
-        } catch (error) {
-            console.log(error);
-        }
 
-        if (!email_cookie) {
+
+    function set_cookie() {
+        //qua setto i cookie
+        console.log(mail + ' ' + profilo);
+
+
+        if (mail) {
 
             console.log("Procedo a settare i cookies: " + mail + ' ' + profilo);
 
@@ -188,10 +184,14 @@ app.post('/login', urlencodedParser, function(req, res) {
             res.setHeader('Location', req.headers.referer || '/');
             console.log("Cookies settati");
         }
+
         res.end();
         return;
 
-    }, 500);
+
+    };
+
+
 });
 
 app.post('/signin', urlencodedParser, function(req, res) {
