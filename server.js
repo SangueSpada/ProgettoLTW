@@ -217,6 +217,8 @@ app.get('/logout', function(req, res) {
         console.log("non ho ricevuto i cookie");
         res.render('index.ejs', { data: database, profilo: '' });
     }
+    res.end();
+    return;
 
 });
 

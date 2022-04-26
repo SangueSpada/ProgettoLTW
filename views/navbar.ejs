@@ -105,21 +105,22 @@
                 })
         })();
         function SessionHandler() {
-            console.log("sto qua");
             var cookies="<%=profilo%>";
             console.log("cookies ="+cookies);
             if(cookies==""){
                 let LS_btn = document.getElementById("login_sigin");
                 let profile_btn= document.getElementById("profile");
-                LS_btn.style.visibility="show";
-                profile_btn.style.visibility="hidden";
+                //LS_btn.style.visibility="show";
+                //profile_btn.style.visibility="hidden";
+                LS_btn.hidden=false;
+                profile_btn.hidden=true;
 
             }
             else{
                 let LS_btn = document.getElementById("login_sigin");
                 let profile_btn= document.getElementById("profile");
-                LS_btn.style.visibility="hidden";
-                profile_btn.style.visibility="show";
+                LS_btn.hidden=true;
+                profile_btn.hidden=false;
 
             }
 
