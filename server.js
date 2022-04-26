@@ -78,11 +78,7 @@ app.get('/offerte', function(req, res) {
 
 app.get('/offerta', urlencodedParser, function(req, res) {
 
-    var cookies = cookie.parse(req.headers.cookie || '');
 
-    var email_cookie = cookies.email_cookie;
-
-    if (email_cookie) {} else {}
 
     console.log('get /offerta');
     res.render('titolo.ejs', { offerta: database[req.query.id] });
@@ -105,28 +101,35 @@ app.get('/profilo', urlencodedParser, function(req, res) {
 
     console.log('get /profilo');
 
-    var cookies = cookie.parse(req.headers.cookie || '');
+    var cucina = cookie.parse(req.headers.cookie || '');
 
-    var email_cookie = cookies.email_cookie;
-    console.log(email_cookie);
-    if (email_cookie) {
+    var cookies = cucina.email_profilo_cookie;
 
-        var n;
-        var c;
-        var s;
-        var p;
+    if (cookies) {
+        var temp = cookies.split(',');
+        var email_cookie = temp[0];
+        //  var profilo_cookie = temp[1];
+        console.log("ho ricevuto i cookie...");
+        //   console.log(email_cookie + ' ' + profilo_cookie);
+
 
         client.query('select * from utente where email=\'' + email_cookie + '\'', function(error, result) {
             if (error) { console.log(error); return; }
-            n = String(result.rows[0].nome);
-            c = String(result.rows[0].cognome);
-            s = String(result.rows[0].storico_offerte);
-            p = String(result.rows[0].foto_profilo);
+            var n = String(result.rows[0].nome);
+            var c = String(result.rows[0].cognome);
+            var s = String(result.rows[0].storico_offerte);
+            var p = String(result.rows[0].foto_profilo);
             res.render('profile.ejs', { nome: n, cognome: c, mail: email_cookie, storico: s, profilo: p });
 
         });
+    } else {
+        console.log("non ho ricevuto i cookie");
+        res.sendFile(path.join(__dirname, '/sigin.html'));
+    }
 
-    } else { res.sendFile(path.join(__dirname, '/sigin.html')); }
+
+
+
 
     //res.sendFile(path.join(__dirname, '/profile.html'));
 
@@ -198,27 +201,22 @@ app.post('/login', urlencodedParser, function(req, res) {
 
 app.get('/logout', function(req, res) {
     console.log('get /logout');
-    res.clearCookie("email_profilo_cookie");
 
-    var cookies = cookie.parse(req.headers.cookie || '');
+    const p1 = Promise.resolve(res.clearCookie("email_profilo_cookie"));
 
-    var cookies = cookies.email_profilo_cookie;
 
-    if (cookies) {
-        var temp = cookies.split(',');
-        var email_cookie = temp[0];
-        var profilo_cookie = temp[1];
-        console.log("ho ricevuto i cookie...");
-        console.log(email_cookie + ' ' + profilo_cookie);
 
-        res.render('index.ejs', { data: database, cookie: email_cookie, profilo: profilo_cookie });
 
-    } else {
-        console.log("non ho ricevuto i cookie");
-        res.render('index.ejs', { data: database, profilo: '' });
-    }
-    res.end();
-    return;
+
+    p1.then(value => {
+        //   res.render('index.ejs', { data: database, profilo: '' });
+        res.statusCode = 302;
+        res.setHeader('Location', req.headers.referer || '/');
+        res.end();
+        return;
+    });
+    //  return;
+
 
 });
 
