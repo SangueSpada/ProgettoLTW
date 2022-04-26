@@ -34,12 +34,9 @@ client.connect(function(err) {
 
 app.get('/', function(req, res) {
     console.log('get /');
-    var cookies = cookie.parse(req.headers.cookie || '');
+    var cucina = cookie.parse(req.headers.cookie || '');
 
-    var cookies = cookies.email_profilo_cookie;
-
-
-
+    var cookies = cucina.email_profilo_cookie;
 
     if (cookies) {
         var temp = cookies.split(',');
@@ -59,16 +56,21 @@ app.get('/', function(req, res) {
 
 app.get('/offerte', function(req, res) {
 
-    var cookies = cookie.parse(req.headers.cookie || '');
+    var cucina = cookie.parse(req.headers.cookie || '');
 
-    var email_cookie = cookies.email_cookie;
-    var profilo_cookie = cookies.profile_cookie;
+    var cookies = cucina.email_profilo_cookie;
 
-    if (email_cookie) {
-        console.log("mando i cookie");
+    if (cookies) {
+        var temp = cookies.split(',');
+        var email_cookie = temp[0];
+        var profilo_cookie = temp[1];
+        console.log("ho ricevuto i cookie...");
+        console.log(email_cookie + ' ' + profilo_cookie);
+
         res.render('offerte.ejs', { data: database, cookie: email_cookie, profilo: profilo_cookie });
+
     } else {
-        console.log("non mando i cookie");
+        console.log("non ho ricevuto i cookie");
         res.render('offerte.ejs', { data: database, profilo: '' });
     }
 
@@ -191,6 +193,30 @@ app.post('/login', urlencodedParser, function(req, res) {
 
     };
 
+
+});
+
+app.get('/logout', function(req, res) {
+    console.log('get /logout');
+    res.clearCookie("email_profilo_cookie");
+
+    var cookies = cookie.parse(req.headers.cookie || '');
+
+    var cookies = cookies.email_profilo_cookie;
+
+    if (cookies) {
+        var temp = cookies.split(',');
+        var email_cookie = temp[0];
+        var profilo_cookie = temp[1];
+        console.log("ho ricevuto i cookie...");
+        console.log(email_cookie + ' ' + profilo_cookie);
+
+        res.render('index.ejs', { data: database, cookie: email_cookie, profilo: profilo_cookie });
+
+    } else {
+        console.log("non ho ricevuto i cookie");
+        res.render('index.ejs', { data: database, profilo: '' });
+    }
 
 });
 
