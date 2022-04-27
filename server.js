@@ -11,6 +11,7 @@ var path = require('path');
 
 const { response } = require('express');
 const { md5 } = require('pg/lib/utils');
+const { Console } = require('console');
 var port = 3334;
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname)); //per elaborare il css
@@ -33,6 +34,7 @@ client.connect(function(err) {
 });
 
 app.get('/', function(req, res) {
+
     console.log('get /');
     var cucina = cookie.parse(req.headers.cookie || '');
 
@@ -52,6 +54,14 @@ app.get('/', function(req, res) {
         res.render('index.ejs', { data: database, profilo: '' });
     }
 });
+
+
+
+
+
+
+
+
 
 
 app.get('/offerte', function(req, res) {
@@ -77,11 +87,27 @@ app.get('/offerte', function(req, res) {
 });
 
 app.get('/offerta', urlencodedParser, function(req, res) {
-
-
-
     console.log('get /offerta');
-    res.render('titolo.ejs', { offerta: database[req.query.id] });
+
+    var cucina = cookie.parse(req.headers.cookie || '');
+
+    var cookies = cucina.email_profilo_cookie;
+
+    if (cookies) {
+        var temp = cookies.split(',');
+        var email_cookie = temp[0];
+        var profilo_cookie = temp[1];
+        console.log("ho ricevuto i cookie...");
+        console.log(email_cookie + ' ' + profilo_cookie);
+
+        res.render('titolo.ejs', { offerta: database[req.query.id], profilo: profilo_cookie });
+
+    } else {
+        console.log("non ho ricevuto i cookie");
+        res.render('titolo.ejs', { offerta: database[req.query.id], profilo: '' });
+    }
+
+
 
 });
 app.get('/navbar', function(req, res) {
@@ -135,6 +161,81 @@ app.get('/profilo', urlencodedParser, function(req, res) {
 
 
 });
+
+
+
+
+app.get('/ricerca', urlencodedParser, function(req, res) {
+
+    console.log('get /ricerca');
+
+    var checkin = req.query.in;
+    var checkout = req.query.out;
+    var luogo = (req.query.place).toLowerCase();
+    var persone = req.query.people;
+    //console.log(checkin + ' ' + checkout + ' ' + luogo + ' ' + persone);
+    var cucina = cookie.parse(req.headers.cookie || '');
+    var cookies = cucina.email_profilo_cookie;
+    var minidb = [];
+
+    if (luogo !== '') {
+
+        for (var i = 0; i < database.length; i++) {
+
+            var d = database[i];
+
+            //se ricerco una citta o un hotel
+            if (d.disponibilita >= persone) {
+
+                if (d.citta === luogo || d.titolo === luogo) {
+
+                    //  console.log(Date.parse(checkin) + ' ' + Date.parse(d.checkin) + ' ' + Date.parse(checkout) + ' ' + Date.parse(d.checkout));
+                    if (new Date(checkin) >= new Date(d.checkin) && new Date(checkout) <= new Date(d.checkout)) {
+
+                        minidb.push(d);
+                    }
+
+                }
+            }
+        }
+    }
+    //se ricerco solo tramite data e disponibilità posti
+    else {
+        for (var i = 0; i < database.length; i++) {
+
+            var d = database[i];
+
+            if (d.disponibilita >= persone) {
+                if (new Date(checkin) >= new Date(d.checkin) && new Date(checkout) <= new Date(d.checkout)) {
+
+                    minidb.push(d);
+                }
+
+            }
+        }
+
+    }
+
+
+
+
+
+
+    if (cookies) {
+        var temp = cookies.split(',');
+        var email_cookie = temp[0];
+        var profilo_cookie = temp[1];
+        console.log("ho ricevuto i cookie...");
+        console.log(email_cookie + ' ' + profilo_cookie);
+
+        res.render('ricerca.ejs', { data: minidb, cookie: email_cookie, profilo: profilo_cookie });
+
+    } else {
+        console.log("non ho ricevuto i cookie");
+        res.render('ricerca.ejs', { data: minidb, profilo: '' });
+    }
+});
+
 
 
 

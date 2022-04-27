@@ -2,65 +2,74 @@
         "id": 0,
         "titolo": "hotel_esempio",
         "citta": "roma",
-        "immagine": "",
+        "immagine": "https://www.gardenhotelterni.it/wp-content/uploads/2015/06/Senza-titolo-12-Copia.jpg",
         "prezzo": 500,
         "descrizione": "questa è la descrizione esempio",
-        "checkin": "02/05/2022",
-        "checkout": "07/05/2022",
+        "checkin": "2022-05-02",
+        "checkout": "2022-05-07",
         "in_evidenza": true,
-        "scaduta": false
+        "scaduta": false,
+        "disponibilita": 30
 
     },
     {
         "id": 1,
         "titolo": "hotel_plaza",
         "citta": "milano",
-        "immagine": "",
+        "immagine": "https://www.hotel-aroma.com/media/LDC-Hotels-AROMA_Piscina_006_%E2%88%8F-2019-Giovanni-Marchesi.jpg",
         "prezzo": 800,
         "descrizione": "questa è la descrizione plaza",
-        "checkin": "01/05/2022",
-        "checkout": "06/05/2022",
+        "checkin": "2022-05-01",
+        "checkout": "2022-05-06",
         "in_evidenza": true,
-        "scaduta": false
+        "scaduta": false,
+        "disponibilita": 5
+
 
     },
     {
         "id": 2,
         "titolo": "hotel_christus",
         "citta": "roma",
-        "immagine": "",
+        "immagine": "https://www.hotel-rudolf.com/fileadmin/user_upload/Headerbilder-1920x1080/N_20160807_Hotel_Rudolf_M01_A.jpg",
         "prezzo": 200,
         "descrizione": "questa è la descrizione christus",
-        "checkin": "05/05/2022",
-        "checkout": "10/05/2022",
+        "checkin": "2022-05-05",
+        "checkout": "2022-05-10",
         "in_evidenza": true,
-        "scaduta": false
+        "scaduta": false,
+        "disponibilita": 8
+
 
     },
     {
         "id": 3,
         "titolo": "hotel_maremma",
         "citta": "firenze",
-        "immagine": "",
+        "immagine": "https://www.hotel-splendid.it/media/slide/homepage/01.jpg",
         "prezzo": 1500,
         "descrizione": "questa è la maremma maiala",
-        "checkin": "01/05/2022",
-        "checkout": "06/05/2022",
+        "checkin": "2022-05-01",
+        "checkout": "2022-05-06",
         "in_evidenza": true,
-        "scaduta": false
+        "scaduta": false,
+        "disponibilita": 4
+
 
     },
     {
         "id": 4,
         "titolo": "hotel_jesus",
         "citta": "roma",
-        "immagine": "",
+        "immagine": "https://static.italiaoggi.it/content_upload/img/2520/00/2520002/hotel-867851.jpg",
         "prezzo": 500,
         "descrizione": "questa è la descrizione jesus",
-        "checkin": "01/06/2022",
-        "checkout": "06/07/2022",
+        "checkin": "2022-06-01",
+        "checkout": "2022-07-06",
         "in_evidenza": false,
-        "scaduta": false
+        "scaduta": false,
+        "disponibilita": 17
+
 
     }
 
