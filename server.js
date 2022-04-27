@@ -109,23 +109,6 @@ app.get('/offerta', urlencodedParser, function(req, res) {
 
 
 
-    if (cookies) {
-        var temp = cookies.split(',');
-        var email_cookie = temp[0];
-        var profilo_cookie = temp[1];
-        console.log("ho ricevuto i cookie...");
-        console.log(email_cookie + ' ' + profilo_cookie);
-
-        res.render('titolo.ejs', { offerta: database[req.query.id], cookie: email_cookie, profilo: profilo_cookie });
-
-    } else {
-        console.log("non ho ricevuto i cookie");
-        res.render('titolo.ejs', { offerta: database[req.query.id], profilo: '' });
-
-    }
-
-
-
 
 
 });

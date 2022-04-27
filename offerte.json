@@ -9,7 +9,9 @@
         "checkout": "2022-05-07",
         "in_evidenza": true,
         "scaduta": false,
-        "disponibilita": 30
+        "disponibilita": 30,
+        "indirizzo": "via esempio 26"
+
 
     },
     {
@@ -23,7 +25,9 @@
         "checkout": "2022-05-06",
         "in_evidenza": true,
         "scaduta": false,
-        "disponibilita": 5
+        "disponibilita": 5,
+        "indirizzo": "via piazza 90"
+
 
 
     },
@@ -38,7 +42,9 @@
         "checkout": "2022-05-10",
         "in_evidenza": true,
         "scaduta": false,
-        "disponibilita": 8
+        "disponibilita": 8,
+        "indirizzo": "via cristoforo colombo 3"
+
 
 
     },
@@ -53,7 +59,9 @@
         "checkout": "2022-05-06",
         "in_evidenza": true,
         "scaduta": false,
-        "disponibilita": 4
+        "disponibilita": 4,
+        "indirizzo": "via mascara 58"
+
 
 
     },
@@ -68,7 +76,9 @@
         "checkout": "2022-07-06",
         "in_evidenza": false,
         "scaduta": false,
-        "disponibilita": 17
+        "disponibilita": 17,
+        "indirizzo": "via dei gesuiti 4"
+
 
 
     }
