@@ -77,12 +77,29 @@ app.get('/offerte', function(req, res) {
 });
 
 app.get('/offerta', urlencodedParser, function(req, res) {
-
-
-
     console.log('get /offerta');
-    res.render('titolo.ejs', { offerta: database[req.query.id] });
+    var cucina = cookie.parse(req.headers.cookie || '');
+    var cookies = cucina.email_profilo_cookie;
 
+    if (cookies) {
+        var temp = cookies.split(',');
+        var email_cookie = temp[0];
+        var profilo_cookie = temp[1];
+        console.log("ho ricevuto i cookie...");
+        console.log(email_cookie + ' ' + profilo_cookie);
+
+        res.render('titolo.ejs', { offerta: database[req.query.id], cookie: email_cookie, profilo: profilo_cookie });
+
+    } else {
+        console.log("non ho ricevuto i cookie");
+        res.render('titolo.ejs', { offerta: database[req.query.id], profilo:''});
+
+    }
+
+
+
+    
+    
 });
 app.get('/navbar', function(req, res) {
     console.log('get /navbar');
@@ -114,7 +131,10 @@ app.get('/profilo', urlencodedParser, function(req, res) {
 
 
         client.query('select * from utente where email=\'' + email_cookie + '\'', function(error, result) {
-            if (error) { console.log(error); return; }
+            if (error) { 
+                console.log(error); 
+                return; 
+            }
             var n = String(result.rows[0].nome);
             var c = String(result.rows[0].cognome);
             var s = String(result.rows[0].storico_offerte);
