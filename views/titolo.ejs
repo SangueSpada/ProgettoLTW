@@ -110,62 +110,42 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div style="padding: 40pt;"></div>
-
-
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label class="active" for="dateStandard">Check-in:</label>
-                            <input type="date" id="CheckInDate" name="CheckIn" onchange="checkin_fun();" min="<%=offerta.checkin%>" max="<%=offerta.checkout%>" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="active" for="dateStandard">Check-out:</label>
-                            <input type="date" id="CheckOutDate" name="CheckOut" onchange="checkout_fun();" min="<%=offerta.checkin%>" max="<%=offerta.checkout%>" required>
-                        </div>
-                        <div style="padding: 40pt;"></div>
-
-                        <div class="row">
-                            <div class="col-md-12 mt-2">
-
-                                <label class="active">Partecipanti:</label>
-                                <div class="btn-group">
-                                    <button type="button" id="lessBtn" class="btn btn-light rounded-circle" onclick="lessBtnRange()">-</button>
-                                    <input type="number" value="1" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
-                                    <button type="button" id="moreBtn" class="btn btn-light rounded-circle" onclick="moreBtnRange()">+</button>
+                    <nav class="shadow container p-3 rounded-3" style="background-color: #e3f2fd;">
+                        <form  onsubmit="prenota()">
+                            <div class="row">
+                                <div class="col-md-3 mt-2">
+                                    <label class="active" for="dateStandard">Check-in:</label>
+                                    <input type="date" id="CheckInDate" name="CheckIn" onchange="checkin_fun();" min="<%=offerta.checkin%>" max="<%=offerta.checkout%>" required>
+                                </div>
+                                <div class="col-md-3 mt-2">
+                                    <label class="active" for="dateStandard">Check-out:</label>
+                                    <input type="date" id="CheckOutDate" name="CheckOut" onchange="checkout_fun();" min="<%=offerta.checkin%>" max="<%=offerta.checkout%>" required>
+                                </div>
+                                <div class="col-md-3 mt-2">
+                                    <label class="active">Partecipanti:</label>
+                                    <div class="btn-group">
+                                        <button type="button" id="lessBtn" class="btn btn-light rounded-circle" onclick="lessBtnRange()">-</button>
+                                        <input type="number" value="1" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
+                                        <button type="button" id="moreBtn" class="btn btn-light rounded-circle" onclick="moreBtnRange()">+</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="active">Prezzo calcolato:</label>
+                                    <input type="text" style="text-align:center;" readonly="readonly" id="prezzo_finale" class="form-control" aria-label="Recipient's username" required>
                                 </div>
                             </div>
-                        </div>
-                        <div style="padding: 40pt;"></div>
-
+                            <div class="row">
+                                <div class="mt-2">
+                                    <button class="btn rounded-3 fw-bold" id="prenota" onclick="prenota()" style="background-color: #68d7f3;" disabled>Prenota ora!!!</button>
+                                </div>
+                            </div>
+                            
+                        </form>
                         <div class="row">
 
-
-                            <h3>prezzo calcolato:</h3>
-                            <div class="col-md-5 mt-2"></div>
-                            <div class="col-md-2 mt-2">
-                                <input type="text" style="text-align:center;" readonly="readonly" id="prezzo_finale" class="form-control" aria-label="Recipient's username" required>
-                            </div>
-                            <div class="col-md-5 mt-2"></div>
-
                         </div>
-                        <div style="padding: 40pt;"></div>
+                    </nav>
 
-                        <div class="row">
-                            <div class="col-md-5 mt-2"></div>
-                            <div class="col-md-2 mt-2">
-
-                                <button type="button" class="btn btn-primary" id="prenota" onclick="prenota()">tasto prenota</button>
-                            </div>
-                            <div class="col-md-5 mt-2"></div>
-
-                            <div style="padding: 50pt;"></div>
-
-
-                        </div>
-
-
-
-                    </div>
                 </div>
             </div>
             <script>
