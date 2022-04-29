@@ -19,31 +19,45 @@
                 <div class="col"></div>
                 <div class="col-auto">
                     <nav class="shadow container p-3 rounded-3" style="background-color: #e3f2fd;">
-                        <div class="row">
-                            <div class="col-12 mb-2">
-                                <input type="text" id="testo_ricerca" class="form-control" placeholder="Hotel o Città" aria-label="Recipient's username" value="<%=query[0]%>" required>
+                        <form class="row" method="post" action="/ricerca" onsubmit="search_fun()">
+                            <div class="col-md-12 mb-2">
+                                <select id="testo_ricerca" class="chosen-select" data-placeholder="Hotel o Città" required >
+                                    <optgroup label="HOTELS">
+                                        <option></option>
+                                        <% data.forEach(item => {%>
+                                        <option><%=item.titolo%></option>
+                                        <%});%>
+                                    </optgroup>
+                                    <optgroup label="CITTÀ">
+                                        <option>Roma</option>
+                                        <option>Firenze</option>
+                                        <option>Milano</option>
+                                    </optgroup>
+                                </select>
+                                <!--<input type="text" id="testo_ricerca" class="form-control" placeholder="Hotel o Città" list="hotelsList">-->
+                                
                             </div>
                             <div class="col-md-3 mt-2">
                                 <label class="active" for="dateStandard">Check-in:</label>
-                                <input type="date" id="CheckInDate" onchange="checkin_fun();" name="CheckIn" value="<%=query[1]%>" required>
+                                <input type="date" id="CheckInDate" onchange="checkin_fun();" name="CheckIn" required>
                             </div>
                             <div class="col-md-3 mt-2">
                                 <label class="active" for="dateStandard">Check-out:</label>
-                                <input type="date" id="CheckOutDate" onchange="checkout_fun();" name="CheckOut" value="<%=query[2]%>" required>
+                                <input type="date" id="CheckOutDate" onchange="checkout_fun();" name="CheckOut" required>
                             </div>
                             <div class="col-md-3 mt-2">
                                 <label class="active">Partecipanti:</label>
                                 <div class="btn-group">
                                     <button type="button" id="lessBtn" class="btn btn-light rounded-circle" onclick="lessBtnRange()">-</button>
-                                    <input type="number" value="<%=query[3]%>" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
+                                    <input type="number" value="1" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
                                     <button type="button" id="moreBtn" class="btn btn-light rounded-circle" onclick="moreBtnRange()">+</button>
                                 </div>
                             </div>
                             <div class="col-md-1"></div>
                             <div class="col-md-2 mt-2">
-                                <button class="btn rounded-3 fw-bold" style="background-color: #68d7f3;" onclick="search_fun()">Cerca <i class="ms-2 bi bi-search"></i></button>
+                                <button class="btn rounded-3 fw-bold" style="background-color: #68d7f3;">Cerca <i class="ms-2 bi bi-search"></i></button>
                             </div>
-                        </div>
+                        </form>
                         <div class="row">
 
                         </div>
@@ -97,6 +111,12 @@
 
 </body>
 <script>
+    $(".chosen-select").chosen({
+        no_results_text: "Non ho trovato quello che cercavi:",
+        width:"100%",
+
+    })
+
     function search_fun() {
 
         var checkin = document.getElementById('CheckInDate').value;

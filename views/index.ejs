@@ -27,7 +27,7 @@
                     <nav class="shadow container p-3 rounded-3" style="background-color: #e3f2fd;">
                         <form class="row" method="post" action="/ricerca" onsubmit="search_fun()">
                             <div class="col-md-12 mb-2">
-                                <select id="testo_ricerca" class="form-control chosen-select" data-placeholder="Hotel o Città" required >
+                                <select id="testo_ricerca" class="chosen-select" data-placeholder="Hotel o Città" required >
                                     <optgroup label="HOTELS">
                                         <option></option>
                                         <% data.forEach(item => {%>
@@ -126,7 +126,11 @@
 
 </body>
 <script>
-    $(".chosen-select").chosen()
+    $(".chosen-select").chosen({
+        no_results_text: "Non ho trovato quello che cercavi:",
+        width:"100%",
+
+    })
 
     function search_fun() {
 
