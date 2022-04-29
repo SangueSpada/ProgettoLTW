@@ -14,22 +14,283 @@
 <body>
     <%- include('navbar')%>
         <div style="padding: 40pt;"></div>
-        <h5 class="card-title">
-        
-            <%=offerta.id%>
-                <%=offerta.titolo%>
-                    <%=offerta.citta%>
-                        <%=offerta.immagine%>
-                            <%=offerta.prezzo%>
-                                <%=offerta.descrizione%>
-                                    <%=offerta.checkin%>
-                                        <%=offerta.checkout%>
-                                            <%=offerta.indirizzo%>
 
-        </h5>
         <div class="container">
-            <div class=""
 
+
+            <div class="row">
+                <div class="col-md-8">
+
+                    <image class="img-fluid" width="100%" src="<%=offerta.immagine%>"> </image>
+
+
+                </div>
+
+                <div class="col-md-4">
+                    <div style="padding: 30pt;"></div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="lead"> nome&#160hotel:
+                            </h3>
+                        </div>
+                        <div class="col-md-6 ">
+                            <h4 class="mb-0">
+                                <%=offerta.titolo%>
+                            </h4>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="lead"> indirizzo:
+                            </h3>
+                        </div>
+                        <div class="col-md-6 ">
+                            <h4 class="mb-0">
+                                <%=offerta.indirizzo%>
+                            </h4>
+                        </div>
+                    </div>
+                    <hr>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="lead"> città:
+                            </h3>
+                        </div>
+                        <div class="col-md-6 ">
+                            <h4 class="mb-0">
+                                <%=offerta.citta%>
+                            </h4>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <h3 class="lead">prezzo&#160per&#160notte:</h3>
+
+
+                        </div>
+                        <div class="col-md-6">
+                            <h4 class="mb-0">
+                                <%=offerta.prezzo%>
+                            </h4>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="lead"> descrizione:
+                            </h3>
+                        </div>
+                        <div class="col-md-6 ">
+                            <h4 class="mb-0">
+                                <%=offerta.descrizione%>
+                            </h4>
+                        </div>
+                    </div>
+
+                    <hr>
+
+
+
+
+
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div style="padding: 40pt;"></div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="active" for="dateStandard">Check-in:</label>
+                            <input type="date" id="CheckInDate" name="CheckIn" onchange="checkin_fun();" min="<%=offerta.checkin%>" max="<%=offerta.checkout%>" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="active" for="dateStandard">Check-out:</label>
+                            <input type="date" id="CheckOutDate" name="CheckOut" onchange="checkout_fun();" min="<%=offerta.checkin%>" max="<%=offerta.checkout%>" required>
+                        </div>
+                        <div style="padding: 40pt;"></div>
+
+                        <div class="row">
+                            <div class="col-md-12 mt-2">
+
+                                <label class="active">Partecipanti:</label>
+                                <div class="btn-group">
+                                    <button type="button" id="lessBtn" class="btn btn-light rounded-circle" onclick="lessBtnRange()">-</button>
+                                    <input type="number" value="1" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
+                                    <button type="button" id="moreBtn" class="btn btn-light rounded-circle" onclick="moreBtnRange()">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding: 40pt;"></div>
+
+                        <div class="row">
+
+
+                            <h3>prezzo calcolato:</h3>
+                            <div class="col-md-5 mt-2"></div>
+                            <div class="col-md-2 mt-2">
+                                <input type="text" style="text-align:center;" readonly="readonly" id="prezzo_finale" class="form-control" aria-label="Recipient's username" required>
+                            </div>
+                            <div class="col-md-5 mt-2"></div>
+
+                        </div>
+                        <div style="padding: 40pt;"></div>
+
+                        <div class="row">
+                            <div class="col-md-5 mt-2"></div>
+                            <div class="col-md-2 mt-2">
+
+                                <button type="button" class="btn btn-primary" id="prenota" onclick="prenota()">tasto prenota</button>
+                            </div>
+                            <div class="col-md-5 mt-2"></div>
+
+                            <div style="padding: 50pt;"></div>
+
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+            <script>
+                function prenota() {
+
+                    // if (!loggato) {goto /signin}
+                    /* if (loggato) {
+
+                    var prezzo;
+                    modifica disponibilità posti hotel
+                    aggiungi al db postgres in storico_offerte 
+
+
+
+                    } 
+
+                    */
+                }
+
+
+
+                function checkin_fun() {
+
+                    var checkin = document.getElementById("CheckInDate");
+                    var today = new Date();
+                    var current_date = today.getTime();
+                    var checkout = document.getElementById("CheckOutDate");
+
+
+                    if (checkin.valueAsNumber <= current_date || (checkout.valueAsNumber >= 0 && checkin.valueAsNumber >= checkout.valueAsNumber)) {
+                        checkin.value = new Date();
+                        console.log("data non valida");
+
+                        alert("data non valida!");
+                        return;
+                    } else if (checkout.valueAsNumber >= 0) {
+                        calcolo_prezzo();
+                    }
+                }
+
+                function checkout_fun() {
+
+                    var checkin = document.getElementById("CheckInDate");
+                    var checkout = document.getElementById("CheckOutDate");
+
+                    var today = new Date();
+                    var current_date = today.getTime();
+
+                    if (checkout.valueAsNumber <= current_date || (checkin.valueAsNumber >= 0 && checkout.valueAsNumber <= checkin.valueAsNumber)) {
+                        checkout.value = new Date();
+                        console.log("data non valida");
+                        alert("data non valida!");
+                        return;
+                    } else if (checkin.valueAsNumber >= 0) {
+                        calcolo_prezzo();
+                    }
+
+                }
+
+                function calcolo_prezzo() {
+
+                    var checkin = document.getElementById("CheckInDate");
+                    var checkout = document.getElementById("CheckOutDate");
+                    var part = document.getElementById("partecipants");
+                    var prenota = document.getElementById("prezzo_finale");
+                    var giorni = dateDiffInDays(new Date(checkin.value), new Date(checkout.value));
+                    var prezzo = giorni * part.valueAsNumber * Number("<%=offerta.prezzo%>");
+                    prenota.value = prezzo + ' Euro';
+
+
+                }
+
+
+
+                function dateDiffInDays(a, b) {
+
+                    var _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+                    // Esclude l'ora ed il fuso orario
+                    var utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+                    var utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+                    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+                }
+
+
+
+                function lessBtnRange() {
+                    var lessBtn = document.getElementById("lessBtn");
+                    var moreBtn = document.getElementById("moreBtn");
+                    var part = document.getElementById("partecipants");
+                    var checkin = document.getElementById("CheckInDate");
+                    var checkout = document.getElementById("CheckOutDate");
+
+                    if (part.valueAsNumber == 1) {
+                        lessBtn.disabled = true;
+                    } else {
+                        lessBtn.disabled = false;
+                        moreBtn.disabled = false;
+                        part.value = part.valueAsNumber - 1;
+                    }
+                    if (checkin.valueAsNumber >= 0 && checkout.valueAsNumber >= 0) {
+                        calcolo_prezzo();
+                    }
+                }
+
+                function moreBtnRange() {
+                    var lessBtn = document.getElementById("lessBtn");
+                    var moreBtn = document.getElementById("moreBtn");
+                    var part = document.getElementById("partecipants");
+                    var checkin = document.getElementById("CheckInDate");
+                    var checkout = document.getElementById("CheckOutDate");
+
+                    if (part.valueAsNumber == 10) {
+                        moreBtn.disabled = true;
+                    } else {
+                        moreBtn.disabled = false;
+                        lessBtn.disabled = false;
+                        part.value = part.valueAsNumber + 1;
+                    }
+                    if (checkin.valueAsNumber >= 0 && checkout.valueAsNumber >= 0) {
+                        calcolo_prezzo();
+                    }
+                }
+            </script>
 
 
 </body>
