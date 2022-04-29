@@ -13,26 +13,67 @@
 
 <body>
     <%- include('navbar')%>
-        <div style="padding: 40pt;"></div>
-        <div class="col-lg-12 text-center">
-            <h3>Offerte risultato</h3>
-        </div>
+        <div style="padding: 40pt;"></div>>
         <div class="container">
-            <div class="row d-flex justify-content-around">
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-auto">
+                    <nav class="shadow container p-3 rounded-3" style="background-color: #e3f2fd;">
+                        <div class="row">
+                            <div class="col-12 mb-2">
+                                <input type="text" id="testo_ricerca" class="form-control" placeholder="Hotel o Città" aria-label="Recipient's username" value="<%=query[0]%>" required>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <label class="active" for="dateStandard">Check-in:</label>
+                                <input type="date" id="CheckInDate" onchange="checkin_fun();" name="CheckIn" value="<%=query[1]%>" required>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <label class="active" for="dateStandard">Check-out:</label>
+                                <input type="date" id="CheckOutDate" onchange="checkout_fun();" name="CheckOut" value="<%=query[2]%>" required>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <label class="active">Partecipanti:</label>
+                                <div class="btn-group">
+                                    <button type="button" id="lessBtn" class="btn btn-light rounded-circle" onclick="lessBtnRange()">-</button>
+                                    <input type="number" value="<%=query[3]%>" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
+                                    <button type="button" id="moreBtn" class="btn btn-light rounded-circle" onclick="moreBtnRange()">+</button>
+                                </div>
+                            </div>
+                            <div class="col-md-1"></div>
+                            <div class="col-md-2 mt-2">
+                                <button class="btn rounded-3 fw-bold" style="background-color: #68d7f3;" onclick="search_fun()">Cerca <i class="ms-2 bi bi-search"></i></button>
+                            </div>
+                        </div>
+                        <div class="row">
 
-                <% if(data.length===0){ %>
-
-                    <div style="padding: 50pt;"></div>
-                    <div class="col-lg-12 text-center" style="color:red;">
-                        <h2>nessun risultato prodotto...</h2>
-                    </div>
+                        </div>
+                    </nav>
+                </div>
+                <div class="col"></div>
+            </div>
+            <div class="row d-flex justify-content-around mt-5">
+                <div style="padding: 50pt;"></div>
+                <% if(data.length==0){ %>
+                    <% if(query[0] == ''){ %>
+                        <div class="col-lg-12 text-center" style="color:red;">
+                            <h2>Non è stato trovato alcun hotel disponibile per queste date e numero partecipanti</h2>
+                        </div>
                     <% } else{ %>
+                        <div class="col-lg-12 text-center" style="color:red;">
+                            <h2>L'hotel selezionato non ha disponibilità per le date e numero partecipanti inseriti</h2>
+                        </div>
+                    
+                    <% } %>
+                <% } else{ %>
+                        <div class="col-lg-12 text-center" style="color:green;">
+                            <h2>La ricerca ha prodotto <%=data.length%> risultati:</h2>
+                        </div>
 
 
 
 
                         <% data.forEach(item => {%>
-                            <div class="card col-md-2 mt-2" style="width: 18rem;">
+                            <div class="card col-md-2 mt-2" style="width: 18rem; color:greenyellow;">
                                 <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
                         <title>Placeholder</title>
                    <!--     <rect width="100%" height="100%" fill="#20c997"></rect>-->
@@ -55,5 +96,52 @@
         </div>
 
 </body>
+<script>
+    function search_fun() {
+
+        var checkin = document.getElementById('CheckInDate').value;
+        var checkout = document.getElementById('CheckOutDate').value;
+        var posto = document.getElementById('testo_ricerca').value;
+        var persone = document.getElementById('partecipants').value;
+        if (checkin === '' || checkout === '') {
+
+            alert("inserire una data valida");
+
+        } else {
+            // Responce.Redirect('/ricerca?q=' + document.getElementById('testo_ricerca').value);
+            location.href = '/ricerca?in=' + checkin + '&out=' + checkout + '&place=' + posto + '&people=' + persone;
+            location.assign('/ricerca?in=' + checkin + '&out=' + checkout + '&place=' + posto + '&people=' + persone);
+        }
+    }
+
+    function lessBtnRange() {
+        var lessBtn = document.getElementById("lessBtn");
+        var moreBtn = document.getElementById("moreBtn");
+        var part = document.getElementById("partecipants");
+
+        if (part.valueAsNumber == 1) {
+            lessBtn.disabled = true;
+        } else {
+            lessBtn.disabled = false;
+            moreBtn.disabled = false;
+            part.value = part.valueAsNumber - 1;
+        }
+    }
+
+    function moreBtnRange() {
+        var lessBtn = document.getElementById("lessBtn");
+        var moreBtn = document.getElementById("moreBtn");
+        var part = document.getElementById("partecipants");
+
+        if (part.valueAsNumber == 10) {
+            moreBtn.disabled = true;
+        } else {
+            moreBtn.disabled = false;
+            lessBtn.disabled = false;
+            part.value = part.valueAsNumber + 1;
+        }
+    }
+
+</script>
 
 </html>

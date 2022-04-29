@@ -178,6 +178,7 @@ app.get('/ricerca', urlencodedParser, function(req, res) {
     var checkout = req.query.out;
     var luogo = (req.query.place).toLowerCase();
     var persone = req.query.people;
+    ricerca=[luogo,checkin,checkout,persone];
     //console.log(checkin + ' ' + checkout + ' ' + luogo + ' ' + persone);
     var cucina = cookie.parse(req.headers.cookie || '');
     var cookies = cucina.email_profilo_cookie;
@@ -187,44 +188,37 @@ app.get('/ricerca', urlencodedParser, function(req, res) {
 
         for (var i = 0; i < database.length; i++) {
 
-            var d = database[i];
+            var hotel = database[i];
 
             //se ricerco una citta o un hotel
-            if (d.disponibilita >= persone) {
+            if (hotel.disponibilita >= persone) {
 
-                if (d.citta === luogo || d.titolo === luogo) {
+                if (hotel.citta === luogo || hotel.titolo === luogo) {
 
                     //  console.log(Date.parse(checkin) + ' ' + Date.parse(d.checkin) + ' ' + Date.parse(checkout) + ' ' + Date.parse(d.checkout));
-                    if (new Date(checkin) >= new Date(d.checkin) && new Date(checkout) <= new Date(d.checkout)) {
-
-                        minidb.push(d);
+                    if (new Date(checkin) >= new Date(hotel.checkin) && new Date(checkout) <= new Date(hotel.checkout)) {
+                        minidb.push(hotel);
                     }
-
                 }
             }
         }
     }
-    //se ricerco solo tramite data e disponibilità posti
+    //se ricerco solo tramite data e disponibilità posti di un hotel specifico
     else {
         for (var i = 0; i < database.length; i++) {
 
-            var d = database[i];
+            var hotel = database[i];
 
-            if (d.disponibilita >= persone) {
-                if (new Date(checkin) >= new Date(d.checkin) && new Date(checkout) <= new Date(d.checkout)) {
+            if (hotel.disponibilita >= persone) {
+                if (new Date(checkin) >= new Date(hotel.checkin) && new Date(checkout) <= new Date(hotel.checkout)) {
 
-                    minidb.push(d);
+                    minidb.push(hotel);
                 }
 
             }
         }
 
     }
-
-
-
-
-
 
     if (cookies) {
         var temp = cookies.split(',');
@@ -233,11 +227,11 @@ app.get('/ricerca', urlencodedParser, function(req, res) {
         console.log("ho ricevuto i cookie...");
         console.log(email_cookie + ' ' + profilo_cookie);
 
-        res.render('ricerca.ejs', { data: minidb, cookie: email_cookie, profilo: profilo_cookie });
+        res.render('ricerca.ejs', { data: minidb, cookie: email_cookie, profilo: profilo_cookie, query: ricerca });
 
     } else {
         console.log("non ho ricevuto i cookie");
-        res.render('ricerca.ejs', { data: minidb, profilo: '' });
+        res.render('ricerca.ejs', { data: minidb, profilo: '',query: ricerca });
     }
 });
 
