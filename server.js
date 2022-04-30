@@ -41,9 +41,12 @@ app.get('/', function(req, res) {
     var cookies = cucina.email_profilo_cookie;
 
     if (cookies) {
-        var temp = cookies.split(',');
-        var email_cookie = temp[0];
-        var profilo_cookie = temp[1];
+        var ma = cookies.split(',');
+        var pr = cookies.replace(ma[0] + ',', '');
+        ma = ma[0];
+
+        var email_cookie = ma;
+        var profilo_cookie = pr;
         console.log("ho ricevuto i cookie...");
         console.log(email_cookie + ' ' + profilo_cookie);
 
@@ -71,9 +74,14 @@ app.get('/offerte', function(req, res) {
     var cookies = cucina.email_profilo_cookie;
 
     if (cookies) {
-        var temp = cookies.split(',');
-        var email_cookie = temp[0];
-        var profilo_cookie = temp[1];
+        //  var temp = cookies.split(',');
+
+        var ma = cookies.split(',');
+        var pr = cookies.replace(ma[0] + ',', '');
+        ma = ma[0];
+
+        var email_cookie = ma;
+        var profilo_cookie = pr;
         console.log("ho ricevuto i cookie...");
         console.log(email_cookie + ' ' + profilo_cookie);
 
@@ -94,9 +102,12 @@ app.get('/offerta', urlencodedParser, function(req, res) {
     var cookies = cucina.email_profilo_cookie;
 
     if (cookies) {
-        var temp = cookies.split(',');
-        var email_cookie = temp[0];
-        var profilo_cookie = temp[1];
+        var ma = cookies.split(',');
+        var pr = cookies.replace(ma[0] + ',', '');
+        ma = ma[0];
+
+        var email_cookie = ma;
+        var profilo_cookie = pr;
         console.log("ho ricevuto i cookie...");
         console.log(email_cookie + ' ' + profilo_cookie);
 
@@ -134,8 +145,12 @@ app.get('/profilo', urlencodedParser, function(req, res) {
     var cookies = cucina.email_profilo_cookie;
 
     if (cookies) {
-        var temp = cookies.split(',');
-        var email_cookie = temp[0];
+        var ma = cookies.split(',');
+        var pr = cookies.replace(ma[0] + ',', '');
+        ma = ma[0];
+
+        var email_cookie = ma;
+        var profilo_cookie = pr;
         //  var profilo_cookie = temp[1];
         console.log("ho ricevuto i cookie...");
         //   console.log(email_cookie + ' ' + profilo_cookie);
@@ -178,7 +193,7 @@ app.get('/ricerca', urlencodedParser, function(req, res) {
     var checkout = req.query.out;
     var luogo = (req.query.place).toLowerCase();
     var persone = req.query.people;
-    ricerca=[luogo,checkin,checkout,persone];
+    ricerca = [luogo, checkin, checkout, persone];
     //console.log(checkin + ' ' + checkout + ' ' + luogo + ' ' + persone);
     var cucina = cookie.parse(req.headers.cookie || '');
     var cookies = cucina.email_profilo_cookie;
@@ -221,9 +236,12 @@ app.get('/ricerca', urlencodedParser, function(req, res) {
     }
 
     if (cookies) {
-        var temp = cookies.split(',');
-        var email_cookie = temp[0];
-        var profilo_cookie = temp[1];
+        var ma = cookies.split(',');
+        var pr = cookies.replace(ma[0] + ',', '');
+        ma = ma[0];
+
+        var email_cookie = ma;
+        var profilo_cookie = pr;
         console.log("ho ricevuto i cookie...");
         console.log(email_cookie + ' ' + profilo_cookie);
 
@@ -231,7 +249,7 @@ app.get('/ricerca', urlencodedParser, function(req, res) {
 
     } else {
         console.log("non ho ricevuto i cookie");
-        res.render('ricerca.ejs', { data: minidb, profilo: '',query: ricerca });
+        res.render('ricerca.ejs', { data: minidb, profilo: '', query: ricerca });
     }
 });
 
