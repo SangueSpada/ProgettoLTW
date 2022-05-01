@@ -25,9 +25,9 @@
                 <div class="col"></div>
                 <div class="col-auto">
                     <nav class="shadow container p-3 rounded-3" style="background-color: #e3f2fd;">
-                        <form class="row" method="post" action="/ricerca" onsubmit="search_fun()">
+                        <form class="row" method="post" action="/ricerca">
                             <div class="col-md-12 mb-2">
-                                <select id="testo_ricerca" class="chosen-select" data-placeholder="Hotel o Città" required >
+                                <select id="testo_ricerca" name="testo_ricerca" value="ao" class="chosen-select" data-placeholder="Hotel o Città" required >
                                     <optgroup label="HOTELS">
                                         <option></option>
                                         <% data.forEach(item => {%>
@@ -40,7 +40,6 @@
                                         <option>Milano</option>
                                     </optgroup>
                                 </select>
-                                <!--<input type="text" id="testo_ricerca" class="form-control" placeholder="Hotel o Città" list="hotelsList">-->
                                 
                             </div>
                             <div class="col-md-3 mt-2">
@@ -55,7 +54,7 @@
                                 <label class="active">Partecipanti:</label>
                                 <div class="btn-group">
                                     <button type="button" id="lessBtn" class="btn btn-light rounded-circle" onclick="lessBtnRange()">-</button>
-                                    <input type="number" value="1" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
+                                    <input type="number" value="1" name="partecipants" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
                                     <button type="button" id="moreBtn" class="btn btn-light rounded-circle" onclick="moreBtnRange()">+</button>
                                 </div>
                             </div>
@@ -132,7 +131,7 @@
 
     })
 
-    function search_fun() {
+    /*function search_fun() {
 
         var checkin = document.getElementById('CheckInDate').value;
         var checkout = document.getElementById('CheckOutDate').value;
@@ -147,37 +146,42 @@
             location.href = '/ricerca?in=' + checkin + '&out=' + checkout + '&place=' + posto + '&people=' + persone;
             location.assign('/ricerca?in=' + checkin + '&out=' + checkout + '&place=' + posto + '&people=' + persone);
         }
-    }
-
+    }*/
 
     function checkin_fun() {
+        
 
         var checkin = document.getElementById("CheckInDate");
-        var today = new Date();
-        var current_date = today.getTime();
         var checkout = document.getElementById("CheckOutDate");
-
-
-        if (checkin.valueAsNumber <= current_date || (checkin.valueAsNumber >= 0 && checkin.valueAsNumber >= checkout.valueAsNumber)) {
-            checkin.value = new Date();
-
+        var in_date=new Date(checkin.value);
+        var out_date= in_date;
+        var today = new Date();
+        if (in_date <= today) {
             alert("data non valida!");
+            checkin.value=new Date();
         }
+        out_date.setDate(out_date.getDate()+1);
+        checkout.value= out_date.toISOString().split('T')[0];
     }
 
     function checkout_fun() {
 
         var checkin = document.getElementById("CheckInDate");
         var checkout = document.getElementById("CheckOutDate");
-
-        var today = new Date();
-        var current_date = today.getTime();
-
-        if (checkin.valueAsNumber >= checkout.valueAsNumber || checkout.valueAsNumber <= current_date) {
-            checkout.value = new Date();
-            alert("data non valida!");
+        var in_date;
+        var out_date=new Date(checkout.value);
+        if(checkin.value==''){
+            alert("Scegli prima la data di partenza");
+            checkout.value=new Date();
+            return
         }
-
+        else{
+            in_date= new Date(checkin.value);
+            if (in_date >= out_date) {
+                alert("data non valida!");
+                checkout.value=new Date();
+            }
+        }
     }
 
     function lessBtnRange() {

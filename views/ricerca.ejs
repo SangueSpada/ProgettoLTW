@@ -21,7 +21,7 @@
                     <nav class="shadow container p-3 rounded-3" style="background-color: #e3f2fd;">
                         <form class="row" method="post" action="/ricerca" onsubmit="search_fun()">
                             <div class="col-md-12 mb-2">
-                                <select id="testo_ricerca" class="chosen-select" data-placeholder="Hotel o Città" required >
+                                <select id="testo_ricerca" class="chosen-select" data-placeholder="Hotel o Città" value="<%=query.luogo%>" required >
                                     <optgroup label="HOTELS">
                                         <option></option>
                                         <% data.forEach(item => {%>
@@ -39,17 +39,17 @@
                             </div>
                             <div class="col-md-3 mt-2">
                                 <label class="active" for="dateStandard">Check-in:</label>
-                                <input type="date" id="CheckInDate" onchange="checkin_fun();" name="CheckIn" required>
+                                <input type="date" id="CheckInDate" onchange="checkin_fun();" name="CheckIn" value="<%=query.checkin%>" required>
                             </div>
                             <div class="col-md-3 mt-2">
                                 <label class="active" for="dateStandard">Check-out:</label>
-                                <input type="date" id="CheckOutDate" onchange="checkout_fun();" name="CheckOut" required>
+                                <input type="date" id="CheckOutDate" onchange="checkout_fun();" name="CheckOut" value="<%=query.checkout%>" required>
                             </div>
                             <div class="col-md-3 mt-2">
                                 <label class="active">Partecipanti:</label>
                                 <div class="btn-group">
                                     <button type="button" id="lessBtn" class="btn btn-light rounded-circle" onclick="lessBtnRange()">-</button>
-                                    <input type="number" value="1" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
+                                    <input type="number" value="1" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;" value="<%=query.persone%>">
                                     <button type="button" id="moreBtn" class="btn btn-light rounded-circle" onclick="moreBtnRange()">+</button>
                                 </div>
                             </div>

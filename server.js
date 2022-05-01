@@ -16,9 +16,18 @@ var port = 3334;
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname)); //per elaborare il css
 
-var database = JSON.parse(fs.readFileSync('offerte.json')); //legge il contenuto di offerte json
+var database = JSON.parse(fs.readFileSync('hotels.json')); //legge il contenuto di offerte json
 var credenziali = JSON.parse(fs.readFileSync('credenziali.json'));
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+// metodo per avere un array di date fra due date
+var getDates = function(start, end) {
+    for(var arr=[],dt=new Date(start); dt<=new Date(end); dt.setDate(dt.getDate()+1)){
+        arr.push(new Date(dt));
+    }
+    return arr;
+};
+//fine metodo ausiliario
 
 const client = new Client({
     user: credenziali.user,
@@ -151,9 +160,9 @@ app.get('/profilo', urlencodedParser, function(req, res) {
 
         var email_cookie = ma;
         var profilo_cookie = pr;
-        //  var profilo_cookie = temp[1];
+        var profilo_cookie = temp[1];
         console.log("ho ricevuto i cookie...");
-        //   console.log(email_cookie + ' ' + profilo_cookie);
+        console.log(email_cookie + ' ' + profilo_cookie);
 
 
         client.query('select * from utente where email=\'' + email_cookie + '\'', function(error, result) {
@@ -185,21 +194,85 @@ app.get('/profilo', urlencodedParser, function(req, res) {
 
 
 
-app.get('/ricerca', urlencodedParser, function(req, res) {
+app.post('/ricerca', urlencodedParser, function(req, res) {
 
     console.log('get /ricerca');
+    console.log(req.body);
 
-    var checkin = req.query.in;
-    var checkout = req.query.out;
-    var luogo = (req.query.place).toLowerCase();
-    var persone = req.query.people;
+    var checkin = req.body.CheckIn;
+    var checkout = req.body.CheckOut;
+    var luogo = (req.body.testo_ricerca);
+    var persone = req.body.partecipants;
     ricerca = [luogo, checkin, checkout, persone];
-    //console.log(checkin + ' ' + checkout + ' ' + luogo + ' ' + persone);
+    console.log(checkin + ' ' + checkout + ' ' + luogo + ' ' + persone);
     var cucina = cookie.parse(req.headers.cookie || '');
     var cookies = cucina.email_profilo_cookie;
-    var minidb = [];
+    var minidb=[];
+    var rangeDate=getDates(checkin,checkout,true);
+    /*if(luogo == ''){
+        let queryLess='select hotel_id,sum(partecipanti) as prenotati from prenotazioni group by(user_email,id_booking,hotel_id,data_pernotto)';
+        client.query(queryLess, function(error, result) {
+            if (error) {
+                console.log(error);
+                return;
+            }
+            for (var i = 0; i < database.length; i++) {
+                var hotel = database[i];
+                for(var j=0;j<result.rows.length;j++){
+                    if(rangeDate.includes(result.rows[j])){
+                        if(String(result.rows[j].hotel_id)==String(hotel.id) && result.rows[j].prenotati >= hotel.disponibilita){
+                            continue;     
+                        }
+                        else{
+                            minidb.push(hotel);
+                        }
+                    }
+                }
+            }
 
-    if (luogo !== '') {
+        })
+    }*/
+    //else{
+        var id_hotel;
+        //console.log(Object.keys(database).length);
+        for(var i=0;i<(Object.keys(database).length);i++){
+            console.log(database[i]);
+            if(String(database[i].titolo)==String(luogo)){ 
+                id_hotel=database[i].id
+                console.log("ecco l'id "+id_hotel);
+                break;
+            }
+        }
+        let queryHotel='select * from prenotazioni where hotel_id=\''+id_hotel+'\' group by(user_email,id_booking,hotel_id,data_pernotto)';
+        client.query(queryHotel, function(error, result) {
+            if (error) {
+                console.log(error);
+                return;
+            }
+            let hotels_prenotati=[];
+            for (var k=0;k<result.rows.length;k++){
+                hotels_prenotati.push(result.rows[k].hotel_id);
+            }
+
+            if(!(hotels_prenotati.includes(id_hotel))){//se(hotel non prenotato)
+                minidb.push(hotels_prenotati);
+                console.log("L'hotel "+id_hotel+" è disponibile");
+
+            }
+            else{
+                for(var j=0;j<result.rows.length;j++){
+                    if( (String(result.rows[j].hotel_id)==String(hotel.id) && rangeDate.includes(result.rows[j]) && result.rows[j].prenotati < hotel.disponibilita) || 
+                        (String(result.rows[j].hotel_id)==String(hotel.id) && !(rangeDate.includes(result.rows[j]))) ){ //(hotel prenotato ma non nelle date in range) or (hotel è nelle prenotazioni AND data_prenotazione in range and disponibile)  
+                            minidb.push(hotels_prenotati);
+                            console.log("L'hotel "+id_hotel+" è disponibile");
+                    }
+                }
+            }
+
+        })
+    //}
+
+    /*if (luogo != '') {
 
         for (var i = 0; i < database.length; i++) {
 
@@ -233,7 +306,7 @@ app.get('/ricerca', urlencodedParser, function(req, res) {
             }
         }
 
-    }
+    }*/
 
     if (cookies) {
         var ma = cookies.split(',');
@@ -262,25 +335,41 @@ app.post('/login', urlencodedParser, function(req, res) {
     var mail = req.body.mail;
     var password = md5(req.body.password);
     var profilo;
-    client.query('select * from utente where email=' + '\'' + mail + '\'' + ' and password=' + '\'' + password + '\'', function(error, result) {
-
-        if (error) { console.log(error); return; }
-
-        console.log("Utente loggato correttamente");
-        try {
-            profilo = String(result.rows[0].foto_profilo);
-            console.log(profilo);
-            //res.render('index.ejs', { data: database, profilo: p });
-
-        } catch (error) {
+    client.query('select * from utente where email=' + '\'' + mail + '\'', function(error, result) {
+        if (error) { 
             console.log(error);
+            return; 
+        }
+        else if(result.rows[0] == undefined){
+            res.send("<p>L'email inserita non è registrata nel sistema o non è stata scritta correttamente. Clicca <a href='/'>qui<a> per tornare all'homepage </p> "); 
             return;
         }
+        else{
+            client.query('select * from utente where email=' + '\'' + mail + '\'' + ' and password=' + '\'' + password + '\'', function(error, result) {
+                if (error) { 
+                    console.log(error);
+                    return; 
+                }
+                else if(result.rows[0] == undefined){
+                    res.send("<p>Password sbagliata. Clicca <a href='/'>qui<a> per tornare all'homepage </p> "); 
+                    return;
+                }
+                else{
+                    console.log("Utente loggato correttamente");
+                    try {
+                        profilo = String(result.rows[0].foto_profilo);
+                        console.log(profilo);
+                        //res.render('index.ejs', { data: database, profilo: p });
 
-        set_cookie();
-
-
-    });
+                    } catch (error) {
+                        console.log(error);
+                        return;
+                    }
+                    set_cookie();
+                }
+            })
+        }
+    })
 
 
     function set_cookie() {
@@ -321,10 +410,6 @@ app.get('/logout', function(req, res) {
     console.log('get /logout');
 
     const p1 = Promise.resolve(res.clearCookie("email_profilo_cookie"));
-
-
-
-
 
     p1.then(value => {
         //   res.render('index.ejs', { data: database, profilo: '' });
