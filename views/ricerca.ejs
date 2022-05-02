@@ -16,7 +16,7 @@
 
 <body>
     <%- include('navbar')%>
-        <div style="padding: 40pt;"></div>>
+        <div style="padding: 40pt;"></div>
         <div class="container">
             <div class="row">
                 <div class="col"></div>
@@ -24,7 +24,7 @@
                     <nav class="shadow container p-3 rounded-3" style="background-color: #e3f2fd;">
                         <form class="row" method="post" action="/ricerca">
                             <div class="col-md-12 mb-2">
-                                <select id="testo_ricerca" name="testo_ricerca" class="chosen-select" data-placeholder="Hotel o Città" required >
+                                <select id="testo_ricerca" value="<%=query[0]%>" name="testo_ricerca" class="chosen-select" data-placeholder="Hotel o Città" required>
                                     <optgroup label="HOTELS">
                                         <option></option>
                                         <% data.forEach(item => {%>
@@ -37,21 +37,21 @@
                                         <option>Milano</option>
                                     </optgroup>
                                 </select>
-                                
+
                             </div>
                             <div class="col-md-3 mt-2">
                                 <label class="active" for="dateStandard">Check-in:</label>
-                                <input type="date" id="CheckInDate" onchange="checkin_fun();" name="CheckIn" value="<%=query.checkin%>" required>
+                                <input type="date" id="CheckInDate" onchange="checkin_fun();" name="CheckIn" value="<%=query[1]%>" required>
                             </div>
                             <div class="col-md-3 mt-2">
                                 <label class="active" for="dateStandard">Check-out:</label>
-                                <input type="date" id="CheckOutDate" onchange="checkout_fun();" name="CheckOut" value="<%=query.checkout%>" required>
+                                <input type="date" id="CheckOutDate" onchange="checkout_fun();" name="CheckOut" value="<%=query[2]%>" required>
                             </div>
                             <div class="col-md-3 mt-2">
                                 <label class="active">Partecipanti:</label>
                                 <div class="btn-group">
                                     <button type="button" id="lessBtn" class="btn btn-light rounded-circle" onclick="lessBtnRange()">-</button>
-                                    <input type="number" value="<%=query.persone%>" name="partecipants" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
+                                    <input type="number" value="<%=query[3]%>" name="partecipants" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
                                     <button type="button" id="moreBtn" class="btn btn-light rounded-circle" onclick="moreBtnRange()">+</button>
                                 </div>
                             </div>
@@ -69,84 +69,74 @@
             </div>
             <div class="row d-flex justify-content-around mt-5">
                 <div style="padding: 50pt;"></div>
-                <% if(data.length==0){ %>
+                <% if(results.length==0){ %>
                     <% if(query[0] == ''){ %>
                         <div class="col-lg-12 text-center" style="color:red;">
                             <h2>Non è stato trovato alcun hotel disponibile per queste date e numero partecipanti</h2>
                         </div>
-                    <% } else{ %>
-                        <div class="col-lg-12 text-center" style="color:red;">
-                            <h2>L'hotel selezionato non ha disponibilità per le date e numero partecipanti inseriti</h2>
-                        </div>
-                    
-                    <% } %>
-                <% } else{ %>
-                        <div class="col-lg-12 text-center" style="color:green;">
-                            <h2>La ricerca ha prodotto <%=data.length%> risultati:</h2>
-                        </div>
+                        <% } else{ %>
+                            <div class="col-lg-12 text-center" style="color:red;">
+                                <h2>L'hotel selezionato non ha disponibilità per le date e numero partecipanti inseriti</h2>
+                            </div>
+
+                            <% } %>
+                                <% } else{ %>
+                                    <div class="col-lg-12 text-center" style="color:green;">
+                                        <h2>La ricerca ha prodotto
+                                            <%=results.length%> risultati:</h2>
+                                    </div>
 
 
 
 
-                        <% data.forEach(item => {%>
-                            <div class="card col-md-2 mt-2" style="width: 18rem;">
-                                <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                    <% results.forEach(item => {%>
+                                        <div class="card col-md-2 mt-2" style="width: 18rem;">
+                                            <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
                         <title>Placeholder</title>
                    <!--     <rect width="100%" height="100%" fill="#20c997"></rect>-->
                         <image href="<%=item.immagine%>" height="100%" width="100%"/>
 
                     </svg>
-                                <div class="card-body">
-                                    <h5 class="card-title"><%=item.titolo%></h5>
-                                    <h6 class="card-subtitle"><%=item.prezzo%> €</h6>
-                                    <p class="card-text"><%=item.descrizione%></p>
-                                    <a class="btn btn-primary" href="/offerta?id=<%=item.id%>">Scopri di più</a>
-                                </div>
-                            </div>
-                            <%});%>
-                                <% } %>
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <%=item.titolo%>
+                                                </h5>
+                                                <h6 class="card-subtitle">
+                                                    <%=item.prezzo%> €</h6>
+                                                <p class="card-text">
+                                                    <%=item.descrizione%>
+                                                </p>
+                                                <a class="btn btn-primary" href="/offerta?id=<%=item.id%>">Scopri di più</a>
+                                            </div>
+                                        </div>
+                                        <%});%>
+                                            <% } %>
             </div>
         </div>
+        <%- include('../footer.html'); -%>
 
 </body>
 <script>
     $(".chosen-select").chosen({
         no_results_text: "Non ho trovato quello che cercavi:",
-        width:"100%",
+        width: "100%",
 
     })
 
-    function search_fun() {
-
-        var checkin = document.getElementById('CheckInDate').value;
-        var checkout = document.getElementById('CheckOutDate').value;
-        var posto = document.getElementById('testo_ricerca').value;
-        var persone = document.getElementById('partecipants').value;
-        if (checkin === '' || checkout === '') {
-
-            alert("inserire una data valida");
-
-        } else {
-            // Responce.Redirect('/ricerca?q=' + document.getElementById('testo_ricerca').value);
-            location.href = '/ricerca?in=' + checkin + '&out=' + checkout + '&place=' + posto + '&people=' + persone;
-            location.assign('/ricerca?in=' + checkin + '&out=' + checkout + '&place=' + posto + '&people=' + persone);
-        }
-    }
-
     function checkin_fun() {
-        
+
 
         var checkin = document.getElementById("CheckInDate");
         var checkout = document.getElementById("CheckOutDate");
-        var in_date=new Date(checkin.value);
-        var out_date= in_date;
+        var in_date = new Date(checkin.value);
+        var out_date = in_date;
         var today = new Date();
         if (in_date <= today) {
             alert("data non valida!");
-            checkin.value=new Date();
+            checkin.value = new Date();
         }
-        out_date.setDate(out_date.getDate()+1);
-        checkout.value= out_date.toISOString().split('T')[0];
+        out_date.setDate(out_date.getDate() + 1);
+        checkout.value = out_date.toISOString().split('T')[0];
     }
 
     function checkout_fun() {
@@ -154,17 +144,16 @@
         var checkin = document.getElementById("CheckInDate");
         var checkout = document.getElementById("CheckOutDate");
         var in_date;
-        var out_date=new Date(checkout.value);
-        if(checkin.value==''){
+        var out_date = new Date(checkout.value);
+        if (checkin.value == '') {
             alert("Scegli prima la data di partenza");
-            checkout.value=new Date();
+            checkout.value = new Date();
             return
-        }
-        else{
-            in_date= new Date(checkin.value);
+        } else {
+            in_date = new Date(checkin.value);
             if (in_date >= out_date) {
                 alert("data non valida!");
-                checkout.value=new Date();
+                checkout.value = new Date();
             }
         }
     }
@@ -196,7 +185,6 @@
             part.value = part.valueAsNumber + 1;
         }
     }
-
 </script>
 
 </html>

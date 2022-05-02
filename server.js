@@ -144,10 +144,11 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
     for (var i = 0; i < (Object.keys(database).length); i++) {
         if (String(database[i].titolo) == String(luogo)) {
             hotel = database[i]
-            console.log("ecco l'id " + hotel.id);
+                //console.log("ecco l'id "+hotel.id);
             break;
         }
     }
+
     let queryHotel = 'with somma as (select hotel_id,data_pernotto,partecipanti from prenotazioni where hotel_id=\'' + hotel.id + '\') select somma.hotel_id,somma.data_pernotto, sum(somma.partecipanti) from somma group by (somma.hotel_id,somma.data_pernotto)';
     var QueryResult;
     const p1 = new Promise((resolve, reject) => {
@@ -171,11 +172,11 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
             console.log("ho ricevuto i cookie...");
             console.log(email_cookie + ' ' + profilo_cookie);
 
-            res.render('ricerca.ejs', { data: minidb, cookie: email_cookie, profilo: profilo_cookie, query: ricerca });
+            res.render('ricerca.ejs', { data: database, results: minidb, cookie: email_cookie, profilo: profilo_cookie, query: ricerca });
 
         } else {
             console.log("non ho ricevuto i cookie");
-            res.render('ricerca.ejs', { data: minidb, profilo: '', query: ricerca });
+            res.render('ricerca.ejs', { data: database, results: minidb, profilo: '', query: ricerca });
         }
     });
 });

@@ -6,7 +6,6 @@
         "prezzo": 500,
         "descrizione": "questa è la descrizione esempio",
         "in_evidenza": true,
-        "scaduta": false,
         "disponibilita": 30,
         "indirizzo": "via esempio 26"
 
@@ -20,7 +19,6 @@
         "prezzo": 800,
         "descrizione": "questa è la descrizione plaza",
         "in_evidenza": true,
-        "scaduta": false,
         "disponibilita": 5,
         "indirizzo": "via piazza 90"
 
@@ -35,7 +33,6 @@
         "prezzo": 200,
         "descrizione": "questa è la descrizione christus",
         "in_evidenza": true,
-        "scaduta": false,
         "disponibilita": 8,
         "indirizzo": "via cristoforo colombo 3"
 
@@ -50,7 +47,6 @@
         "prezzo": 1500,
         "descrizione": "questa è la maremma maiala",
         "in_evidenza": true,
-        "scaduta": false,
         "disponibilita": 4,
         "indirizzo": "via mascara 58"
 
@@ -65,7 +61,6 @@
         "prezzo": 500,
         "descrizione": "questa è la descrizione jesus",
         "in_evidenza": false,
-        "scaduta": false,
         "disponibilita": 17,
         "indirizzo": "via dei gesuiti 4"
 
