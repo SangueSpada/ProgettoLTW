@@ -146,7 +146,7 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
         for(var i=0;i<(Object.keys(database).length);i++){
             if(String(database[i].titolo)==String(luogo)){ 
                 hotel=database[i]
-                console.log("ecco l'id "+hotel.id);
+                //console.log("ecco l'id "+hotel.id);
                 break;
             }
         }
@@ -173,11 +173,11 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
             console.log("ho ricevuto i cookie...");
             console.log(email_cookie + ' ' + profilo_cookie);
 
-            res.render('ricerca.ejs', { data: minidb, cookie: email_cookie, profilo: profilo_cookie, query: ricerca });
+            res.render('ricerca.ejs', { data: database, results: minidb, cookie: email_cookie, profilo: profilo_cookie, query: ricerca });
 
         } else {
             console.log("non ho ricevuto i cookie");
-            res.render('ricerca.ejs', { data: minidb, profilo: '', query: ricerca });
+            res.render('ricerca.ejs', { data: database, results: minidb, profilo: '', query: ricerca });
         }
     });
     });
