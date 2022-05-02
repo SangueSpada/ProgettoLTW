@@ -22,32 +22,30 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 // metodo per avere un array di date fra due date
 async function getDates(start, end) {
-    for(var arr=[],dt=new Date(start); dt<=new Date(end); dt.setDate(dt.getDate()+1)){
+    for (var arr = [], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate() + 1)) {
         arr.push(new Date(dt));
-        }
-    return arr;
     }
+    return arr;
+}
 
-function Hotelavilability(hotel,result,minidb,rangeDate,persone){
-    let hotels_prenotati=[];
-    for (var k=0;k<result.rows.length;k++){ //inserisce in una lista gli id degli hotel
+function Hotelavilability(hotel, result, minidb, rangeDate, persone) {
+    let hotels_prenotati = [];
+    for (var k = 0; k < result.rows.length; k++) { //inserisce in una lista gli id degli hotel
         hotels_prenotati.push(result.rows[k].hotel_id);
     }
-    if(parseInt(persone) > parseInt(hotel.disponibilita)){
-        console.log("L'hotel "+hotel.id+" ha disponibilità minore dei partecipanti richiesti");
-        console.log(persone+' '+hotel.disponibilita);
-    }
-    else{
-        if(!(hotels_prenotati.includes(hotel.id)) ){//se(hotel non prenotato)
+    if (parseInt(persone) > parseInt(hotel.disponibilita)) {
+        console.log("L'hotel " + hotel.id + " ha disponibilità minore dei partecipanti richiesti");
+        console.log(persone + ' ' + hotel.disponibilita);
+    } else {
+        if (!(hotels_prenotati.includes(hotel.id))) { //se(hotel non prenotato)
             minidb.push(hotel);
-            console.log("L'hotel "+hotel.id+" è disponibile");
+            console.log("L'hotel " + hotel.id + " è disponibile");
             return;
-        }
-        else{
-            for(var j=0;j<result.rows.length;j++){ //scorre la lista finchè non trova l'hotel e controlla le altre condizioni
-                if( String(result.rows[j].hotel_id)==String(hotel.id) && rangeDate.includes(result.rows[j].data_pernotto) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(hotel.disponibilita)){  // (hotel è nelle prenotazioni AND data_prenotazione in range and  NON disponibile)  
-                    console.log("Nel giorno: "+result.rows[j].data_pernotto+" l'hotel con id: "+result.rows[j].hotel_id+" NON è DISPONIBILE. LA PRENOTAZIONE NON SI PUò FARE");
-                    return;           
+        } else {
+            for (var j = 0; j < result.rows.length; j++) { //scorre la lista finchè non trova l'hotel e controlla le altre condizioni
+                if (String(result.rows[j].hotel_id) == String(hotel.id) && rangeDate.includes(result.rows[j].data_pernotto) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(hotel.disponibilita)) { // (hotel è nelle prenotazioni AND data_prenotazione in range and  NON disponibile)  
+                    console.log("Nel giorno: " + result.rows[j].data_pernotto + " l'hotel con id: " + result.rows[j].hotel_id + " NON è DISPONIBILE. LA PRENOTAZIONE NON SI PUò FARE");
+                    return;
                 }
             }
             console.log("Ho controllato tutti i giorni e non ci sono giorni pieni e/o i giorni non sono nel range");
@@ -56,7 +54,7 @@ function Hotelavilability(hotel,result,minidb,rangeDate,persone){
         }
     }
 
-            
+
 }
 // 
 
@@ -115,8 +113,8 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
     console.log(checkin + ' ' + checkout + ' ' + luogo + ' ' + persone);
     var cucina = cookie.parse(req.headers.cookie || '');
     var cookies = cucina.email_profilo_cookie;
-    var minidb=[];
-    var rangeDate=getDates(checkin,checkout);
+    var minidb = [];
+    var rangeDate = getDates(checkin, checkout);
     /*if(luogo == ''){
         let queryLess='select hotel_id,sum(partecipanti) as prenotati from prenotazioni group by(user_email,id_booking,hotel_id,data_pernotto)';
         client.query(queryLess, function(error, result) {
@@ -141,28 +139,28 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
         })
     }*/
     //else{
-        var hotel;
-        //console.log(Object.keys(database).length);
-        for(var i=0;i<(Object.keys(database).length);i++){
-            if(String(database[i].titolo)==String(luogo)){ 
-                hotel=database[i]
-                console.log("ecco l'id "+hotel.id);
-                break;
-            }
+    var hotel;
+    //console.log(Object.keys(database).length);
+    for (var i = 0; i < (Object.keys(database).length); i++) {
+        if (String(database[i].titolo) == String(luogo)) {
+            hotel = database[i]
+            console.log("ecco l'id " + hotel.id);
+            break;
         }
-        let queryHotel='with somma as (select hotel_id,data_pernotto,partecipanti from prenotazioni where hotel_id=\''+hotel.id+'\') select somma.hotel_id,somma.data_pernotto, sum(somma.partecipanti) from somma group by (somma.hotel_id,somma.data_pernotto)';
-        var QueryResult; 
-        const p1= new Promise ((resolve,reject) => {
-            client.query(queryHotel, function(error, result) {
-                if (error) {
-                    console.log(error);
-                    return [];
-                }
-                resolve(QueryResult=result);
-            })
-        });
-        p1.then( value => { 
-            Hotelavilability(hotel,QueryResult,minidb,rangeDate,persone)     
+    }
+    let queryHotel = 'with somma as (select hotel_id,data_pernotto,partecipanti from prenotazioni where hotel_id=\'' + hotel.id + '\') select somma.hotel_id,somma.data_pernotto, sum(somma.partecipanti) from somma group by (somma.hotel_id,somma.data_pernotto)';
+    var QueryResult;
+    const p1 = new Promise((resolve, reject) => {
+        client.query(queryHotel, function(error, result) {
+            if (error) {
+                console.log(error);
+                return [];
+            }
+            resolve(QueryResult = result);
+        })
+    });
+    p1.then(value => {
+        Hotelavilability(hotel, QueryResult, minidb, rangeDate, persone)
         if (cookies) {
             var ma = cookies.split(',');
             var pr = cookies.replace(ma[0] + ',', '');
@@ -180,7 +178,7 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
             res.render('ricerca.ejs', { data: minidb, profilo: '', query: ricerca });
         }
     });
-    });
+});
 
 app.get('/offerte', function(req, res) {
 
@@ -253,25 +251,21 @@ app.post('/login', urlencodedParser, function(req, res) {
     var password = md5(req.body.password);
     var profilo;
     client.query('select * from utente where email=' + '\'' + mail + '\'', function(error, result) {
-        if (error) { 
+        if (error) {
             console.log(error);
-            return; 
-        }
-        else if(result.rows[0] == undefined){
-            res.send("<p>L'email inserita non è registrata nel sistema o non è stata scritta correttamente. Clicca <a href='/'>qui<a> per tornare all'homepage </p> "); 
             return;
-        }
-        else{
+        } else if (result.rows[0] == undefined) {
+            res.send("<p>L'email inserita non è registrata nel sistema o non è stata scritta correttamente. Clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
+            return;
+        } else {
             client.query('select * from utente where email=' + '\'' + mail + '\'' + ' and password=' + '\'' + password + '\'', function(error, result) {
-                if (error) { 
+                if (error) {
                     console.log(error);
-                    return; 
-                }
-                else if(result.rows[0] == undefined){
-                    res.send("<p>Password sbagliata. Clicca <a href='/'>qui<a> per tornare all'homepage </p> "); 
                     return;
-                }
-                else{
+                } else if (result.rows[0] == undefined) {
+                    res.send("<p>Password sbagliata. Clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
+                    return;
+                } else {
                     console.log("Utente loggato correttamente");
                     try {
                         profilo = String(result.rows[0].foto_profilo);
@@ -344,34 +338,33 @@ app.get('/logout', function(req, res) {
 app.post('/signin', urlencodedParser, function(req, res) {
 
     console.log('post /signin');
-        var nome = req.body.firstName;
-        var cognome = req.body.lastName;
-        var mail = req.body.email;
-        var pass = md5(req.body.password);
-        var indirizzo = req.body.address;
-        var sesso;
-        if(req.body.Msex==undefined){sesso=req.body.Fsex}
-        else{sesso=req.body.Msex}
-        console.log(nome+' '+cognome+' '+mail+' '+indirizzo+' '+sesso);
-    
-        client.query('insert into utente(email,password,foto_profilo,nome,cognome,indirizzo,sesso) values (' + '\'' + mail + '\',' + '\'' + pass + '\',' + '\'' + String('https://cdn.calciomercato.com/images/2019-05/Whatsapp.senza.immagine.2019.1400x840.jpg') + '\',' + '\'' + nome + '\',' + '\'' + cognome + '\',' + '\'' + indirizzo + '\',' + '\'' + sesso + '\');', function(error, result) {
-    
-            if (error) {
-    
-                if (error.code === '23505') {
-    
-                    res.send("<p>mail gia presa clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
-                    res.end();
-    
-                    // res.sendFile(path.join(__dirname, '/sigin.html'));
-                } else {
-                    throw error;
-                }
+    var nome = req.body.firstName;
+    var cognome = req.body.lastName;
+    var mail = req.body.email;
+    var pass = md5(req.body.password);
+    var indirizzo = req.body.address;
+    var sesso;
+    if (req.body.Msex == undefined) { sesso = req.body.Fsex } else { sesso = req.body.Msex }
+    console.log(nome + ' ' + cognome + ' ' + mail + ' ' + indirizzo + ' ' + sesso);
+
+    client.query('insert into utente(email,password,foto_profilo,nome,cognome,indirizzo,sesso) values (' + '\'' + mail + '\',' + '\'' + pass + '\',' + '\'' + String('https://cdn.calciomercato.com/images/2019-05/Whatsapp.senza.immagine.2019.1400x840.jpg') + '\',' + '\'' + nome + '\',' + '\'' + cognome + '\',' + '\'' + indirizzo + '\',' + '\'' + sesso + '\');', function(error, result) {
+
+        if (error) {
+
+            if (error.code === '23505') {
+
+                res.send("<p>mail gia presa clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
+                res.end();
+
+                // res.sendFile(path.join(__dirname, '/sigin.html'));
             } else {
-                res.send("<p>Registrazione eseguita correttamente, clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
+                throw error;
             }
-    
-        });
+        } else {
+            res.send("<p>Registrazione eseguita correttamente, clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
+        }
+
+    });
 
 });
 
@@ -380,8 +373,7 @@ app.get('/signin', function(req, res) {
     var cookies = cucina.email_profilo_cookie;
     if (cookies) {
         res.redirect('/');
-    }
-    else {
+    } else {
         console.log('get /signin');
         res.sendFile(path.join(__dirname, '/sigin.html'));
     }
@@ -418,7 +410,7 @@ app.get('/profilo', urlencodedParser, function(req, res) {
             var p = String(result.rows[0].foto_profilo);
             var i = String(result.rows[0].indirizzo);
             var s = String(result.rows[0].sesso);
-            res.render('profile.ejs', { nome: n, cognome: c, mail: email_cookie, profilo: p, indirizzo: i, sesso: s});
+            res.render('profile.ejs', { nome: n, cognome: c, mail: email_cookie, profilo: p, indirizzo: i, sesso: s });
 
         });
     } else {
