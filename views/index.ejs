@@ -85,12 +85,9 @@
                         <image href="<%=item.immagine%>" height="100%" width="100%"/>
                     </svg>
                             <div class="card-body">
-                                <h5 class="card-title">
-                                    <%=item.titolo%>
-                                </h5>
-                                <p class="card-text">
-                                    <%=item.descrizione%>
-                                </p>
+                                <h5 class="card-title"><%=item.titolo%></h5>
+                                <h6 class="card-subtitle"><%=item.prezzo%> €</h6>
+                                <p class="card-text"><%=item.descrizione%></p>
                                 <a href="/offerta?id=<%=item.id%>" class="btn btn-primary">Scopri di più</a>
                             </div>
                         </div>

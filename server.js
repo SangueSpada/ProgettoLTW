@@ -28,28 +28,34 @@ async function getDates(start, end) {
     return arr;
     }
 
-async function Hotelavilability(id_hotel,result,minidb,rangeDate){
+function Hotelavilability(hotel,result,minidb,rangeDate,persone){
     let hotels_prenotati=[];
     for (var k=0;k<result.rows.length;k++){ //inserisce in una lista gli id degli hotel
         hotels_prenotati.push(result.rows[k].hotel_id);
     }
-
-    if(!(hotels_prenotati.includes(id_hotel))){//se(hotel non prenotato)
-        minidb.push(database[id_hotel]);
-        console.log("L'hotel "+id_hotel+" è disponibile");
-        return;
+    if(parseInt(persone) > parseInt(hotel.disponibilita)){
+        console.log("L'hotel "+hotel.id+" ha disponibilità minore dei partecipanti richiesti");
+        console.log(persone+' '+hotel.disponibilita);
     }
     else{
-        for(var j=0;j<result.rows.length;j++){ //scorre la lista finchè non trova l'hotel e controlla le altre condizioni
-            if( String(result.rows[j].hotel_id)==String(hotel.id) && rangeDate.includes(result.rows[j].data_pernotto) && result.rows[j].prenotati > hotel.disponibilita ){  // (hotel è nelle prenotazioni AND data_prenotazione in range and  NON disponibile)  
-                console.log("Nel giorno: "+result.rows[j].data_pernotto+" l'hotel con id: "+result.rows[j].hotel_id+" NON è DISPONIBILE. LA PRENOTAZIONE NON SI PUò FARE");
-                return;           
-            }
+        if(!(hotels_prenotati.includes(hotel.id)) ){//se(hotel non prenotato)
+            minidb.push(hotel);
+            console.log("L'hotel "+hotel.id+" è disponibile");
+            return;
         }
-        console.log("Ho controllato tutti i giorni e non ci sono giorni pieni e/o i giorni non sono nel range");
-        minidb.push(database[id_hotel]);
-        return;
+        else{
+            for(var j=0;j<result.rows.length;j++){ //scorre la lista finchè non trova l'hotel e controlla le altre condizioni
+                if( String(result.rows[j].hotel_id)==String(hotel.id) && rangeDate.includes(result.rows[j].data_pernotto) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(hotel.disponibilita)){  // (hotel è nelle prenotazioni AND data_prenotazione in range and  NON disponibile)  
+                    console.log("Nel giorno: "+result.rows[j].data_pernotto+" l'hotel con id: "+result.rows[j].hotel_id+" NON è DISPONIBILE. LA PRENOTAZIONE NON SI PUò FARE");
+                    return;           
+                }
+            }
+            console.log("Ho controllato tutti i giorni e non ci sono giorni pieni e/o i giorni non sono nel range");
+            minidb.push(hotel);
+            return;
+        }
     }
+
             
 }
 // 
@@ -135,16 +141,16 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
         })
     }*/
     //else{
-        var id_hotel;
+        var hotel;
         //console.log(Object.keys(database).length);
         for(var i=0;i<(Object.keys(database).length);i++){
             if(String(database[i].titolo)==String(luogo)){ 
-                id_hotel=database[i].id
-                console.log("ecco l'id "+id_hotel);
+                hotel=database[i]
+                console.log("ecco l'id "+hotel.id);
                 break;
             }
         }
-        let queryHotel='with somma as (select hotel_id,data_pernotto,partecipanti from prenotazioni where hotel_id=\''+id_hotel+'\') select somma.hotel_id,somma.data_pernotto, sum(somma.partecipanti) from somma group by (somma.hotel_id,somma.data_pernotto)';
+        let queryHotel='with somma as (select hotel_id,data_pernotto,partecipanti from prenotazioni where hotel_id=\''+hotel.id+'\') select somma.hotel_id,somma.data_pernotto, sum(somma.partecipanti) from somma group by (somma.hotel_id,somma.data_pernotto)';
         var QueryResult; 
         const p1= new Promise ((resolve,reject) => {
             client.query(queryHotel, function(error, result) {
@@ -156,9 +162,7 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
             })
         });
         p1.then( value => { 
-            Hotelavilability(id_hotel,QueryResult,minidb,rangeDate) 
-            console.log(minidb);
-    
+            Hotelavilability(hotel,QueryResult,minidb,rangeDate,persone)     
         if (cookies) {
             var ma = cookies.split(',');
             var pr = cookies.replace(ma[0] + ',', '');
