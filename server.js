@@ -21,13 +21,42 @@ var credenziali = JSON.parse(fs.readFileSync('credenziali.json'));
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 // metodo per avere un array di date fra due date
-var getDates = function(start, end) {
+async function getDates(start, end) {
     for(var arr=[],dt=new Date(start); dt<=new Date(end); dt.setDate(dt.getDate()+1)){
         arr.push(new Date(dt));
-    }
+        }
     return arr;
-};
-//fine metodo ausiliario
+    }
+
+async function Hotelavilability(id_hotel,result,minidb,rangeDate){
+    let hotels_prenotati=[];
+    for (var k=0;k<result.rows.length;k++){ //inserisce in una lista gli id degli hotel
+        hotels_prenotati.push(result.rows[k].hotel_id);
+    }
+
+    if(!(hotels_prenotati.includes(id_hotel))){//se(hotel non prenotato)
+        minidb.push(database[id_hotel]);
+        console.log("L'hotel "+id_hotel+" è disponibile");
+        return;
+    }
+    else{
+        for(var j=0;j<result.rows.length;j++){ //scorre la lista finchè non trova l'hotel e controlla le altre condizioni
+            if( String(result.rows[j].hotel_id)==String(hotel.id) && rangeDate.includes(result.rows[j].data_pernotto) && result.rows[j].prenotati > hotel.disponibilita ){  // (hotel è nelle prenotazioni AND data_prenotazione in range and  NON disponibile)  
+                console.log("Nel giorno: "+result.rows[j].data_pernotto+" l'hotel con id: "+result.rows[j].hotel_id+" NON è DISPONIBILE. LA PRENOTAZIONE NON SI PUò FARE");
+                return;           
+            }
+        }
+        console.log("Ho controllato tutti i giorni e non ci sono giorni pieni e/o i giorni non sono nel range");
+        minidb.push(database[id_hotel]);
+        return;
+    }
+            
+}
+// 
+
+
+
+//fine metodo ausiliari
 
 const client = new Client({
     user: credenziali.user,
@@ -41,6 +70,7 @@ client.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
 });
+
 
 app.get('/', function(req, res) {
 
@@ -67,14 +97,86 @@ app.get('/', function(req, res) {
     }
 });
 
+app.post('/ricerca', urlencodedParser, function(req, res) {
 
+    console.log('get /ricerca');
 
+    var checkin = req.body.CheckIn;
+    var checkout = req.body.CheckOut;
+    var luogo = (req.body.testo_ricerca);
+    var persone = req.body.partecipants;
+    ricerca = [luogo, checkin, checkout, persone];
+    console.log(checkin + ' ' + checkout + ' ' + luogo + ' ' + persone);
+    var cucina = cookie.parse(req.headers.cookie || '');
+    var cookies = cucina.email_profilo_cookie;
+    var minidb=[];
+    var rangeDate=getDates(checkin,checkout);
+    /*if(luogo == ''){
+        let queryLess='select hotel_id,sum(partecipanti) as prenotati from prenotazioni group by(user_email,id_booking,hotel_id,data_pernotto)';
+        client.query(queryLess, function(error, result) {
+            if (error) {
+                console.log(error);
+                return;
+            }
+            for (var i = 0; i < database.length; i++) {
+                var hotel = database[i];
+                for(var j=0;j<result.rows.length;j++){
+                    if(rangeDate.includes(result.rows[j])){
+                        if(String(result.rows[j].hotel_id)==String(hotel.id) && result.rows[j].prenotati >= hotel.disponibilita){
+                            continue;     
+                        }
+                        else{
+                            minidb.push(hotel);
+                        }
+                    }
+                }
+            }
 
+        })
+    }*/
+    //else{
+        var id_hotel;
+        //console.log(Object.keys(database).length);
+        for(var i=0;i<(Object.keys(database).length);i++){
+            if(String(database[i].titolo)==String(luogo)){ 
+                id_hotel=database[i].id
+                console.log("ecco l'id "+id_hotel);
+                break;
+            }
+        }
+        let queryHotel='with somma as (select hotel_id,data_pernotto,partecipanti from prenotazioni where hotel_id=\''+id_hotel+'\') select somma.hotel_id,somma.data_pernotto, sum(somma.partecipanti) from somma group by (somma.hotel_id,somma.data_pernotto)';
+        var QueryResult; 
+        const p1= new Promise ((resolve,reject) => {
+            client.query(queryHotel, function(error, result) {
+                if (error) {
+                    console.log(error);
+                    return [];
+                }
+                resolve(QueryResult=result);
+            })
+        });
+        p1.then( value => { 
+            Hotelavilability(id_hotel,QueryResult,minidb,rangeDate) 
+            console.log(minidb);
+    
+        if (cookies) {
+            var ma = cookies.split(',');
+            var pr = cookies.replace(ma[0] + ',', '');
+            ma = ma[0];
 
+            var email_cookie = ma;
+            var profilo_cookie = pr;
+            console.log("ho ricevuto i cookie...");
+            console.log(email_cookie + ' ' + profilo_cookie);
 
+            res.render('ricerca.ejs', { data: minidb, cookie: email_cookie, profilo: profilo_cookie, query: ricerca });
 
-
-
+        } else {
+            console.log("non ho ricevuto i cookie");
+            res.render('ricerca.ejs', { data: minidb, profilo: '', query: ricerca });
+        }
+    });
+    });
 
 app.get('/offerte', function(req, res) {
 
@@ -132,199 +234,10 @@ app.get('/offerta', urlencodedParser, function(req, res) {
 
 
 });
-app.get('/navbar', function(req, res) {
-    console.log('get /navbar');
-    res.render('navbar.ejs');
-
-});
-
-app.get('/signin', function(req, res) {
-    console.log('get /signin');
-    res.sendFile(path.join(__dirname, '/sigin.html'));
-
-
-});
-
-app.get('/profilo', urlencodedParser, function(req, res) {
-
-    console.log('get /profilo');
-
-    var cucina = cookie.parse(req.headers.cookie || '');
-
-    var cookies = cucina.email_profilo_cookie;
-
-    if (cookies) {
-        var ma = cookies.split(',');
-        var pr = cookies.replace(ma[0] + ',', '');
-        ma = ma[0];
-
-        var email_cookie = ma;
-        var profilo_cookie = pr;
-        var profilo_cookie = temp[1];
-        console.log("ho ricevuto i cookie...");
-        console.log(email_cookie + ' ' + profilo_cookie);
-
-
-        client.query('select * from utente where email=\'' + email_cookie + '\'', function(error, result) {
-            if (error) {
-                console.log(error);
-                return;
-            }
-            var n = String(result.rows[0].nome);
-            var c = String(result.rows[0].cognome);
-            var s = String(result.rows[0].storico_offerte);
-            var p = String(result.rows[0].foto_profilo);
-            res.render('profile.ejs', { nome: n, cognome: c, mail: email_cookie, storico: s, profilo: p });
-
-        });
-    } else {
-        console.log("non ho ricevuto i cookie");
-        res.sendFile(path.join(__dirname, '/sigin.html'));
-    }
 
 
 
-
-
-    //res.sendFile(path.join(__dirname, '/profile.html'));
-
-
-});
-
-
-
-
-app.post('/ricerca', urlencodedParser, function(req, res) {
-
-    console.log('get /ricerca');
-    console.log(req.body);
-
-    var checkin = req.body.CheckIn;
-    var checkout = req.body.CheckOut;
-    var luogo = (req.body.testo_ricerca);
-    var persone = req.body.partecipants;
-    ricerca = [luogo, checkin, checkout, persone];
-    console.log(checkin + ' ' + checkout + ' ' + luogo + ' ' + persone);
-    var cucina = cookie.parse(req.headers.cookie || '');
-    var cookies = cucina.email_profilo_cookie;
-    var minidb=[];
-    var rangeDate=getDates(checkin,checkout,true);
-    /*if(luogo == ''){
-        let queryLess='select hotel_id,sum(partecipanti) as prenotati from prenotazioni group by(user_email,id_booking,hotel_id,data_pernotto)';
-        client.query(queryLess, function(error, result) {
-            if (error) {
-                console.log(error);
-                return;
-            }
-            for (var i = 0; i < database.length; i++) {
-                var hotel = database[i];
-                for(var j=0;j<result.rows.length;j++){
-                    if(rangeDate.includes(result.rows[j])){
-                        if(String(result.rows[j].hotel_id)==String(hotel.id) && result.rows[j].prenotati >= hotel.disponibilita){
-                            continue;     
-                        }
-                        else{
-                            minidb.push(hotel);
-                        }
-                    }
-                }
-            }
-
-        })
-    }*/
-    //else{
-        var id_hotel;
-        //console.log(Object.keys(database).length);
-        for(var i=0;i<(Object.keys(database).length);i++){
-            console.log(database[i]);
-            if(String(database[i].titolo)==String(luogo)){ 
-                id_hotel=database[i].id
-                console.log("ecco l'id "+id_hotel);
-                break;
-            }
-        }
-        let queryHotel='select * from prenotazioni where hotel_id=\''+id_hotel+'\' group by(user_email,id_booking,hotel_id,data_pernotto)';
-        client.query(queryHotel, function(error, result) {
-            if (error) {
-                console.log(error);
-                return;
-            }
-            let hotels_prenotati=[];
-            for (var k=0;k<result.rows.length;k++){
-                hotels_prenotati.push(result.rows[k].hotel_id);
-            }
-
-            if(!(hotels_prenotati.includes(id_hotel))){//se(hotel non prenotato)
-                minidb.push(hotels_prenotati);
-                console.log("L'hotel "+id_hotel+" è disponibile");
-
-            }
-            else{
-                for(var j=0;j<result.rows.length;j++){
-                    if( (String(result.rows[j].hotel_id)==String(hotel.id) && rangeDate.includes(result.rows[j]) && result.rows[j].prenotati < hotel.disponibilita) || 
-                        (String(result.rows[j].hotel_id)==String(hotel.id) && !(rangeDate.includes(result.rows[j]))) ){ //(hotel prenotato ma non nelle date in range) or (hotel è nelle prenotazioni AND data_prenotazione in range and disponibile)  
-                            minidb.push(hotels_prenotati);
-                            console.log("L'hotel "+id_hotel+" è disponibile");
-                    }
-                }
-            }
-
-        })
-    //}
-
-    /*if (luogo != '') {
-
-        for (var i = 0; i < database.length; i++) {
-
-            var hotel = database[i];
-
-            //se ricerco una citta o un hotel
-            if (hotel.disponibilita >= persone) {
-
-                if (hotel.citta === luogo || hotel.titolo === luogo) {
-
-                    //  console.log(Date.parse(checkin) + ' ' + Date.parse(d.checkin) + ' ' + Date.parse(checkout) + ' ' + Date.parse(d.checkout));
-                    if (new Date(checkin) >= new Date(hotel.checkin) && new Date(checkout) <= new Date(hotel.checkout)) {
-                        minidb.push(hotel);
-                    }
-                }
-            }
-        }
-    }
-    //se ricerco solo tramite data e disponibilità posti di un hotel specifico
-    else {
-        for (var i = 0; i < database.length; i++) {
-
-            var hotel = database[i];
-
-            if (hotel.disponibilita >= persone) {
-                if (new Date(checkin) >= new Date(hotel.checkin) && new Date(checkout) <= new Date(hotel.checkout)) {
-
-                    minidb.push(hotel);
-                }
-
-            }
-        }
-
-    }*/
-
-    if (cookies) {
-        var ma = cookies.split(',');
-        var pr = cookies.replace(ma[0] + ',', '');
-        ma = ma[0];
-
-        var email_cookie = ma;
-        var profilo_cookie = pr;
-        console.log("ho ricevuto i cookie...");
-        console.log(email_cookie + ' ' + profilo_cookie);
-
-        res.render('ricerca.ejs', { data: minidb, cookie: email_cookie, profilo: profilo_cookie, query: ricerca });
-
-    } else {
-        console.log("non ho ricevuto i cookie");
-        res.render('ricerca.ejs', { data: minidb, profilo: '', query: ricerca });
-    }
-});
+/* +++++++++++++++++++++++ GESTIONE LOGIN SIGIN LOGOUT ++++++++++++++++++++++++++++ */
 
 
 
@@ -404,6 +317,7 @@ app.post('/login', urlencodedParser, function(req, res) {
     };
 
 
+
 });
 
 app.get('/logout', function(req, res) {
@@ -426,35 +340,96 @@ app.get('/logout', function(req, res) {
 app.post('/signin', urlencodedParser, function(req, res) {
 
     console.log('post /signin');
-
-    var nome = req.body.firstName;
-    var cognome = req.body.lastName;
-    var mail = req.body.email;
-    var pass = md5(req.body.password);
-
-
-    client.query('insert into utente(email,password,storico_offerte,foto_profilo,nome,cognome) values (' + '\'' + mail + '\',' + '\'' + pass + '\',' + '\'{}\',' + '\'' + String('https://cdn.calciomercato.com/images/2019-05/Whatsapp.senza.immagine.2019.1400x840.jpg') + '\',' + '\'' + nome + '\',' + '\'' + cognome + '\');', function(error, result) {
-
-        if (error) {
-
-            if (error.code === '23505') {
-
-                res.send("<p>mail gia presa clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
-                res.end();
-
-                // res.sendFile(path.join(__dirname, '/sigin.html'));
+        var nome = req.body.firstName;
+        var cognome = req.body.lastName;
+        var mail = req.body.email;
+        var pass = md5(req.body.password);
+        var indirizzo = req.body.address;
+        var sesso;
+        if(req.body.Msex==undefined){sesso=req.body.Fsex}
+        else{sesso=req.body.Msex}
+        console.log(nome+' '+cognome+' '+mail+' '+indirizzo+' '+sesso);
+    
+        client.query('insert into utente(email,password,foto_profilo,nome,cognome,indirizzo,sesso) values (' + '\'' + mail + '\',' + '\'' + pass + '\',' + '\'' + String('https://cdn.calciomercato.com/images/2019-05/Whatsapp.senza.immagine.2019.1400x840.jpg') + '\',' + '\'' + nome + '\',' + '\'' + cognome + '\',' + '\'' + indirizzo + '\',' + '\'' + sesso + '\');', function(error, result) {
+    
+            if (error) {
+    
+                if (error.code === '23505') {
+    
+                    res.send("<p>mail gia presa clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
+                    res.end();
+    
+                    // res.sendFile(path.join(__dirname, '/sigin.html'));
+                } else {
+                    throw error;
+                }
             } else {
-                throw error;
+                res.send("<p>Registrazione eseguita correttamente, clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
             }
-        } else {
-            res.send("<p>Registrazione eseguita correttamente, clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
-        }
-
-    });
+    
+        });
 
 });
 
+app.get('/signin', function(req, res) {
+    var cucina = cookie.parse(req.headers.cookie || '');
+    var cookies = cucina.email_profilo_cookie;
+    if (cookies) {
+        res.redirect('/');
+    }
+    else {
+        console.log('get /signin');
+        res.sendFile(path.join(__dirname, '/sigin.html'));
+    }
 
+
+});
+
+app.get('/profilo', urlencodedParser, function(req, res) {
+
+    console.log('get /profilo');
+
+    var cucina = cookie.parse(req.headers.cookie || '');
+
+    var cookies = cucina.email_profilo_cookie;
+
+    if (cookies) {
+        var ma = cookies.split(',');
+        var pr = cookies.replace(ma[0] + ',', '');
+        ma = ma[0];
+
+        var email_cookie = ma;
+        var profilo_cookie = pr;
+        console.log("ho ricevuto i cookie...");
+        console.log(email_cookie + ' ' + profilo_cookie);
+
+
+        client.query('select * from utente where email=\'' + email_cookie + '\'', function(error, result) {
+            if (error) {
+                console.log(error);
+                return;
+            }
+            var n = String(result.rows[0].nome);
+            var c = String(result.rows[0].cognome);
+            var p = String(result.rows[0].foto_profilo);
+            var i = String(result.rows[0].indirizzo);
+            var s = String(result.rows[0].sesso);
+            res.render('profile.ejs', { nome: n, cognome: c, mail: email_cookie, profilo: p, indirizzo: i, sesso: s});
+
+        });
+    } else {
+        console.log("non ho ricevuto i cookie");
+        res.sendFile(path.join(__dirname, '/sigin.html'));
+    }
+
+
+
+
+
+    //res.sendFile(path.join(__dirname, '/profile.html'));
+
+
+});
 
 var server = app.listen(port, function() {});
 console.log('listen at  http://127.0.0.1:' + port);

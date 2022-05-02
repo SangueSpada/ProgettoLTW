@@ -29,7 +29,21 @@
                 <div class="col-lg-12">
                     <form name="registrazione" method="POST" action="/signin" class="needs-validation"  novalidate>
                         <div class="row g-3">
-                            <div class="col-sm-6">
+                            <div class="col-sm-1 pt-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="Fsex" id="Fsex" value="Sig.ra">
+                                    <label class="form-check-label" for="Fsex">
+                                      Sig.ra
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="Msex" id="Msex" value="Sig." checked>
+                                    <label class="form-check-label" for="Msex">
+                                      Sig.
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
                                 <label for="firstName" class="form-label">Nome</label>
                                 <input type="text" name="firstName" class="form-control" id="firstName" required>
                                 <div class="invalid-feedback">
@@ -79,14 +93,14 @@
                                     <p>La password inserita non corrisponde</p>
                                 </div>
                             </div>
-                            <div class="col-md-9 ">
-                                <label for="address " class="form-label ">Indirizzo di residenza</label>
-                                <input type="text " class="form-control " id="address " placeholder=" Via mario rossi, 6 " required>
+                            <div class="col-md-12 ">
+                                <label for="address" class="form-label">Indirizzo di residenza</label>
+                                <input type="text" class="form-control" id="address" name="address" placeholder=" Via mario rossi, 6" required>
                                 <div class="invalid-feedback">
                                   Inserisci l'indirizzo
                                 </div>
                             </div>
-                            <div class="col-md-3 ">
+                            <!--<div class="col-md-3 ">
                                 <label for="citta" class="form-label ">Città</label>
                                 <input type="text " class="form-control " id="citta " placeholder="" required>
                                 <div class="invalid-feedback ">
@@ -95,7 +109,7 @@
                             </div>
 
 
-                            <!--<div class="col-md-5 ">
+                            <div class="col-md-5 ">
                     <label for="country " class="form-label ">Country</label>
                     <select class="form-select " id="country " required>
                       <option value=" ">Choose...</option>
