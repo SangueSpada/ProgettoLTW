@@ -32,9 +32,9 @@
                                         <%});%>
                                     </optgroup>
                                     <optgroup label="CITTÀ">
-                                        <option>Roma</option>
-                                        <option>Firenze</option>
-                                        <option>Milano</option>
+                                        <% cittas.forEach(item => {%>
+                                            <option><%= item %></option>
+                                            <%});%>
                                     </optgroup>
                                 </select>
 
@@ -69,22 +69,21 @@
             </div>
             <div class="row d-flex justify-content-around mt-5">
                 <div style="padding: 50pt;"></div>
-                <% if(results.length==0){ %>
+                <% if(results.size==0){ %>
                     <% if(query[0] == ''){ %>
                         <div class="col-lg-12 text-center" style="color:red;">
                             <h2>Non è stato trovato alcun hotel disponibile per queste date e numero partecipanti</h2>
                         </div>
-                        <% } else{ %>
-                            <div class="col-lg-12 text-center" style="color:red;">
-                                <h2>L'hotel selezionato non ha disponibilità per le date e numero partecipanti inseriti</h2>
-                            </div>
-
-                            <% } %>
-                                <% } else{ %>
-                                    <div class="col-lg-12 text-center" style="color:green;">
-                                        <h2>La ricerca ha prodotto
-                                            <%=results.length%> risultati:</h2>
-                                    </div>
+                    <% } else{ %>
+                        <div class="col-lg-12 text-center" style="color:red;">
+                            <h2>L'hotel selezionato non ha disponibilità per le date e numero partecipanti inseriti</h2>
+                        </div>
+                    
+                    <% } %>
+                <% } else{ %>
+                        <div class="col-lg-12 text-center" style="color:green;">
+                            <h2>La ricerca ha prodotto <%=results.size%> risultati:</h2>
+                        </div>
 
 
 

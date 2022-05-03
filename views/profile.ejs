@@ -77,49 +77,65 @@
 
 <body>
     <%- include('navbar')%>
-        <div style="padding: 40pt;"></div>
+    <div style="padding: 40pt;"></div>
 
 
-        <div class="container">
-            <div class="main-body">
+    <div class="container">
+        <div class="main-body">
 
-                <!-- Breadcrumb -->
-                <nav aria-label="breadcrumb" class="main-breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Profilo utente</li>
-                    </ol>
-                </nav>
-                <!-- /Breadcrumb -->
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="main-breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Profilo utente</li>
+                </ol>
+            </nav>
+            <!-- /Breadcrumb -->
 
-                <div class="row gutters-sm">
-                    <div class="col-md-4 mb-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex flex-column align-items-center text-center">
-                                    <img src="<%=profilo%>" alt="Admin" class="rounded-circle" width="150">
-                                    <div class="mt-3">
-                                        <h4>
-                                            <%=nome%>
-                                                <%=cognome%>
-                                        </h4>
-                                    </div>
+            <div class="row gutters-sm pb-3">
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <img src="<%=profilo[2]%>" alt="Admin" class="rounded-circle" width="150">
+                                <div class="mt-3">
+                                    <h4>
+                                        <%=profilo[0]%>
+                                            <%=profilo[1]%>
+                                    </h4>
                                 </div>
                             </div>
                         </div>
 
                     </div>
 
-                    <div class="col-md-8">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Sesso</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <%=sesso%>
-                                    </div>
+                <div class="col-md-8">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Sesso</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <%=profilo[4]%>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Nome</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <%=profilo[0]%>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Cognome</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <%=profilo[1]%>
                                 </div>
                                 <hr>
                                 <div class="row">
@@ -148,14 +164,8 @@
                                         <%=mail%>
                                     </div>
                                 </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">Indirizzo</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <%=indirizzo%>
-                                    </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <%=profilo[3]%>
                                 </div>
                                 <hr>
 
@@ -164,7 +174,45 @@
 
 
 
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="card mt-3">
+                    <div class="card-title text-center mt-3">
+                        <h2>Le tue prenotazioni</h2>
                     </div>
+                    <hr>
+                    <div class="card-body">
+                        <% dati_book.forEach(item => {%>
+                            <div class="row justify-content-around">
+                                <div class="col-auto">
+                                    <img src="<%=item[0]%>" alt="hotel_logo" class="rounded-circle" width="100">
+                                </div>
+                                <div class="col-auto">
+                                    <label><%=item[1]%></label>
+                                </div>
+                                <div class="col-auto">
+                                    <label>Check-in: <%=item[2]%></label>
+                                </div>
+                                <div class="col-auto">
+                                    <label>Check-out: <%=item[3]%></label>
+                                </div>
+                                <div class="col-auto">
+                                    <label>Partecipanti: <%=item[4]%></label>
+                                </div>
+                                <div class="col-auto">
+                                    <label>Prezzo: <%=item[5]%> €</label>
+                                </div>
+                                <div class="col-2 mx-1">
+                                    <button class="btn btn-danger">Cancella prenotazione</button>
+                                </div>
+                                
+                            </div>
+                            <hr>
+                        <%});%>
+                    </div>
+                </div>
 
                 </div>
 
@@ -172,9 +220,6 @@
             </div>
         </div>
 
-
-        <script type="text/javascript">
-        </script>
         <%- include('../footer.html'); -%>
 
 </body>

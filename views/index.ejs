@@ -35,9 +35,9 @@
                                         <%});%>
                                     </optgroup>
                                     <optgroup label="CITTÀ">
-                                        <option>Roma</option>
-                                        <option>Firenze</option>
-                                        <option>Milano</option>
+                                        <% cittas.forEach(item => {%>
+                                        <option><%= item %></option>
+                                        <%});%>
                                     </optgroup>
                                 </select>
 

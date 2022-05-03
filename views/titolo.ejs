@@ -128,42 +128,43 @@
                 <div class="col-lg-12 text-center">
                     <div style="padding: 40pt;"></div>
                     <nav class="shadow container p-3 rounded-3" style="background-color: #e3f2fd;">
-                        <form onsubmit="prenota()">
+                        <form  method="post" action="/prenota">
                             <div class="row">
+                                <input type="text" id="testo_ricerca" name="testo_ricerca" value="<%=offerta.titolo%>" hidden>
                                 <div class="col-md-3 mt-2">
                                     <label class="active" for="dateStandard">Check-in:</label>
-                                    <input type="date" id="CheckInDate" name="CheckIn" onchange="checkin_fun();" required>
+                                    <input type="date" id="CheckInDate" name="CheckIn" onchange="checkin_fun();" value="<%= search[1] || '' %>" required>
                                 </div>
                                 <div class="col-md-3 mt-2">
                                     <label class="active" for="dateStandard">Check-out:</label>
-                                    <input type="date" id="CheckOutDate" name="CheckOut" onchange="checkout_fun();" required>
+                                    <input type="date" id="CheckOutDate" name="CheckOut" onchange="checkout_fun();" value="<%=search[2] || ''%>" required>
                                 </div>
                                 <div class="col-md-3 mt-2">
                                     <label class="active">Partecipanti:</label>
                                     <div class="btn-group">
                                         <button type="button" id="lessBtn" class="btn btn-light rounded-circle" onclick="lessBtnRange()">-</button>
-                                        <input type="number" value="1" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
+                                        <input type="number" value="1" name="partecipants" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
                                         <button type="button" id="moreBtn" class="btn btn-light rounded-circle" onclick="moreBtnRange()">+</button>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="active">Prezzo calcolato:</label>
-                                    <input type="text" style="text-align:center;" readonly="readonly" id="prezzo_finale" class="form-control" aria-label="Recipient's username" required>
+                                    <input type="text" value="0 €" style="text-align:center;" readonly="readonly" id="prezzo_finale" name="prezzo_finale" class="form-control" aria-label="Recipient's username" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="mt-2">
                                     <span class="d-inline-block" id="popover" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Per poter proseguire con la prenotazione è necessario essere loggati">
-                                    <button class="btn rounded-3 fw-bold" id="prenota" data-bs-toggle="button" style="background-color: #68d7f3;" disabled>Prenota ora!!!</button>
+                                    <button type="submit" class="btn rounded-3 fw-bold" id="prenota" style="background-color: #68d7f3;" disabled>Prenota ora!!!</button>
                                     </span>
                                 </div>
                             </div>
 
                         </form>
-                        <div class="row">
-
-                        </div>
                     </nav>
+                    <div id="invalid-dates" style="color:red;" hidden>
+                        Le date inserite non sono disponibili, per favore cambia data o verifica che l hotel abbia effettivamente tali posti liberi
+                    </div>
                     <div style="padding: 20pt;"></div>
                 </div>
             </div>
@@ -172,43 +173,53 @@
                 var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
                     return new bootstrap.Popover(popoverTriggerEl)
                 })
+                var search='<%=search%>';
+                if(search != ''){
+                    var invalid_date= document.getElementById("invalid-dates");
+                    invalid_date.hidden=false;
+                }
 
                 function checkin_fun() {
+                    if(search != ''){
+                        var invalid_date= document.getElementById("invalid-dates");
+                        invalid_date.hidden=true;
+                    }
 
                     var checkin = document.getElementById("CheckInDate");
-                    var today = new Date();
-                    var current_date = today.getTime();
                     var checkout = document.getElementById("CheckOutDate");
-
-
-                    if (checkin.valueAsNumber <= current_date || (checkout.valueAsNumber >= 0 && checkin.valueAsNumber >= checkout.valueAsNumber)) {
-                        checkin.value = new Date();
-                        console.log("data non valida");
-
+                    var in_date=new Date(checkin.value);
+                    var out_date= in_date;
+                    var today = new Date();
+                    if (in_date <= today) {
                         alert("data non valida!");
-                        return;
-                    } else if (checkout.valueAsNumber >= 0) {
-                        calcolo_prezzo();
+                        checkin.value=new Date();
                     }
+                    out_date.setDate(out_date.getDate()+1);
+                    checkout.value= out_date.toISOString().split('T')[0];
+                    calcolo_prezzo();
                 }
 
                 function checkout_fun() {
 
                     var checkin = document.getElementById("CheckInDate");
                     var checkout = document.getElementById("CheckOutDate");
-
-                    var today = new Date();
-                    var current_date = today.getTime();
-
-                    if (checkout.valueAsNumber <= current_date || (checkin.valueAsNumber >= 0 && checkout.valueAsNumber <= checkin.valueAsNumber)) {
-                        checkout.value = new Date();
-                        console.log("data non valida");
-                        alert("data non valida!");
-                        return;
-                    } else if (checkin.valueAsNumber >= 0) {
-                        calcolo_prezzo();
+                    var in_date;
+                    var out_date=new Date(checkout.value);
+                    if(checkin.value==''){
+                        alert("Scegli prima la data di partenza");
+                        checkout.value=new Date();
+                        return
                     }
-
+                    else{
+                        in_date= new Date(checkin.value);
+                        if (in_date >= out_date) {
+                            alert("data non valida!");
+                            checkout.value=new Date();
+                            }
+                        else{
+                            calcolo_prezzo();
+                        }
+                    }
                 }
 
                 function calcolo_prezzo() {
@@ -219,12 +230,9 @@
                     var prenota = document.getElementById("prezzo_finale");
                     var giorni = dateDiffInDays(new Date(checkin.value), new Date(checkout.value));
                     var prezzo = giorni * part.valueAsNumber * Number("<%=offerta.prezzo%>");
-                    prenota.value = prezzo + ' Euro';
-
+                    prenota.value = prezzo + ' €';
 
                 }
-
-
 
                 function dateDiffInDays(a, b) {
 
