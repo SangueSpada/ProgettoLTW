@@ -43,7 +43,7 @@ function totalAvilability(result, minidb, rangeDate, persone) { //esplora  caso 
     for (var i = 0; i < result.rows.length; i++) {
         let idAlbergo = result.rows[i].hotel_id;
         let j = i;
-        while (idAlbergo == result.rows[j].hotel_id) { // hotel[i] == hotel[j]
+        while (j < result.rows.length && idAlbergo == result.rows[j].hotel_id) { // hotel[i] == hotel[j]
             if (rangeDate.includes(result.rows[j].data_pernotto) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(database[idAlbergo].disponibilita)) {
                 if (minidb.delete(database[i])) { console.log("Nel giorno: " + result.rows[j].data_pernotto + " l'hotel con id: " + result.rows[j].hotel_id + " NON è DISPONIBILE. Hotel pisciato"); } else { console.log('Albergo con id: ' + idAlbergo + ' non è stato cancellato. Forse è stato già cancellato?') }
             }
@@ -71,7 +71,7 @@ function placeAvilability(citta, result, minidb, rangeDate, persone) { //esplora
         } else {
             let idAlbergo = result.rows[i].hotel_id;
             let j = i;
-            while (idAlbergo == result.rows[j].hotel_id) { // hotel[i] == hotel[j]
+            while (j < result.rows.length && idAlbergo == result.rows[j].hotel_id) { // hotel[i] == hotel[j]
                 if (rangeDate.includes(result.rows[j].data_pernotto) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(database[idAlbergo].disponibilita)) {
                     if (minidb.delete(database[i])) { console.log("Nel giorno: " + result.rows[j].data_pernotto + " l'hotel con id: " + result.rows[j].hotel_id + " NON è DISPONIBILE. Hotel pisciato"); } else { console.log(result.rows[j].hotel_id + ' non è stato cancellato. Forse è stato già cancellato?') }
                 }
@@ -188,6 +188,7 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
             })
         });
         p1.then(value => {
+            console.log(QueryResult.rows);
             totalAvilability(QueryResult, minidb, rangeDate, persone); //leva gli hotel da miniDb che non sono disponibili in rangeDate a persone
 
             var cucina = cookie.parse(req.headers.cookie || '');
@@ -227,6 +228,7 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
             })
         });
         p1.then(value => {
+            console.log(QueryResult.rows);
             placeAvilability(luogo, QueryResult, minidb, rangeDate, persone);
 
             var cucina = cookie.parse(req.headers.cookie || '');
@@ -270,6 +272,7 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
             })
         });
         p1.then(value => {
+            console.log(QueryResult.rows);
             hotelAvilability(hotel, QueryResult, minidb, rangeDate, persone);
 
             var cucina = cookie.parse(req.headers.cookie || '');
