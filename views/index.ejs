@@ -36,8 +36,8 @@
                                     </optgroup>
                                     <optgroup label="CITTÀ">
                                         <% cittas.forEach(item => {%>
-                                        <option><%= item %></option>
-                                        <%});%>
+                                            <option><%= item %></option>
+                                            <%});%>
                                     </optgroup>
                                 </select>
 
@@ -126,8 +126,9 @@
                                 </div>-->
             </div>
             <div class="text-center mt-5 mb-5">
-                <h3>Scopri le regioni più belle d'Italia</h3>
                 <a name="zona_scopri"></a>
+
+                <h3>Scopri le regioni più belle d'Italia</h3>
             </div>
 
             <section id="piemonte">
@@ -322,6 +323,42 @@
                     viewFactor: 0.2
                 });
             </script>
+
+
+
+            <script>
+                //effetto scroll rallentato
+                $(function() {
+
+                    $('a[href*="#"]:not([href="#"])').click(function() {
+
+                        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+
+                            var target = $(this.hash);
+                            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                            if (target.length) {
+
+                                $('html,body').animate({
+
+                                    scrollTop: target.offset().top
+                                }, 500);
+                                return false;
+
+                            }
+
+
+                        }
+
+
+
+                    });
+
+
+
+
+                });
+            </script>
+
 
 
 
