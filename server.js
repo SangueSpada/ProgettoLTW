@@ -101,12 +101,11 @@ function hotelAvilability(hotel,result,minidb,rangeDate,persone){ //caso peggior
             minidb.add(hotel);
             console.log("L'hotel "+hotel.id+" è disponibile");
             return;
-        }
-        else{
-            for(var j=0;j<result.rows.length;j++){ //scorre la lista finchè non trova l'hotel e controlla le altre condizioni
-                if( String(result.rows[j].hotel_id)==String(hotel.id) && rangeDate.includes(result.rows[j].data_pernotto) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(hotel.disponibilita)){  // (hotel è nelle prenotazioni AND data_prenotazione in range and  NON disponibile)  
-                    console.log("Nel giorno: "+result.rows[j].data_pernotto+" l'hotel con id: "+result.rows[j].hotel_id+" NON è DISPONIBILE. LA PRENOTAZIONE NON SI PUò FARE");
-                    return;           
+        } else {
+            for (var j = 0; j < result.rows.length; j++) { //scorre la lista finchè non trova l'hotel e controlla le altre condizioni
+                if (String(result.rows[j].hotel_id) == String(hotel.id) && rangeDate.includes(result.rows[j].data_pernotto) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(hotel.disponibilita)) { // (hotel è nelle prenotazioni AND data_prenotazione in range and  NON disponibile)  
+                    console.log("Nel giorno: " + result.rows[j].data_pernotto + " l'hotel con id: " + result.rows[j].hotel_id + " NON è DISPONIBILE. LA PRENOTAZIONE NON SI PUò FARE");
+                    return;
                 }
             }
             console.log("Ho controllato tutti i giorni e non ci sono giorni pieni e/o i giorni non sono nel range");
@@ -261,8 +260,7 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
         //console.log(Object.keys(database).length);
         for(var i=0;i<(Object.keys(database).length);i++){
             if(String(database[i].titolo)==String(luogo)){ 
-                hotel=database[i]
-                //console.log("ecco l'id "+hotel.id);
+                hotel=database[i];
                 break;
             }
         }
@@ -457,25 +455,21 @@ app.post('/login', urlencodedParser, function(req, res) {
     var password = md5(req.body.password);
     var profilo;
     client.query('select * from utente where email=' + '\'' + mail + '\'', function(error, result) {
-        if (error) { 
+        if (error) {
             console.log(error);
-            return; 
-        }
-        else if(result.rows[0] == undefined){
-            res.send("<p>L'email inserita non è registrata nel sistema o non è stata scritta correttamente. Clicca <a href='/'>qui<a> per tornare all'homepage </p> "); 
             return;
-        }
-        else{
+        } else if (result.rows[0] == undefined) {
+            res.send("<p>L'email inserita non è registrata nel sistema o non è stata scritta correttamente. Clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
+            return;
+        } else {
             client.query('select * from utente where email=' + '\'' + mail + '\'' + ' and password=' + '\'' + password + '\'', function(error, result) {
-                if (error) { 
+                if (error) {
                     console.log(error);
-                    return; 
-                }
-                else if(result.rows[0] == undefined){
-                    res.send("<p>Password sbagliata. Clicca <a href='/'>qui<a> per tornare all'homepage </p> "); 
                     return;
-                }
-                else{
+                } else if (result.rows[0] == undefined) {
+                    res.send("<p>Password sbagliata. Clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
+                    return;
+                } else {
                     console.log("Utente loggato correttamente");
                     try {
                         profilo = String(result.rows[0].foto_profilo);
@@ -542,34 +536,33 @@ app.get('/logout', function(req, res) {
 app.post('/signin', urlencodedParser, function(req, res) {
 
     console.log('post /signin');
-        var nome = req.body.firstName;
-        var cognome = req.body.lastName;
-        var mail = req.body.email;
-        var pass = md5(req.body.password);
-        var indirizzo = req.body.address;
-        var sesso;
-        if(req.body.Msex==undefined){sesso=req.body.Fsex}
-        else{sesso=req.body.Msex}
-        console.log(nome+' '+cognome+' '+mail+' '+indirizzo+' '+sesso);
-    
-        client.query('insert into utente(email,password,foto_profilo,nome,cognome,indirizzo,sesso) values (' + '\'' + mail + '\',' + '\'' + pass + '\',' + '\'' + String('https://cdn.calciomercato.com/images/2019-05/Whatsapp.senza.immagine.2019.1400x840.jpg') + '\',' + '\'' + nome + '\',' + '\'' + cognome + '\',' + '\'' + indirizzo + '\',' + '\'' + sesso + '\');', function(error, result) {
-    
-            if (error) {
-    
-                if (error.code === '23505') {
-    
-                    res.send("<p>mail gia presa clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
-                    res.end();
-    
-                    // res.sendFile(path.join(__dirname, '/sigin.html'));
-                } else {
-                    throw error;
-                }
+    var nome = req.body.firstName;
+    var cognome = req.body.lastName;
+    var mail = req.body.email;
+    var pass = md5(req.body.password);
+    var indirizzo = req.body.address;
+    var sesso;
+    if (req.body.Msex == undefined) { sesso = req.body.Fsex } else { sesso = req.body.Msex }
+    console.log(nome + ' ' + cognome + ' ' + mail + ' ' + indirizzo + ' ' + sesso);
+
+    client.query('insert into utente(email,password,foto_profilo,nome,cognome,indirizzo,sesso) values (' + '\'' + mail + '\',' + '\'' + pass + '\',' + '\'' + String('https://cdn.calciomercato.com/images/2019-05/Whatsapp.senza.immagine.2019.1400x840.jpg') + '\',' + '\'' + nome + '\',' + '\'' + cognome + '\',' + '\'' + indirizzo + '\',' + '\'' + sesso + '\');', function(error, result) {
+
+        if (error) {
+
+            if (error.code === '23505') {
+
+                res.send("<p>mail gia presa clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
+                res.end();
+
+                // res.sendFile(path.join(__dirname, '/sigin.html'));
             } else {
-                res.send("<p>Registrazione eseguita correttamente, clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
+                throw error;
             }
-    
-        });
+        } else {
+            res.send("<p>Registrazione eseguita correttamente, clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
+        }
+
+    });
 
 });
 
@@ -578,8 +571,7 @@ app.get('/signin', function(req, res) {
     var cookies = cucina.email_profilo_cookie;
     if (cookies) {
         res.redirect('/');
-    }
-    else {
+    } else {
         console.log('get /signin');
         res.sendFile(path.join(__dirname, '/sigin.html'));
     }

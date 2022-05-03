@@ -19,88 +19,90 @@
     </script>
     <div style="padding: 40pt;"></div>
     <div class="container">
-            <div class="py-5 text-center">
-                <img class="d-block mx-auto mb-4" src="pizza_005.jpg" alt="" width="72" height="72">
-                <h2>Iscriviti ad Italia in viaggio</h2>
-                <p class="lead">Per poter prenotare un'offerta presente sul nostro sito devi registrarti.</p>
-            </div>
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="pizza_005.jpg" alt="" width="72" height="72">
+            <h2>Iscriviti ad Italia in viaggio</h2>
+            <p class="lead">Per poter prenotare un'offerta presente sul nostro sito devi registrarti.</p>
+        </div>
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <form name="registrazione" method="POST" action="/signin" class="needs-validation"  novalidate>
-                        <div class="row g-3">
-                            <div class="col-sm-1 pt-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="Fsex" id="Fsex" value="Sig.ra">
-                                    <label class="form-check-label" for="Fsex">
+        <div class="row">
+            <div class="col-lg-12">
+                <form name="registrazione" method="POST" action="/signin" class="needs-validation" novalidate>
+                    <div class="row g-3">
+
+                        <div class="col-sm-1 pt-4">
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="Fsex" id="Fsex" value="Sig.ra">
+                                <label class="form-check-label" for="Fsex">
                                       Sig.ra
                                     </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="Msex" id="Msex" value="Sig." checked>
-                                    <label class="form-check-label" for="Msex">
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="Msex" id="Msex" value="Sig." checked>
+                                <label class="form-check-label" for="Msex">
                                       Sig.
                                     </label>
-                                </div>
                             </div>
-                            <div class="col-sm-5">
-                                <label for="firstName" class="form-label">Nome</label>
-                                <input type="text" name="firstName" class="form-control" id="firstName" required>
-                                <div class="invalid-feedback">
-                                    Inserisci il tuo nome.
-                                </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <label for="firstName" class="form-label">Nome</label>
+                            <input type="text" name="firstName" class="form-control" id="firstName" required>
+                            <div class="invalid-feedback">
+                                Inserisci il tuo nome.
                             </div>
+                        </div>
 
-                            <div class="col-sm-6">
-                                <label for="lastName" class="form-label">Cognome</label>
-                                <input type="text" name="lastName" class="form-control" id="lastName" required>
-                                <div class="invalid-feedback">
-                                    Inserisci il tuo cognome.
-                                </div>
+                        <div class="col-sm-6">
+                            <label for="lastName" class="form-label">Cognome</label>
+                            <input type="text" name="lastName" class="form-control" id="lastName" required>
+                            <div class="invalid-feedback">
+                                Inserisci il tuo cognome.
                             </div>
+                        </div>
 
-                            <div class="col-6">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control" id="email" placeholder="you@example.com" required>
-                                <div class="invalid-feedback">
-                                    Inserisci una email valida.
-                                </div>
+                        <div class="col-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" id="email" placeholder="you@example.com" required>
+                            <div class="invalid-feedback">
+                                Inserisci una email valida.
                             </div>
-                            <div class="col-6">
-                                <label for="emailConf" class="form-label">Conferma email</label>
-                                <input type="email" name="emailConf" class="form-control" id="emailConf" placeholder="you@example.com">
-                                <div class="invalid-feedback">
-                                    Inserisci di nuovo l'email
-                                </div>
-                                <div id="invalid-emailConf" style="color:red;" hidden>
-                                    L'email inserita non corrisponde
-                                </div>
+                        </div>
+                        <div class="col-6">
+                            <label for="emailConf" class="form-label">Conferma email</label>
+                            <input type="email" name="emailConf" class="form-control" id="emailConf" placeholder="you@example.com">
+                            <div class="invalid-feedback">
+                                Inserisci di nuovo l'email
                             </div>
-                            <div class="col-6">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
-                                <div class="invalid-feedback">
-                                    Inserisci una password
-                                </div>
+                            <div id="invalid-emailConf" style="color:red;" hidden>
+                                L'email inserita non corrisponde
                             </div>
-                            <div class="col-6">
-                                <label for="passwordConf" class="form-label">Conferma password</label>
-                                <input type="password" name="passwordConf" class="form-control" id="passwordConf" placeholder="Password">
-                                <div class="invalid-feedback">
-                                    Inserisci di nuovo la password
-                                </div>
-                                <div id="invalid-passConf" style="color:red;" hidden>
-                                    <p>La password inserita non corrisponde</p>
-                                </div>
+                        </div>
+                        <div class="col-6">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+                            <div class="invalid-feedback">
+                                Inserisci una password
                             </div>
-                            <div class="col-md-12 ">
-                                <label for="address" class="form-label">Indirizzo di residenza</label>
-                                <input type="text" class="form-control" id="address" name="address" placeholder=" Via mario rossi, 6" required>
-                                <div class="invalid-feedback">
-                                  Inserisci l'indirizzo
-                                </div>
+                        </div>
+                        <div class="col-6">
+                            <label for="passwordConf" class="form-label">Conferma password</label>
+                            <input type="password" name="passwordConf" class="form-control" id="passwordConf" placeholder="Password">
+                            <div class="invalid-feedback">
+                                Inserisci di nuovo la password
                             </div>
-                            <!--<div class="col-md-3 ">
+                            <div id="invalid-passConf" style="color:red;" hidden>
+                                <p>La password inserita non corrisponde</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12 ">
+                            <label for="address" class="form-label">Indirizzo di residenza</label>
+                            <input type="text" class="form-control" id="address" name="address" placeholder=" Via mario rossi, 6" required>
+                            <div class="invalid-feedback">
+                                Inserisci l'indirizzo
+                            </div>
+                        </div>
+                        <!--<div class="col-md-3 ">
                                 <label for="citta" class="form-label ">Città</label>
                                 <input type="text " class="form-control " id="citta " placeholder="" required>
                                 <div class="invalid-feedback ">
@@ -141,13 +143,13 @@
                 </div>
                 onsubmit="validaFormPlus()"-->
 
-                            <hr class="my-4 ">
+                        <hr class="my-4 ">
 
-                            <button class="w-100 btn btn-primary btn-lg " type="submit ">Registrati NOW!!!</button>
+                        <button class="w-100 btn btn-primary btn-lg " type="submit ">Registrati NOW!!!</button>
 
-                    </form>
-                    </div>
+                </form>
                 </div>
+            </div>
         </div>
         <script>
             // Example starter JavaScript for disabling form submissions if there are invalid fields
@@ -164,32 +166,35 @@
                             let emailConf = document.registrazione.emailConf;
                             let pass = document.registrazione.password;
                             let passConf = document.registrazione.passwordConf;
-                            if (!form.checkValidity()) {                               
+                            if (!form.checkValidity()) {
                                 event.preventDefault()
                                 event.stopPropagation()
                             }
                             form.classList.add('was-validated');
 
-                            if(email.value != emailConf.value){
-                                document.getElementById("invalid-emailConf").hidden=false;
+                            if (email.value != emailConf.value) {
+                                document.getElementById("invalid-emailConf").hidden = false;
                                 event.preventDefault()
                                 event.stopPropagation()
+                            } else {
+                                document.getElementById("invalid-emailConf").hidden = true;
                             }
-                            else{
-                                document.getElementById("invalid-emailConf").hidden=true;
-                            }
-                            if(pass.value != passConf.value){
-                                document.getElementById("invalid-passConf").hidden=false;
+                            if (pass.value != passConf.value) {
+                                document.getElementById("invalid-passConf").hidden = false;
                                 event.preventDefault()
                                 event.stopPropagation()
-                            }
-                            else{
-                                document.getElementById("invalid-passConf").hidden=true;
+                            } else {
+                                document.getElementById("invalid-passConf").hidden = true;
                             }
 
                         }, false)
                     })
             })()
+        </script>
+
+        <div id="foot-placeholder"></div>
+        <script>
+            $("#foot-placeholder").load("footer.html");
         </script>
 
 </body>
