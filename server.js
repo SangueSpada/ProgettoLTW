@@ -599,7 +599,7 @@ app.get('/profilo', urlencodedParser, function(req, res) {
         console.log(email_cookie + ' ' + profilo_cookie);
         var dati_profilo = [];
         var dati_prenotazioni = new Set();
-        client.query('select * from utente join prenotazioni on email=user_email where email=\'' + email_cookie + '\'', function(error, result) {
+        client.query('select * from utente left join prenotazioni on email=user_email where email=\'' + email_cookie + '\'', function(error, result) {
             if (error) {
                 console.log(error);
                 return;
