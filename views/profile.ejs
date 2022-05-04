@@ -80,7 +80,7 @@
         <div style="padding: 40pt;"></div>
 
 
-        <div class="container">
+        <div class="container-fluid">
             <div class="main-body">
 
                 <!-- Breadcrumb -->
@@ -160,8 +160,68 @@
 
                     </div>
                 </div>
+
+
+
                 <hr>
-                <div class="row">
+
+
+                <div class="container-fluid text-center mt-3 py-1">
+                    <h2 class="py-5" style="color: blue;">Le tue prenotazioni</h2>
+
+                    <table class="container-fluid">
+
+                        <thead>
+                            <tr>
+                                <th class="col-auto" style="text-align: center;"></th>
+                                <th class="col-auto" style="text-align: center;">Nome Hotel:</th>
+                                <th class="col-auto" style="text-align: center;">Check-in:</th>
+                                <th class="col-auto" style="text-align: center;">Check-out:</th>
+                                <th class="col-auto" style="text-align: center;">Persone:</th>
+                                <th class="col-auto" style="text-align: center;">Prezzo pagato:</th>
+
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td colspan="7">
+                                    <hr>
+                                </td>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <% dati_book.forEach(item => {%>
+                                <tr>
+                                    <td class="col-auto py-3" style="text-align: center;"><img src="<%=item[0]%>" alt="hotel_logo" class="rounded-circle" width="100"></td>
+                                    <td class="col-auto py-3" style="text-align: center;"><label><%=item[1]%></label></td>
+                                    <td class="col-auto py-3" style="text-align: center;"> <label><%=item[2]%></label></td>
+                                    <td class="col-auto py-3" style="text-align: center;"> <label><%=item[3]%></label></td>
+                                    <td class="col-auto py-3" style="text-align: center;"><label><%=item[4]%></label></td>
+                                    <td class="col-auto py-3" style="text-align: center;"><label><%=item[5]%> €</label></td>
+                                    <td class="col-auto py-3" style="text-align: center;"><button class="btn btn-danger">Cancella prenotazione</button></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="7">
+                                        <hr>
+                                    </td>
+                                </tr>
+
+
+                                <%});%>
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+
+
+
+
+                <!--     <div class="row">
                     <div class="card mt-3">
                         <div class="card-title text-center mt-3">
                             <h2>Le tue prenotazioni</h2>
@@ -204,44 +264,42 @@
                         </div>
                     </div>
 
-                </div>
+                </div>-->
 
 
             </div>
+
+
+            <%- include('../footer.html'); -%>
         </div>
+</body>
 
-        <%- include('../footer.html'); -%>
+<script>
+    //effetto scroll rallentato
+    $(function() {
 
+        $('a[href*="#"]:not([href="#"])').click(function() {
 
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
 
-            <script>
-                //effetto scroll rallentato
-                $(function() {
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
 
-                    $('a[href*="#"]:not([href="#"])').click(function() {
+                    $('html,body').animate({
 
-                        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+                        scrollTop: target.offset().top
+                    }, 500);
+                    return false;
 
-                            var target = $(this.hash);
-                            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-                            if (target.length) {
-
-                                $('html,body').animate({
-
-                                    scrollTop: target.offset().top
-                                }, 500);
-                                return false;
-
-                            }
+                }
 
 
-                        }
+            }
 
 
 
-                    });
-
-
+        });
 
 
                 });
@@ -266,6 +324,7 @@
             </script>
 
 
-</body>
+    });
+</script>
 
 </html>
