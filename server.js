@@ -44,7 +44,7 @@ function totalAvilability(result, minidb, rangeDate, persone) { //esplora  caso 
         let idAlbergo = result.rows[i].hotel_id;
         let j = i;
         while (j < result.rows.length && idAlbergo == result.rows[j].hotel_id) { // hotel[i] == hotel[j]
-            if (rangeDate.includes(result.rows[j].data_pernotto.toISOString().split('T')[0]) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(database[idAlbergo].disponibilita)) {
+            if (rangeDate.includes(result.rows[j].data_pernotto) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(database[idAlbergo].disponibilita)) {
                 minidb.forEach(function(point) {
                     if (point.id == idAlbergo) {
                         minidb.delete(point)
@@ -76,7 +76,7 @@ function placeAvilability(citta, result, minidb, rangeDate, persone) { //esplora
         } else {
             let j = i;
             while (j < result.rows.length && idAlbergo == result.rows[j].hotel_id) { // hotel[i] == hotel[j]
-                if (rangeDate.includes(result.rows[j].data_pernotto.toISOString().split('T')[0]) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(database[idAlbergo].disponibilita)) {
+                if (rangeDate.includes(result.rows[j].data_pernotto) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(database[idAlbergo].disponibilita)) {
                     minidb.forEach(function(point) {
                         if (point.id == idAlbergo) {
                             minidb.delete(point)
@@ -107,7 +107,7 @@ function hotelAvilability(hotel, result, minidb, rangeDate, persone) { //caso pe
             return;
         } else {
             for (var j = 0; j < result.rows.length; j++) { //scorre la lista finchè non trova l'hotel e controlla le altre condizioni
-                if (String(result.rows[j].hotel_id) == String(hotel.id) && rangeDate.includes(result.rows[j].data_pernotto.toISOString().split('T')[0]) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(hotel.disponibilita)) { // (hotel è nelle prenotazioni AND data_prenotazione in range and  NON disponibile)  
+                if (String(result.rows[j].hotel_id) == String(hotel.id) && rangeDate.includes(result.rows[j].data_pernotto) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(hotel.disponibilita)) { // (hotel è nelle prenotazioni AND data_prenotazione in range and  NON disponibile)  
                     console.log("Nel giorno: " + result.rows[j].data_pernotto + " l'hotel con id: " + result.rows[j].hotel_id + " NON è DISPONIBILE. LA PRENOTAZIONE NON SI PUò FARE");
                     return;
                 }
@@ -174,11 +174,10 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
     var luogo = req.body.testo_ricerca;
     var persone = req.body.partecipants;
     ricerca = [luogo, checkin, checkout, persone];
-    //console.log(checkin + ' ' + checkout + ' ' + luogo + ' ' + persone);
 
     var minidb = new Set();
     var rangeDate = getDates(checkin, checkout);
-
+    console.log(rangeDate);
     var cities = new Set();
     database.forEach(item => { cities.add(item.citta); });
 
@@ -331,7 +330,7 @@ app.post('/prenota', urlencodedParser, function(req, res) {
             break;
         }
     }
-    let queryHotel = 'with somma as (select hotel_id,data_pernotto,partecipanti from prenotazioni where hotel_id=\'' + hotel.id + '\') select somma.hotel_id,somma.data_pernotto, sum(somma.partecipanti) from somma group by (somma.hotel_id,somma.data_pernotto) order by (somma.hotel_id,somma.data_pernotto)';
+    let queryHotel = 'with somma as (select hotel_id,data_pernotto,partecipanti from prenotazioni where hotel_id=\'' + hotel.id + '\') select somma.hotel_id,somma.data_pernotto, sum(somma.partecipanti) as prenotati from somma group by (somma.hotel_id,somma.data_pernotto) order by (somma.hotel_id,somma.data_pernotto)';
     var QueryResult;
     const p1 = new Promise((resolve, reject) => {
         client.query(queryHotel, function(error, result) {
@@ -344,6 +343,7 @@ app.post('/prenota', urlencodedParser, function(req, res) {
     });
     p1.then(value => {
         hotelAvilability(hotel, QueryResult, minidb, rangeDate, persone);
+        console.log(minidb);
         if (minidb.size > 0) { //se l hotel è disponibile procede
             let id_booking;
             const p2 = new Promise((resolve, reject) => {
@@ -358,19 +358,25 @@ app.post('/prenota', urlencodedParser, function(req, res) {
             });
 
             p2.then(value => {
-
+                var timestamp = new Date().toISOString();
+                var flag=false;
                 rangeDate.forEach(giorno_pern => {
-                    client.query('insert into prenotazioni values (' + '\'' + email_cookie + '\',' + '\'' + id_booking + '\',' + '\'' + hotel.id + '\',' + '\'' + persone + '\',' + '\'' + giorno_pern + '\');', function(error, result) {
+                    client.query('insert into prenotazioni values (' + '\'' + email_cookie + '\',' + '\'' + id_booking + '\',' + '\'' + hotel.id + '\',' + '\'' + persone + '\',' +'\'' + giorno_pern + '\',' + '\'' + timestamp + '\');', function(error, result) {
                         if (error) {
+                            flag=true;
                             console.log(error);
-                            return;
                         }
                     })
                     id_booking++;
 
                 });
-                console.log("Prenotazione registrata correttamente nel sistema!");
-                res.redirect('/profilo');
+                if(flag){
+                    res.render('titolo.ejs', { offerta: database[hotel.id], profilo: profilo_cookie, search: ricerca });
+                }
+                else{
+                    console.log("Prenotazione registrata correttamente nel sistema!");
+                    res.redirect('/profilo');
+                }
                 res.end();
                 return;
             });
@@ -442,6 +448,38 @@ app.get('/offerta', urlencodedParser, function(req, res) {
 
 });
 
+app.post('/cancella',function(req, res) { 
+    console.log("post /cancella");
+
+    var cucina = cookie.parse(req.headers.cookie || '');
+    var cookies = cucina.email_profilo_cookie;
+    var ma = cookies.split(',');
+    var pr = cookies.replace(ma[0] + ',', '');
+    ma = ma[0];
+    var email_cookie = ma;
+    var profilo_cookie = pr;
+    console.log("ho ricevuto i cookie...");
+    console.log(email_cookie + ' ' + profilo_cookie);
+
+    var timestamp=req.query.timestamp;
+    console.log("ts= "+timestamp);
+    let queryHotel = 'delete from prenotazioni where user_email=\'' + email_cookie + '\' and timestamp =\'' + timestamp + '\'';
+    var QueryResult;
+    const p1 = new Promise((resolve, reject) => {
+        client.query(queryHotel, function(error, result) {
+            if (error) {
+                console.log(error);
+                return [];
+            }
+            resolve(QueryResult = result);
+        })
+    });
+    p1.then(value => {
+        console.log("Prenotazione cancellata correttamente nel sistema!");
+        res.redirect('/profilo');
+               
+    });
+});
 
 
 /* +++++++++++++++++++++++ GESTIONE LOGIN SIGIN LOGOUT ++++++++++++++++++++++++++++ */
@@ -605,7 +643,7 @@ app.get('/profilo', urlencodedParser, function(req, res) {
                 return;
             }
 
-            console.log(result.rows);
+            //console.log(result.rows);
             var n = result.rows[0].nome;
             var c = result.rows[0].cognome;
             var p = result.rows[0].foto_profilo;
@@ -613,7 +651,7 @@ app.get('/profilo', urlencodedParser, function(req, res) {
             var s = result.rows[0].sesso;
             dati_profilo = [n, c, p, i, s];
 
-            client.query('with range as (select hotel_id, partecipanti, min(data_pernotto) as checkin, max(data_pernotto) as checkout from prenotazioni where user_email=\'' + email_cookie + '\' group by (hotel_id, partecipanti)  )  select * from range', function(error, result) {
+            client.query('with range as (select timestamp, hotel_id, partecipanti, min(data_pernotto) as checkin, max(data_pernotto) as checkout from prenotazioni where user_email=\'' + email_cookie + '\' group by (timestamp, hotel_id, partecipanti)  )  select * from range', function(error, result) {
                 if (error) {
                     console.log(error);
                     return;
@@ -628,8 +666,9 @@ app.get('/profilo', urlencodedParser, function(req, res) {
                     let Cout = new Date(checkout);
                     let giorni = (Cout.getTime() - Cin.getTime()) / (1000 * 3600 * 24);
                     let prezzo = parseInt(database[tupla.hotel_id].prezzo) * giorni * parseInt(partecipanti);
-
-                    let prenotazione = [immagine, titolo, Cin.toISOString().split('T')[0], Cout.toISOString().split('T')[0], partecipanti, prezzo];
+                    let timestamp = tupla.timestamp;
+                    console.log(timestamp);
+                    let prenotazione = [immagine, titolo, Cin.toISOString().split('T')[0], Cout.toISOString().split('T')[0], partecipanti, prezzo, timestamp];
                     dati_prenotazioni.add(prenotazione);
                 });
                 res.render('profile.ejs', { d_profilo: dati_profilo, dati_book: dati_prenotazioni, mail: email_cookie, profilo: profilo_cookie });

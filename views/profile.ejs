@@ -189,7 +189,13 @@
                                         <label>Prezzo: <%=item[5]%> €</label>
                                     </div>
                                     <div class="col-2 mx-1">
-                                        <button class="btn btn-danger">Cancella prenotazione</button>
+                                        <button class="btn btn-danger" id="btnCancel_<%=item[6]%>" onclick="confirm_fun('<%=item[6]%>')">Cancella prenotazione</button>
+                                        <form hidden id="formCancel_<%=item[6]%>" method="post" action="/cancella?timestamp=<%=item[6]%>">
+                                            <label style="color: red;">Sei Sicuro di voler eliminare la prenotazione?</label>
+                                            <button type="button" id="btnReset_<%=item[6]%>"class="btn btn-secondary" onclick="reset_fun('<%=item[6]%>')">Annulla</button>
+                                            <button type="submit" class="btn btn-danger">Conferma</button>
+                                        </form>
+
                                     </div>
 
                                 </div>
@@ -239,6 +245,24 @@
 
 
                 });
+                var timestamp;             
+
+                function confirm_fun(ts){
+                    timestamp=ts;
+                    console.log("timestamp è:+"+timestamp);
+                    var confBtn= document.getElementById("btnCancel_"+timestamp);
+                    var formCanc = document.getElementById("formCancel_"+timestamp);
+                    confBtn.hidden=true;
+                    formCanc.hidden=false;
+                }
+                function reset_fun(ts){
+                    timestamp=ts;
+                    var confBtn= document.getElementById("btnCancel_"+timestamp);
+                    var formCanc = document.getElementById("formCancel_"+timestamp);
+                    var resetCanc= document.getElementById("btnReset_"+timestamp);
+                    confBtn.hidden=false;
+                    formCanc.hidden=true;
+                }
             </script>
 
 

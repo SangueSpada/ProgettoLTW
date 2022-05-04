@@ -2,7 +2,7 @@
     "user": "postgres",
     "host": "localhost",
     "database": "Anulare",
-    "password": "root",
+    "password": "maremma",
     "port": 5432
 
 }
