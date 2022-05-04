@@ -45,11 +45,11 @@ function totalAvilability(result, minidb, rangeDate, persone) { //esplora  caso 
         let j = i;
         while (j < result.rows.length && idAlbergo == result.rows[j].hotel_id) { // hotel[i] == hotel[j]
             if (rangeDate.includes(result.rows[j].data_pernotto.toISOString().split('T')[0]) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(database[idAlbergo].disponibilita)) {
-                minidb.forEach(function(point){
-                    if (point.id == idAlbergo){
-                      minidb.delete(point)
+                minidb.forEach(function(point) {
+                    if (point.id == idAlbergo) {
+                        minidb.delete(point)
                     }
-                  });
+                });
             }
             j++;
         }
@@ -77,11 +77,11 @@ function placeAvilability(citta, result, minidb, rangeDate, persone) { //esplora
             let j = i;
             while (j < result.rows.length && idAlbergo == result.rows[j].hotel_id) { // hotel[i] == hotel[j]
                 if (rangeDate.includes(result.rows[j].data_pernotto.toISOString().split('T')[0]) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(database[idAlbergo].disponibilita)) {
-                    minidb.forEach(function(point){
-                        if (point.id == idAlbergo){
-                          minidb.delete(point)
+                    minidb.forEach(function(point) {
+                        if (point.id == idAlbergo) {
+                            minidb.delete(point)
                         }
-                      });
+                    });
                 }
                 j++;
             }
@@ -96,7 +96,7 @@ function hotelAvilability(hotel, result, minidb, rangeDate, persone) { //caso pe
     for (var k = 0; k < result.rows.length; k++) { //inserisce in una lista gli id degli hotel
         hotels_prenotati.push(result.rows[k].hotel_id);
     }
-    
+
     if (parseInt(persone) > parseInt(hotel.disponibilita)) { //caso migliore o(1)
         console.log("L'hotel " + hotel.id + " ha disponibilità minore dei partecipanti richiesti");
 
@@ -599,13 +599,13 @@ app.get('/profilo', urlencodedParser, function(req, res) {
         console.log(email_cookie + ' ' + profilo_cookie);
         var dati_profilo = [];
         var dati_prenotazioni = new Set();
-        client.query('select * from utente join prenotazioni on email=user_email where email=\'' + email_cookie + '\'', function(error, result) {
+        client.query('select * from utente left join prenotazioni on email=user_email where email=\'' + email_cookie + '\'', function(error, result) {
             if (error) {
                 console.log(error);
                 return;
             }
 
-            console.log(result.rows[0]);
+            console.log(result.rows);
             var n = result.rows[0].nome;
             var c = result.rows[0].cognome;
             var p = result.rows[0].foto_profilo;
@@ -632,7 +632,7 @@ app.get('/profilo', urlencodedParser, function(req, res) {
                     let prenotazione = [immagine, titolo, Cin.toISOString().split('T')[0], Cout.toISOString().split('T')[0], partecipanti, prezzo];
                     dati_prenotazioni.add(prenotazione);
                 });
-                res.render('profile.ejs', { profilo: dati_profilo, dati_book: dati_prenotazioni, mail: email_cookie, });
+                res.render('profile.ejs', { d_profilo: dati_profilo, dati_book: dati_prenotazioni, mail: email_cookie, profilo: profilo_cookie });
             });
 
         });
