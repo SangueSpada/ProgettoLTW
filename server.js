@@ -31,7 +31,7 @@ function getDates(start, end) {
 
 
 function totalAvilability(result, minidb, rangeDate, persone) { //esplora  caso migliore=caso peggiore in o(2n)
-
+    console.log(minidb);
     for (let item of minidb) { // verifica se ci sono hotel con posti letto < persone
         if (parseInt(persone) > parseInt(item.disponibilita)) {
             minidb.delete(item);
@@ -44,8 +44,12 @@ function totalAvilability(result, minidb, rangeDate, persone) { //esplora  caso 
         let idAlbergo = result.rows[i].hotel_id;
         let j = i;
         while (j < result.rows.length && idAlbergo == result.rows[j].hotel_id) { // hotel[i] == hotel[j]
-            if (rangeDate.includes(result.rows[j].data_pernotto) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(database[idAlbergo].disponibilita)) {
-                if (minidb.delete(database[i])) { console.log("Nel giorno: " + result.rows[j].data_pernotto + " l'hotel con id: " + result.rows[j].hotel_id + " NON è DISPONIBILE. Hotel pisciato"); } else { console.log('Albergo con id: ' + idAlbergo + ' non è stato cancellato. Forse è stato già cancellato?') }
+            if (rangeDate.includes(result.rows[j].data_pernotto.toISOString().split('T')[0]) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(database[idAlbergo].disponibilita)) {
+                minidb.forEach(function(point){
+                    if (point.id == idAlbergo){
+                      minidb.delete(point)
+                    }
+                  });
             }
             j++;
         }
@@ -65,15 +69,19 @@ function placeAvilability(citta, result, minidb, rangeDate, persone) { //esplora
     }
 
     for (var i = 0; i < result.rows.length; i++) { //per ogni hotel della query 
-        if (database[i].citta != citta) { //se l albergo non è nella citta richiesta continua a scorrere
+        let idAlbergo = result.rows[i].hotel_id;
+        if (database[idAlbergo].citta != citta) { //se l albergo non è nella citta richiesta continua a scorrere
             console.log("aoao");
             continue;
         } else {
-            let idAlbergo = result.rows[i].hotel_id;
             let j = i;
             while (j < result.rows.length && idAlbergo == result.rows[j].hotel_id) { // hotel[i] == hotel[j]
-                if (rangeDate.includes(result.rows[j].data_pernotto) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(database[idAlbergo].disponibilita)) {
-                    if (minidb.delete(database[i])) { console.log("Nel giorno: " + result.rows[j].data_pernotto + " l'hotel con id: " + result.rows[j].hotel_id + " NON è DISPONIBILE. Hotel pisciato"); } else { console.log(result.rows[j].hotel_id + ' non è stato cancellato. Forse è stato già cancellato?') }
+                if (rangeDate.includes(result.rows[j].data_pernotto.toISOString().split('T')[0]) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(database[idAlbergo].disponibilita)) {
+                    minidb.forEach(function(point){
+                        if (point.id == idAlbergo){
+                          minidb.delete(point)
+                        }
+                      });
                 }
                 j++;
             }
@@ -88,7 +96,7 @@ function hotelAvilability(hotel, result, minidb, rangeDate, persone) { //caso pe
     for (var k = 0; k < result.rows.length; k++) { //inserisce in una lista gli id degli hotel
         hotels_prenotati.push(result.rows[k].hotel_id);
     }
-    console.log(persone + ' ' + hotel.disponibilita);
+    
     if (parseInt(persone) > parseInt(hotel.disponibilita)) { //caso migliore o(1)
         console.log("L'hotel " + hotel.id + " ha disponibilità minore dei partecipanti richiesti");
 
@@ -99,7 +107,7 @@ function hotelAvilability(hotel, result, minidb, rangeDate, persone) { //caso pe
             return;
         } else {
             for (var j = 0; j < result.rows.length; j++) { //scorre la lista finchè non trova l'hotel e controlla le altre condizioni
-                if (String(result.rows[j].hotel_id) == String(hotel.id) && rangeDate.includes(result.rows[j].data_pernotto) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(hotel.disponibilita)) { // (hotel è nelle prenotazioni AND data_prenotazione in range and  NON disponibile)  
+                if (String(result.rows[j].hotel_id) == String(hotel.id) && rangeDate.includes(result.rows[j].data_pernotto.toISOString().split('T')[0]) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(hotel.disponibilita)) { // (hotel è nelle prenotazioni AND data_prenotazione in range and  NON disponibile)  
                     console.log("Nel giorno: " + result.rows[j].data_pernotto + " l'hotel con id: " + result.rows[j].hotel_id + " NON è DISPONIBILE. LA PRENOTAZIONE NON SI PUò FARE");
                     return;
                 }
@@ -177,7 +185,7 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
     if (luogo == '') {
         console.log("luogo non inserito");
         database.forEach(item => { minidb.add(item); }); //aggiungo tutti gli hotel a miniDb
-        let queryHotel = 'with somma as (select hotel_id,data_pernotto,partecipanti from prenotazioni) select somma.hotel_id,somma.data_pernotto, sum(somma.partecipanti) from somma group by (somma.hotel_id,somma.data_pernotto) order by (somma.hotel_id,somma.data_pernotto)';
+        let queryHotel = 'with somma as (select hotel_id,data_pernotto,partecipanti from prenotazioni) select somma.hotel_id,somma.data_pernotto, sum(somma.partecipanti) as prenotati from somma group by (somma.hotel_id,somma.data_pernotto) order by (somma.hotel_id,somma.data_pernotto)';
         const p1 = new Promise((resolve, reject) => {
             client.query(queryHotel, function(error, result) {
                 if (error) {
@@ -188,7 +196,6 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
             })
         });
         p1.then(value => {
-            console.log(QueryResult.rows);
             totalAvilability(QueryResult, minidb, rangeDate, persone); //leva gli hotel da miniDb che non sono disponibili in rangeDate a persone
 
             var cucina = cookie.parse(req.headers.cookie || '');
@@ -217,7 +224,7 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
                 minidb.add(item);
             }
         });
-        let queryHotel = 'with somma as (select hotel_id,data_pernotto,partecipanti from prenotazioni) select somma.hotel_id,somma.data_pernotto, sum(somma.partecipanti) from somma group by (somma.hotel_id,somma.data_pernotto) order by (somma.hotel_id,somma.data_pernotto)';
+        let queryHotel = 'with somma as (select hotel_id,data_pernotto,partecipanti from prenotazioni) select somma.hotel_id,somma.data_pernotto, sum(somma.partecipanti) as prenotati from somma group by (somma.hotel_id,somma.data_pernotto) order by (somma.hotel_id,somma.data_pernotto)';
         const p1 = new Promise((resolve, reject) => {
             client.query(queryHotel, function(error, result) {
                 if (error) {
@@ -228,7 +235,6 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
             })
         });
         p1.then(value => {
-            console.log(QueryResult.rows);
             placeAvilability(luogo, QueryResult, minidb, rangeDate, persone);
 
             var cucina = cookie.parse(req.headers.cookie || '');
@@ -260,7 +266,7 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
                 break;
             }
         }
-        let queryHotel = 'with somma as (select hotel_id,data_pernotto,partecipanti from prenotazioni where hotel_id=\'' + hotel.id + '\') select somma.hotel_id,somma.data_pernotto, sum(somma.partecipanti) from somma group by (somma.hotel_id,somma.data_pernotto) order by (somma.hotel_id,somma.data_pernotto)';
+        let queryHotel = 'with somma as (select hotel_id,data_pernotto,partecipanti from prenotazioni where hotel_id=\'' + hotel.id + '\') select somma.hotel_id,somma.data_pernotto, sum(somma.partecipanti) as prenotati from somma group by (somma.hotel_id,somma.data_pernotto) order by (somma.hotel_id,somma.data_pernotto)';
         var QueryResult;
         const p1 = new Promise((resolve, reject) => {
             client.query(queryHotel, function(error, result) {
@@ -272,7 +278,6 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
             })
         });
         p1.then(value => {
-            console.log(QueryResult.rows);
             hotelAvilability(hotel, QueryResult, minidb, rangeDate, persone);
 
             var cucina = cookie.parse(req.headers.cookie || '');
