@@ -580,8 +580,8 @@ app.post('/signin', urlencodedParser, function(req, res) {
     var mail = req.body.email;
     var pass = md5(req.body.password);
     var indirizzo = req.body.address;
-    var sesso;
-    if (req.body.Msex == undefined) { sesso = req.body.Fsex } else { sesso = req.body.Msex }
+    var sesso= req.body.sesso;
+    console.log(req.body);
     console.log(nome + ' ' + cognome + ' ' + mail + ' ' + indirizzo + ' ' + sesso);
 
     client.query('insert into utente(email,password,foto_profilo,nome,cognome,indirizzo,sesso) values (' + '\'' + mail + '\',' + '\'' + pass + '\',' + '\'' + String('https://cdn.calciomercato.com/images/2019-05/Whatsapp.senza.immagine.2019.1400x840.jpg') + '\',' + '\'' + nome + '\',' + '\'' + cognome + '\',' + '\'' + indirizzo + '\',' + '\'' + sesso + '\');', function(error, result) {
@@ -590,7 +590,7 @@ app.post('/signin', urlencodedParser, function(req, res) {
 
             if (error.code === '23505') {
 
-                res.send("<p>mail gia presa clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
+                res.send("<p>mail gia presa clicca <a href='/sigin'>qui<a> per tornare alla sigin </p> ");
                 res.end();
 
                 // res.sendFile(path.join(__dirname, '/sigin.html'));
