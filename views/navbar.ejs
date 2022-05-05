@@ -45,7 +45,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="/logout">Log out</a></li>
+                            <li><button class="dropdown-item" id="logout_btn">Log out</button></li>
                         </ul>
                     </li>
 
@@ -124,6 +124,58 @@
         }
 
 
+
+
+        var logoutbtn = document.getElementById("logout_btn");
+        logoutbtn.onclick = logoutnavbar;
+
+        function logoutnavbar(e) {
+
+
+
+
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.onreadystatechange = gestiscilogout;
+            httpRequest.open("GET", '/logout', true);
+            httpRequest.send(null);
+
+            if (window.location.pathname === '/profilo') {
+                window.location.href = "/";
+            }
+
+
+
+        }
+
+        function gestiscilogout(e) {
+
+            if (e.target.readyState == 4 && e.target.status == 200) {
+
+
+
+                let LS_btn = document.getElementById("login_sigin");
+                let profile_btn = document.getElementById("profile");
+                LS_btn.hidden = false;
+                profile_btn.hidden = true;
+
+                if (window.location.pathname === '/offerta') {
+
+                    try {
+                        document.getElementById("prenota").disabled = true;
+                        //document.getElementById("popover")
+
+                    } catch (error) {}
+
+
+
+                }
+
+
+
+            }
+
+        }
+
         var accedi_btn = document.getElementById("accedi_btn");
         accedi_btn.onclick = aggiornaNavbar;
 
@@ -139,6 +191,9 @@
 
             httpRequest.send(data);
 
+            if (window.location.pathname === '/signin') {
+                window.location.href = "/";
+            }
 
 
         }
@@ -155,7 +210,8 @@
                 profile_btn.hidden = false;
                 try {
                     document.getElementById("prenota").disabled = false;
-                    document.getElementById("popover").disabled = true;
+                    //document.getElementById("popover")
+
                 } catch (error) {}
 
 
