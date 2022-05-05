@@ -359,21 +359,20 @@ app.post('/prenota', urlencodedParser, function(req, res) {
 
             p2.then(value => {
                 var timestamp = new Date().toISOString();
-                var flag=false;
+                var flag = false;
                 rangeDate.forEach(giorno_pern => {
-                    client.query('insert into prenotazioni values (' + '\'' + email_cookie + '\',' + '\'' + id_booking + '\',' + '\'' + hotel.id + '\',' + '\'' + persone + '\',' +'\'' + giorno_pern + '\',' + '\'' + timestamp + '\');', function(error, result) {
+                    client.query('insert into prenotazioni values (' + '\'' + email_cookie + '\',' + '\'' + id_booking + '\',' + '\'' + hotel.id + '\',' + '\'' + persone + '\',' + '\'' + giorno_pern + '\',' + '\'' + timestamp + '\');', function(error, result) {
                         if (error) {
-                            flag=true;
+                            flag = true;
                             console.log(error);
                         }
                     })
                     id_booking++;
 
                 });
-                if(flag){
+                if (flag) {
                     res.render('titolo.ejs', { offerta: database[hotel.id], profilo: profilo_cookie, search: ricerca });
-                }
-                else{
+                } else {
                     console.log("Prenotazione registrata correttamente nel sistema!");
                     res.redirect('/profilo');
                 }
@@ -448,7 +447,7 @@ app.get('/offerta', urlencodedParser, function(req, res) {
 
 });
 
-app.post('/cancella',function(req, res) { 
+app.post('/cancella', function(req, res) {
     console.log("post /cancella");
 
     var cucina = cookie.parse(req.headers.cookie || '');
@@ -461,8 +460,8 @@ app.post('/cancella',function(req, res) {
     console.log("ho ricevuto i cookie...");
     console.log(email_cookie + ' ' + profilo_cookie);
 
-    var timestamp=req.query.timestamp;
-    console.log("ts= "+timestamp);
+    var timestamp = req.query.timestamp;
+    console.log("ts= " + timestamp);
     let queryHotel = 'delete from prenotazioni where user_email=\'' + email_cookie + '\' and timestamp =\'' + timestamp + '\'';
     var QueryResult;
     const p1 = new Promise((resolve, reject) => {
@@ -477,7 +476,7 @@ app.post('/cancella',function(req, res) {
     p1.then(value => {
         console.log("Prenotazione cancellata correttamente nel sistema!");
         res.redirect('/profilo');
-               
+
     });
 });
 
@@ -488,7 +487,6 @@ app.post('/cancella',function(req, res) {
 
 
 app.post('/login', urlencodedParser, function(req, res) {
-
     console.log('post /login');
     var mail = req.body.mail;
     var password = md5(req.body.password);
@@ -498,7 +496,8 @@ app.post('/login', urlencodedParser, function(req, res) {
             console.log(error);
             return;
         } else if (result.rows[0] == undefined) {
-            res.send("<p>L'email inserita non è registrata nel sistema o non è stata scritta correttamente. Clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
+
+            res.status(401).send("<p>L'email inserita non è registrata nel sistema o non è stata scritta correttamente. Clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
             return;
         } else {
             client.query('select * from utente where email=' + '\'' + mail + '\'' + ' and password=' + '\'' + password + '\'', function(error, result) {
@@ -506,7 +505,7 @@ app.post('/login', urlencodedParser, function(req, res) {
                     console.log(error);
                     return;
                 } else if (result.rows[0] == undefined) {
-                    res.send("<p>Password sbagliata. Clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
+                    res.status(401).send("<p>Password sbagliata. Clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
                     return;
                 } else {
                     console.log("Utente loggato correttamente");
@@ -519,7 +518,9 @@ app.post('/login', urlencodedParser, function(req, res) {
                         console.log(error);
                         return;
                     }
+
                     set_cookie();
+
                 }
             })
         }
@@ -539,12 +540,16 @@ app.post('/login', urlencodedParser, function(req, res) {
             // Set a new cookie with the name
             res.setHeader('Set-Cookie', cookie.serialize('email_profilo_cookie', [mail, profilo], {
                 httpOnly: true,
-                maxAge: 60 * 60 // 1 hour
+                maxAge: 60 * 60, // 1 hour
+                path: '/'
             }));
 
             console.log("Cookies settati");
         }
-        res.redirect('/');
+
+        //  res.redirect('/');
+        //    res.status(204).send();
+        res.status(200).send(profilo);
         res.end();
         return;
 
@@ -580,7 +585,7 @@ app.post('/signin', urlencodedParser, function(req, res) {
     var mail = req.body.email;
     var pass = md5(req.body.password);
     var indirizzo = req.body.address;
-    var sesso= req.body.sesso;
+    var sesso = req.body.sesso;
     console.log(req.body);
     console.log(nome + ' ' + cognome + ' ' + mail + ' ' + indirizzo + ' ' + sesso);
 

@@ -12,7 +12,8 @@
 </head>
 
 <body onload="SessionHandler();">
-    <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
+
+    <nav id="nav_" class="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
         <div class="container-fluid">
             <a href="/" class="navbar-brand">
                 <img src="pizza_005.jpg" alt="" width="32" height="32">
@@ -37,7 +38,7 @@
                 <ul class="navbar-nav me-1" id="profile" hidden="true">
                     <li class="nav-item dropdown">
                         <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="<%=profilo%>" alt="mdo" width="32" height="32" class="rounded-circle">
+                            <img id="profilo_imm" src="<%=profilo%>" alt="mdo" width="32" height="32" class="rounded-circle">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="dropdownUser1" style="position: absolute;">
                             <li><a class="dropdown-item" href="/profilo">Profilo</a></li>
@@ -54,7 +55,7 @@
                         <button class=" btn btn-outline-light dropdown-toggle me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="true">
                         Login
                     </button>
-                        <form method="POST" action="/login" class="dropdown-menu p-4 needs-validation" aria-labelledby="dropdownMenuButton" novalidate>
+                        <div id="accedi_form" class="dropdown-menu p-4 needs-validation" aria-labelledby="dropdownMenuButton" novalidate>
                             <div class="mb-3">
                                 <label for="exampleDropdownFormEmail2" class="form-label">Email</label>
                                 <input type="email" name="mail" class="form-control" id="exampleDropdownFormEmail2" placeholder="email@example.com">
@@ -69,8 +70,8 @@
                             <div class="invalid-feedback">
                                 Inserisci una password valida.
                             </div>
-                            <button type="submit" class="btn btn-primary" formmethod="post" formaction="/login">Accedi</button>
-                        </form>
+                            <button type="submit" class="btn btn-primary" id="accedi_btn">Accedi</button>
+                        </div>
                     </li>
                     <li class="nav-item"><a class="btn btn-warning pt-auto" href="/signin" role="button">Iscriviti</a></li>
                 </ul>
@@ -78,6 +79,7 @@
             </div>
         </div>
     </nav>
+
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function() {
@@ -119,6 +121,51 @@
             }
 
 
+        }
+
+
+        var accedi_btn = document.getElementById("accedi_btn");
+        accedi_btn.onclick = aggiornaNavbar;
+
+        function aggiornaNavbar(e) {
+
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.onreadystatechange = gestisciResponse;
+            httpRequest.open("POST", '/login', true);
+            var data = 'mail=' + document.getElementById("exampleDropdownFormEmail2").value + '&password=' + document.getElementById("exampleDropdownFormPassword2").value;
+
+
+            httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            httpRequest.send(data);
+
+
+
+        }
+
+
+        function gestisciResponse(e) {
+            if (e.target.readyState == 4 && e.target.status == 200) {
+                var profilo = e.target.responseText;
+
+                document.getElementById("profilo_imm").src = profilo;
+                let LS_btn = document.getElementById("login_sigin");
+                let profile_btn = document.getElementById("profile");
+                LS_btn.hidden = true;
+                profile_btn.hidden = false;
+                try {
+                    document.getElementById("prenota").disabled = false;
+                    document.getElementById("popover").disabled = true;
+                } catch (error) {}
+
+
+
+
+
+            } else if (e.target.readyState == 4 && e.target.status == 401) {
+                document.write(e.target.responseText);
+
+            }
         }
     </script>
 
