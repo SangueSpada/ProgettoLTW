@@ -56,6 +56,7 @@
                         Login
                     </button>
                         <div id="accedi_form" class="dropdown-menu p-4 needs-validation" aria-labelledby="dropdownMenuButton" novalidate>
+                            <div class="text-area" id="area_errori" style="color: red;"></div>
                             <div class="mb-3">
                                 <label for="exampleDropdownFormEmail2" class="form-label">Email</label>
                                 <input type="email" name="mail" class="form-control" id="exampleDropdownFormEmail2" placeholder="email@example.com">
@@ -139,6 +140,7 @@
             httpRequest.open("GET", '/logout', true);
             httpRequest.send(null);
 
+
             if (window.location.pathname === '/profilo') {
                 window.location.href = "/";
             }
@@ -208,6 +210,8 @@
                 let profile_btn = document.getElementById("profile");
                 LS_btn.hidden = true;
                 profile_btn.hidden = false;
+                var txt = document.getElementById("area_errori");
+                txt.textContent = "";
                 try {
                     document.getElementById("prenota").disabled = false;
                     //document.getElementById("popover")
@@ -219,7 +223,14 @@
 
 
             } else if (e.target.readyState == 4 && e.target.status == 401) {
-                document.write(e.target.responseText);
+                //document.write(e.target.responseText);
+                var area_err = document.getElementById("area_errori");
+                if ((e.target.responseText).includes('email')) {
+                    area_err.textContent = 'email errata';
+                } else {
+                    area_err.textContent = 'password errata';
+
+                }
 
             }
         }
