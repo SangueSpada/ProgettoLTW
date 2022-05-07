@@ -50,62 +50,59 @@
             </div>
         </div>
         <%- include('../footer.html'); -%>
-            <script>
-                window.sr = ScrollReveal();
-                sr.reveal('.navbar', {
-                    duration: 2000,
-                    origin: 'bottom'
-                });
-                sr.reveal('.showcase-left', {
-                    duration: 2000,
-                    origin: 'top',
-                    distance: '300px'
-
-
-                });
-                /*
-                sr.reveal('.showcase-btn', {
-                    duration: 2000,
-                    delay: 500,
-                    origin: 'bottom',
-                    distance: '300px'
-
-                });*/
-            </script>
-            <script>
-                //effetto scroll rallentato
-                $(function() {
-
-                    $('a[href*="#"]:not([href="#"])').click(function() {
-
-                        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-
-                            var target = $(this.hash);
-                            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-                            if (target.length) {
-
-                                $('html,body').animate({
-
-                                    scrollTop: target.offset().top
-                                }, 500);
-                                return false;
-
-                            }
-
-
-                        }
-
-
-
-                    });
-
-
-
-
-                });
-            </script>
-
 
 </body>
+<script>
+    window.sr = ScrollReveal();
+    sr.reveal('.navbar', {
+        duration: 2000,
+        origin: 'bottom'
+    });
+    sr.reveal('.showcase-left', {
+        duration: 2000,
+        origin: 'top',
+        distance: '300px'
 
+
+    });
+    /*
+    sr.reveal('.showcase-btn', {
+        duration: 2000,
+        delay: 500,
+        origin: 'bottom',
+        distance: '300px'
+
+    });*/
+
+    //effetto scroll rallentato
+    $(function() {
+
+        $('a[href*="#"]:not([href="#"])').click(function() {
+
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+
+                    $('html,body').animate({
+
+                        scrollTop: target.offset().top
+                    }, 500);
+                    return false;
+
+                }
+
+
+            }
+
+
+
+        });
+
+
+
+
+    });
+</script>
 </html>
