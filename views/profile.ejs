@@ -166,10 +166,10 @@
                 <hr>
 
 
-                <div class="container-fluid text-center mt-3 py-1">
+                <div class="table-responsive text-center mt-3 py-1">
                     <h2 class="py-5" style="color: blue;">Le tue prenotazioni</h2>
 
-                    <table class="container-fluid">
+                    <table class="table" style="min-width: 1000px;">
 
                         <thead>
                             <tr>
@@ -194,7 +194,7 @@
 
                             <% dati_book.forEach(item => {%>
                                 <tr>
-                                    <td class="col-auto py-3" style="text-align: center;"><img src="<%=item[0]%>" alt="hotel_logo" class="rounded-circle" width="100"></td>
+                                    <td class="col-auto py-3" style="text-align: center;"><img src="<%=item[0]%>" alt="hotel_logo" class="rounded-circle" width="100" height="75" ></td>
                                     <td class="col-auto py-3" style="text-align: center;"><label><%=item[1]%></label></td>
                                     <td class="col-auto py-3" style="text-align: center;"> <label><%=item[2]%></label></td>
                                     <td class="col-auto py-3" style="text-align: center;"> <label><%=item[3]%></label></td>

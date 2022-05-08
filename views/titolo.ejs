@@ -154,9 +154,16 @@
                             </div>
                             <div class="row">
                                 <div class="mt-2">
-                                    <span class="d-inline-block" id="popover" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Per poter proseguire con la prenotazione è necessario essere loggati">
-                                    <button type="submit" class="btn rounded-3 fw-bold" id="prenota" style="background-color: #68d7f3;" disabled>Prenota ora!!!</button>
-                                    </span>
+                                    <div id="PrenotaDiv">
+                                        <span class="d-inline-block" id="popover" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Per poter proseguire con la prenotazione è necessario essere loggati">
+                                        <button class="btn rounded-3 fw-bold" id="prenota" style="background-color: #68d7f3;"  onclick="conf_fun()" disabled>Prenota ora!!!</button>
+                                        </span>
+                                    </div>
+                                    <div id="ConfDiv" hidden>
+                                        <label style="color: red;">Sei Sicuro di voler effettuare la prenotazione?</label>
+                                        <button type="button" id="btnConfirm" class="btn btn-secondary" onclick="reset_fun()">Annulla</button>
+                                        <button type="submit" class="btn rounded-3 fw-bold" style="background-color: #68d7f3;">Conferma</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -287,6 +294,20 @@
             calcolo_prezzo();
         }
     }
+
+    function conf_fun() {
+        var prenotaDiv = document.getElementById("PrenotaDiv");
+        var confDiv = document.getElementById("ConfDiv");
+        prenotaDiv.hidden = true;
+        confDiv.hidden = false;
+    }
+    function reset_fun(ts) {
+        var prenotaDiv = document.getElementById("PrenotaDiv");
+        var confDiv = document.getElementById("ConfDiv");
+        prenotaDiv.hidden = false;
+        confDiv.hidden = true;
+    }
+
     (function() {
         var cookies = "<%=profilo%>";
         if (cookies == "") {
