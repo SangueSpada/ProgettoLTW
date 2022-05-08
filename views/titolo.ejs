@@ -11,6 +11,15 @@
 
 
     <title>Offerta cercata</title>
+    <style>
+        body {
+            font-size: 100%;
+            background-image: url(https://burst.shopifycdn.com/photos/vernazza-city-sunset.jpg?width=373&format=pjpg&exif=1&iptc=1);
+            background-attachment: fixed, fixed;
+            background-size: cover, cover;
+            background-repeat: no-repeat;
+        }
+    </style>
 </head>
 
 <body>
@@ -178,7 +187,7 @@
         </div>
 
 
-<%- include('../footer.html'); -%>
+        <%- include('../footer.html'); -%>
 </body>
 <script>
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
@@ -301,6 +310,7 @@
         prenotaDiv.hidden = true;
         confDiv.hidden = false;
     }
+
     function reset_fun(ts) {
         var prenotaDiv = document.getElementById("PrenotaDiv");
         var confDiv = document.getElementById("ConfDiv");
@@ -328,36 +338,36 @@
 
     })();
 
-        //effetto scroll rallentato
-        $(function() {
+    //effetto scroll rallentato
+    $(function() {
 
-            $('a[href*="#"]:not([href="#"])').click(function() {
+        $('a[href*="#"]:not([href="#"])').click(function() {
 
-                if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
 
-                    var target = $(this.hash);
-                    target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-                    if (target.length) {
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
 
-                        $('html,body').animate({
+                    $('html,body').animate({
 
-                            scrollTop: target.offset().top
-                        }, 500);
-                        return false;
-
-                    }
-
+                        scrollTop: target.offset().top
+                    }, 500);
+                    return false;
 
                 }
 
 
-
-            });
-
+            }
 
 
 
         });
+
+
+
+
+    });
 </script>
 
 </html>
