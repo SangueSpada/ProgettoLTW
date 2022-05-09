@@ -151,87 +151,54 @@
                 </div>
             </div>
         </div>
-        <script>
-            // Example starter JavaScript for disabling form submissions if there are invalid fields
-            (function() {
-                'use strict'
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.querySelectorAll('.needs-validation')
+    </div>
+    <div style="padding: 20pt;"></div>
+    <div id="foot-placeholder"></div>
+    <script>
+        $("#foot-placeholder").load("footer.html");
+    </script>
+</body>
 
-                // Loop over them and prevent submission
-                Array.prototype.slice.call(forms)
-                    .forEach(function(form) {
-                        form.addEventListener('submit', function(event) {
-                            let email = document.registrazione.email;
-                            let emailConf = document.registrazione.emailConf;
-                            let pass = document.registrazione.password;
-                            let passConf = document.registrazione.passwordConf;
-                            if (!form.checkValidity()) {
-                                event.preventDefault()
-                                event.stopPropagation()
-                            }
-                            form.classList.add('was-validated');
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict'
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
 
-                            if (email.value != emailConf.value) {
-                                document.getElementById("invalid-emailConf").hidden = false;
-                                event.preventDefault()
-                                event.stopPropagation()
-                            } else {
-                                document.getElementById("invalid-emailConf").hidden = true;
-                            }
-                            if (pass.value != passConf.value) {
-                                document.getElementById("invalid-passConf").hidden = false;
-                                event.preventDefault()
-                                event.stopPropagation()
-                            } else {
-                                document.getElementById("invalid-passConf").hidden = true;
-                            }
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    let email = document.registrazione.email;
+                    let emailConf = document.registrazione.emailConf;
+                    let pass = document.registrazione.password;
+                    let passConf = document.registrazione.passwordConf;
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated');
 
-                        }, false)
-                    })
-            })()
-        </script>
-
-        <div id="foot-placeholder"></div>
-        <script>
-            $("#foot-placeholder").load("footer.html");
-        </script>
-
-        <script>
-            //effetto scroll rallentato
-            $(function() {
-
-                $('a[href*="#"]:not([href="#"])').click(function() {
-
-                    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-
-                        var target = $(this.hash);
-                        target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-                        if (target.length) {
-
-                            $('html,body').animate({
-
-                                scrollTop: target.offset().top
-                            }, 500);
-                            return false;
-
-                        }
-
-
+                    if (email.value != emailConf.value) {
+                        document.getElementById("invalid-emailConf").hidden = false;
+                        event.preventDefault()
+                        event.stopPropagation()
+                    } else {
+                        document.getElementById("invalid-emailConf").hidden = true;
+                    }
+                    if (pass.value != passConf.value) {
+                        document.getElementById("invalid-passConf").hidden = false;
+                        event.preventDefault()
+                        event.stopPropagation()
+                    } else {
+                        document.getElementById("invalid-passConf").hidden = true;
                     }
 
-
-
-                });
-
-
-
-
-            });
-        </script>
-
-
-
-</body>
+                }, false)
+            })
+    })()
+    //effetto scroll rallentato
+</script>
 
 </html>
