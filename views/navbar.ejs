@@ -164,7 +164,9 @@
 
                     try {
                         document.getElementById("prenota").disabled = true;
-                        //document.getElementById("popover")
+                        var popover = document.getElementById('popover');
+                        var Bpopover = new bootstrap.Popover(popover, {})
+                        Bpopover.enable();
 
                     } catch (error) {}
 
@@ -214,7 +216,9 @@
                 txt.textContent = "";
                 try {
                     document.getElementById("prenota").disabled = false;
-                    //document.getElementById("popover")
+                    var popover = document.getElementById('popover');
+                    var Bpopover = new bootstrap.Popover(popover, {})
+                    Bpopover.disable();
 
                 } catch (error) {}
 
@@ -224,7 +228,7 @@
 
             } else if (e.target.readyState == 4 && e.target.status == 401) {
                 //document.write(e.target.responseText);
-                var password=document.getElementById("exampleDropdownFormPassword2");
+                var password = document.getElementById("exampleDropdownFormPassword2");
                 var area_err = document.getElementById("area_errori");
                 if ((e.target.responseText).includes('email')) {
                     area_err.textContent = 'email errata';
@@ -232,7 +236,7 @@
 
                     area_err.textContent = 'password errata';
                 }
-                password.value="";
+                password.value = "";
 
             }
         }
