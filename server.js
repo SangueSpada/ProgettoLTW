@@ -124,7 +124,7 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
             })
         });
         p1.then(value => {
-            utils.placeAvilability(luogo, QueryResult, minidb, rangeDate, persone);
+            utils.placeAvilability(luogo, QueryResult, minidb, rangeDate, persone, database);
 
             var cookies = cookie.parse(req.headers.cookie || '').email_profilo_cookie;
             if (cookies) {

@@ -1,10 +1,10 @@
-function getCookies(cookies){
+function getCookies(cookies) {
     var ma = cookies.split(',');
     var email_cookie = ma[0];
     var profilo_cookie = ma[1];
-    console.log('cookies = '+email_cookie + ' ' + profilo_cookie);
+    console.log('cookies = ' + email_cookie + ' ' + profilo_cookie);
     return [email_cookie, profilo_cookie];
-    
+
 }
 
 
@@ -44,7 +44,7 @@ function totalAvilability(result, minidb, rangeDate, persone) { //esplora  caso 
 
 }
 
-function placeAvilability(citta, result, minidb, rangeDate, persone) { //esplora tutto nel caso peggiore in o(n)
+function placeAvilability(citta, result, minidb, rangeDate, persone, database) { //esplora tutto nel caso peggiore in o(n)
 
     for (let item of minidb) { // verifica se ci sono hotel con posti letto < persone
         if (parseInt(persone) > parseInt(item.disponibilita)) {

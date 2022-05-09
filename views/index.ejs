@@ -419,9 +419,11 @@
         if (in_date <= today) {
             alert("data non valida!");
             checkin.value = new Date();
+            checkout.value = new Date();
+        } else {
+            out_date.setDate(out_date.getDate() + 1);
+            checkout.value = out_date.toISOString().split('T')[0];
         }
-        out_date.setDate(out_date.getDate() + 1);
-        checkout.value = out_date.toISOString().split('T')[0];
     }
 
     function checkout_fun() {
