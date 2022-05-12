@@ -113,7 +113,7 @@
                                 </div>
                                 <div class="col-md-1"></div>
                                 <div class="col-md-2 mt-2">
-                                    <button class="btn rounded-3 fw-bold" style="background-color: #68d7f3;">Cerca <i class="ms-2 bi bi-search"></i></button>
+                                    <button class="btn rounded-3 fw-bold" onclick="validSearch()" style="background-color: #68d7f3;">Cerca <i class="ms-2 bi bi-search"></i></button>
                                 </div>
                             </form>
                             <div class="row">
@@ -425,14 +425,18 @@
 
 </body>
 <script>
-    $(".chosen-select").chosen({
-        no_results_text: "Non ho trovato quello che cercavi:",
-        width: "100%",
-
-    })
-
-    var el = $(".chosen-select");
-    el.selectmenu("refresh", true);
+    function validSearch(){ 
+        var search= document.getElementById("testo_ricerca");
+        var hot="<%=hotels%>".split(',');
+        var ci="<%=citt%>".split(',');
+        var db=hot.concat(ci);
+        if(!db.includes(search.value)){
+            console.log(search.value);
+            alert("Attenzione, l'hotel o la città inseriti non sono validi");
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    }
 
 
     /*function search_fun() {
