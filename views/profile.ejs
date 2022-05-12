@@ -201,13 +201,19 @@
                                     <td class="col-auto py-3" style="text-align: center;"><label><%=item[4]%></label></td>
                                     <td class="col-auto py-3" style="text-align: center;"><label><%=item[5]%> €</label></td>
                                     <td class="col-auto py-3" style="text-align: center;">
-                                        <button class="btn btn-danger" id="btnCancel_<%=item[6]%>" onclick="confirm_fun('<%=item[6]%>')">Cancella prenotazione</button>
-                                        <form hidden id="formCancel_<%=item[6]%>" method="post" action="/cancella?timestamp=<%=item[6]%>">
+                                        <% if(new Date(item[2]) <= new Date()) {%>
+                                            <span class="d-inline-block" id="popover" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Il viaggio è stato fatto, non è più possibile cancellare la prenotazione">
+                                            <button disabled  type="button" class="btn btn-danger" id="btnCancel_<%=item[6]%>">Cancella prenotazione</button>
+                                            </span>
+                                        <%} else {%>
+                                            <button class="btn btn-danger" id="btnCancel_<%=item[6]%>" onclick="confirm_fun('<%=item[6]%>')">Cancella prenotazione</button>
+                                            <form hidden id="formCancel_<%=item[6]%>" method="post" action="/cancella?timestamp=<%=item[6]%>">
                                             <label style="color: red;">Sei Sicuro di voler eliminare la prenotazione?</label>
                                             <button type="button" id="btnReset_<%=item[6]%>" class="btn btn-secondary" onclick="reset_fun('<%=item[6]%>')">Annulla</button>
                                             <button type="submit" class="btn btn-danger">Conferma</button>
-                                        </form>
-                                        <form></form>
+                                            </form>
+                                        <%} %>
+
                                     </td>
 
                                 </tr>
