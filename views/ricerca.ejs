@@ -112,23 +112,31 @@
                 <div class="col"></div>
             </div>
             <div class="row d-flex justify-content-around mt-5">
-                <div style="padding: 50pt;"></div>
+                <div style="padding: 30pt;"></div>
                 <% if(results.size==0){ %>
-                    <% if(query[0] == ''){ %>
+                    <% if(query[0] == ''){ %> //non è stato inserito alcun luogo
                         <div class="col-lg-12 text-center" style="color:red;">
-                            <h2>Non è stato trovato alcun hotel disponibile per queste date e numero partecipanti</h2>
+                            <h2>Non ci sono hotel disponibili per le date inserite</h2>
+                            
                         </div>
-                        <% } else{ %>
+                    <% } else{ %>
                             <div class="col-lg-12 text-center" style="color:red;">
-                                <h2>L'hotel selezionato non ha disponibilità per le date e numero partecipanti inseriti</h2>
+                                <% if(res != ''){ %>
+                                    <%=res%>
+                                <% } else { %>
+                                Errore.
+                                <% } %>
                             </div>
 
+                    <% } %>
+                    <% } else{ %>
+                        <div class="col-lg-12 text-center" style="color:green;">
+                            <% if(results.size==1){%>
+                            <h2>L'hotel selezionato è disponibile:</h2>
+                            <% } else{ %>
+                                <h2>La ricerca ha prodotto <%=results.size%> risultati:</h2>
                             <% } %>
-                                <% } else{ %>
-                                    <div class="col-lg-12 text-center" style="color:green;">
-                                        <h2>La ricerca ha prodotto
-                                            <%=results.size%> risultati:</h2>
-                                    </div>
+                        </div>
 
 
 
@@ -198,6 +206,11 @@
 
 </body>
 <script>
+    $('.desc').each(function() {
+    var str50=$(this).text().substr(0,100);
+    $(this).html(str50+'...');
+    });
+
     function validSearch(){ 
         var search= document.getElementById("testo_ricerca");
         var hot="<%=hotels%>".split(',');

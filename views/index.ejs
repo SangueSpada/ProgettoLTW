@@ -93,7 +93,7 @@
                         <nav class="shadow container p-3 rounded-3" style="background-color: #e3f2fd;">
                             <form class="row" method="post" action="/ricerca">
                                 <div class="col-md-12 mb-2">
-                                    <input type="text" class="active form-control" id="testo_ricerca" name="testo_ricerca" placeholder="Cerca per Hotel o per Città" required>
+                                    <input type="text" class="active form-control" id="testo_ricerca" name="testo_ricerca" placeholder="Cerca per Hotel o per Città">
                                 </div>
                                 <div class="col-md-3 mt-2">
                                     <label class="active" for="dateStandard">Check-in:</label>
@@ -144,8 +144,8 @@
                                                 <%=item.titolo%>
                                             </h5>
                                             <h6 class="card-subtitle">
-                                                <%=item.prezzo%> €</h6>
-                                            <p class="card-text">
+                                                a partire da <%=item.prezzo%> € per 1 <i class="bi bi-person-fill"></i></h6> 
+                                            <p class="card-text desc">
                                                 <%=item.descrizione%>
                                             </p>
                                             <div class="showcase-btn">
@@ -346,6 +346,7 @@
 
     </div>
     <script>
+
         window.sr = ScrollReveal();
         sr.reveal('.navbar', {
             duration: 2000,
@@ -430,7 +431,7 @@
         var hot="<%=hotels%>".split(',');
         var ci="<%=citt%>".split(',');
         var db=hot.concat(ci);
-        if(!db.includes(search.value)){
+        if(!db.includes(search.value) && search.value!=''){
             console.log(search.value);
             alert("Attenzione, l'hotel o la città inseriti non sono validi");
             event.stopPropagation();
@@ -520,6 +521,11 @@
             part.value = part.valueAsNumber + 1;
         }
     }
+
+    $('.desc').each(function() {
+        var str50=$(this).text().substr(0,100);
+        $(this).html(str50+'...');
+    });
 </script>
 
 </html>

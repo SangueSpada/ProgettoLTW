@@ -69,7 +69,7 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
     var luogo = req.body.testo_ricerca;
     var persone = req.body.partecipants;
     ricerca = [luogo, checkin, checkout, persone];
-
+    var resp;
     var minidb = new Set();
     var rangeDate = utils.getDates(checkin, checkout);
     console.log(rangeDate);
@@ -162,7 +162,7 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
             })
         });
         p1.then(value => {
-            utils.hotelAvilability(hotel, QueryResult, minidb, rangeDate, persone);
+            resp = utils.hotelAvilability(hotel, QueryResult, minidb, rangeDate, persone);
 
             var cookies = cookie.parse(req.headers.cookie || '').email_profilo_cookie;
             if (cookies) {
@@ -170,11 +170,11 @@ app.post('/ricerca', urlencodedParser, function(req, res) {
                 var email_cookie = cook[0];
                 var profilo_cookie = cook[1];
 
-                res.render('ricerca.ejs', { data: database, cittas: cities, results: minidb, cookie: email_cookie, profilo: profilo_cookie, query: ricerca });
+                res.render('ricerca.ejs', { data: database, cittas: cities, results: minidb, cookie: email_cookie, profilo: profilo_cookie, query: ricerca, res: resp });
 
             } else {
                 console.log("non ho ricevuto i cookie");
-                res.render('ricerca.ejs', { data: database, cittas: cities, results: minidb, profilo: '', query: ricerca });
+                res.render('ricerca.ejs', { data: database, cittas: cities, results: minidb, profilo: '', query: ricerca, res: resp });
             }
         });
     }
@@ -197,6 +197,7 @@ app.post('/prenota', urlencodedParser, function(req, res) {
     var minidb = new Set();
     var rangeDate = utils.getDates(checkin, checkout);
     var hotel;
+    var resp;
 
     for (var i = 0; i < (Object.keys(database).length); i++) { //trova l'hotel dal titolo
         if (String(database[i].titolo) == String(luogo)) {
@@ -216,8 +217,8 @@ app.post('/prenota', urlencodedParser, function(req, res) {
         })
     });
     p1.then(value => {
-        utils.hotelAvilability(hotel, QueryResult, minidb, rangeDate, persone);
-        console.log(minidb);
+        resp = utils.hotelAvilability(hotel, QueryResult, minidb, rangeDate, persone);
+        //console.log(minidb);
         if (minidb.size > 0) { //se l hotel è disponibile procede
             let id_booking;
             const p2 = new Promise((resolve, reject) => {
@@ -255,7 +256,7 @@ app.post('/prenota', urlencodedParser, function(req, res) {
 
         } else { //altrimenti rimanda la ricerca (da ampliare con gli errori eventuali)
             console.log("hotel non disponibile in quelle date");
-            res.render('titolo.ejs', { offerta: database[hotel.id], profilo: profilo_cookie, search: ricerca });
+            res.render('titolo.ejs', { offerta: database[hotel.id], profilo: profilo_cookie, search: ricerca, res: resp });
         }
     });
 
@@ -283,11 +284,11 @@ app.get('/offerta', urlencodedParser, function(req, res) {
         let cook = utils.getCookies(cookies);
         var email_cookie = cook[0];
         var profilo_cookie = cook[1];
-        res.render('titolo.ejs', { offerta: database[req.query.id], cookie: email_cookie, profilo: profilo_cookie, search: '' });
+        res.render('titolo.ejs', { offerta: database[req.query.id], cookie: email_cookie, profilo: profilo_cookie, search: '', res: '' });
 
     } else {
         console.log("non ho ricevuto i cookie");
-        res.render('titolo.ejs', { offerta: database[req.query.id], profilo: '', search: '' });
+        res.render('titolo.ejs', { offerta: database[req.query.id], profilo: '', search: '', res: '' });
     }
 });
 
@@ -477,5 +478,6 @@ app.get('/profilo', urlencodedParser, function(req, res) {
     }
 });
 
-var server = app.listen(port, function() {});
+var port = process.env.PORT || 3334;
+var server = app.listen(port);
 console.log('listen at  http://127.0.0.1:' + port);

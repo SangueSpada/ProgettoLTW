@@ -1,3 +1,6 @@
+var fs = require('fs');
+var database = JSON.parse(fs.readFileSync('hotels.json'));
+
 function getCookies(cookies) {
     var ma = cookies.split(',');
     var email_cookie = ma[0];
@@ -21,8 +24,8 @@ function totalAvilability(result, minidb, rangeDate, persone) { //esplora  caso 
     for (let item of minidb) { // verifica se ci sono hotel con posti letto < persone
         if (parseInt(persone) > parseInt(item.disponibilita)) {
             minidb.delete(item);
-            console.log("L'hotel " + item.id + " ha disponibilità minore dei partecipanti richiesti");
-            console.log(persone + ' ' + item.disponibilita);
+            //console.log("L'hotel " + item.id + " ha disponibilità minore dei partecipanti richiesti");
+            //console.log(persone + ' ' + item.disponibilita);
         }
     }
 
@@ -49,15 +52,14 @@ function placeAvilability(citta, result, minidb, rangeDate, persone, database) {
     for (let item of minidb) { // verifica se ci sono hotel con posti letto < persone
         if (parseInt(persone) > parseInt(item.disponibilita)) {
             minidb.delete(item);
-            console.log("L'hotel " + item.id + " ha disponibilità minore dei partecipanti richiesti");
-            console.log(persone + ' ' + item.disponibilita);
+            //console.log("L'hotel " + item.id + " ha disponibilità minore dei partecipanti richiesti");
+            //console.log(persone + ' ' + item.disponibilita);
         }
     }
 
     for (var i = 0; i < result.rows.length; i++) { //per ogni hotel della query 
         let idAlbergo = result.rows[i].hotel_id;
         if (database[idAlbergo].citta != citta) { //se l albergo non è nella citta richiesta continua a scorrere
-            console.log("aoao");
             continue;
         } else {
             let j = i;
@@ -74,7 +76,7 @@ function placeAvilability(citta, result, minidb, rangeDate, persone, database) {
             i = j;
         }
     }
-    console.log(minidb);
+    //console.log(minidb);
 }
 
 function hotelAvilability(hotel, result, minidb, rangeDate, persone) { //caso peggiore o(n)
@@ -84,23 +86,24 @@ function hotelAvilability(hotel, result, minidb, rangeDate, persone) { //caso pe
     }
 
     if (parseInt(persone) > parseInt(hotel.disponibilita)) { //caso migliore o(1)
-        console.log("L'hotel " + hotel.id + " ha disponibilità minore dei partecipanti richiesti");
+        //console.log("L'hotel " + hotel.id + " ha disponibilità minore dei partecipanti richiesti");
+        return "L'hotel selezionato ha disponibilità minore dei partecipanti richiesti"
 
     } else {
         if (!(hotels_prenotati.includes(hotel.id))) { //verifica o(n)
             minidb.add(hotel);
-            console.log("L'hotel " + hotel.id + " è disponibile");
-            return;
+            //console.log("L'hotel " + hotel.id + " è disponibile");
+            return '';
         } else {
             for (var j = 0; j < result.rows.length; j++) { //scorre la lista finchè non trova l'hotel e controlla le altre condizioni
                 if (String(result.rows[j].hotel_id) == String(hotel.id) && rangeDate.includes(result.rows[j].data_pernotto) && parseInt(result.rows[j].prenotati) + parseInt(persone) > parseInt(hotel.disponibilita)) { // (hotel è nelle prenotazioni AND data_prenotazione in range and  NON disponibile)  
-                    console.log("Nel giorno: " + result.rows[j].data_pernotto + " l'hotel con id: " + result.rows[j].hotel_id + " NON è DISPONIBILE. LA PRENOTAZIONE NON SI PUò FARE");
-                    return;
+                    //console.log("Nel giorno: " + result.rows[j].data_pernotto + " l'hotel con id: " + result.rows[j].hotel_id + " NON è DISPONIBILE. LA PRENOTAZIONE NON SI PUò FARE");
+                    return "L'hotel selezionato non è disponibile in data "+result.rows[j].data_pernotto+" per il numero di partecipanti richiesti. Posti disponibili per quel giorno = "+String(parseInt(hotel.disponibilita)-parseInt(result.rows[j].prenotati))
                 }
             }
-            console.log("Ho controllato tutti i giorni e non ci sono giorni pieni e/o i giorni non sono nel range");
+            //console.log("Ho controllato tutti i giorni e non ci sono giorni pieni e/o i giorni non sono nel range");
             minidb.add(hotel);
-            return;
+            return '';
         }
     }
 }

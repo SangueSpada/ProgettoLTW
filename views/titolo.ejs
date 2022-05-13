@@ -87,7 +87,7 @@
                         </div>
                         <div class="col-md-6">
                             <h4 class="mb-0">
-                                <%=offerta.prezzo%>
+                                <%=offerta.prezzo%> €
                             </h4>
                         </div>
                     </div>
@@ -177,7 +177,11 @@
                         </form>
                     </nav>
                     <div id="invalid-dates" style="color:red;" hidden>
-                        Le date inserite non sono disponibili, per favore cambia data o verifica che l hotel abbia effettivamente tali posti liberi
+                        <% if(res != ''){ %>
+                            <%=res%>
+                        <% } else { %>
+                        Errore, riprova a prenotare.
+                        <% } %>
                     </div>
                     <div style="padding: 20pt;"></div>
                 </div>
