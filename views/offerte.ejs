@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <script type="application/javascript" src="..\bootstrap-5.1.3\dist\js\bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <title>Offerte del momento</title>
     <style>
@@ -43,7 +44,9 @@
                                 <h5 class="card-title">
                                     <%=item.titolo%>
                                 </h5>
-                                <p class="card-text">
+                                <h6 class="card-subtitle">
+                                    a partire da <%=item.prezzo%> € per 1 <i class="bi bi-person-fill"></i></h6>
+                                <p class="card-text desc">
                                     <%=item.descrizione%>
                                 </p>
                                 <div class="showcase-btn">
@@ -57,10 +60,15 @@
             </div>
         </div>
         <<div style="padding: 20pt;"></div>
-            <%- include('../footer.html'); -%>
+        <%- include('footer'); -%>
 
 </body>
 <script>
+    $('.desc').each(function() {
+    var str50=$(this).text().substr(0,100);
+    $(this).html(str50+'...');
+    });
+
     window.sr = ScrollReveal();
     sr.reveal('.navbar', {
         duration: 2000,
@@ -112,6 +120,8 @@
 
 
     });
+
+
 </script>
 
 </html>

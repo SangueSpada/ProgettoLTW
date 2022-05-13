@@ -7,9 +7,7 @@
         "descrizione": "questa è la descrizione esempio",
         "in_evidenza": true,
         "disponibilita": 30,
-        "indirizzo": "via esempio 26"
-
-
+        "indirizzo": "via esempio, 26"
     },
     {
         "id": 1,
@@ -18,12 +16,9 @@
         "immagine": "https://www.hotel-aroma.com/media/LDC-Hotels-AROMA_Piscina_006_%E2%88%8F-2019-Giovanni-Marchesi.jpg",
         "prezzo": 800,
         "descrizione": "questa è la descrizione plaza",
-        "in_evidenza": true,
+        "in_evidenza": false,
         "disponibilita": 5,
-        "indirizzo": "via piazza 90"
-
-
-
+        "indirizzo": "via piazza, 90"
     },
     {
         "id": 2,
@@ -34,10 +29,7 @@
         "descrizione": "questa è la descrizione christus",
         "in_evidenza": true,
         "disponibilita": 8,
-        "indirizzo": "via cristoforo colombo 3"
-
-
-
+        "indirizzo": "via cristoforo colombo, 3"
     },
     {
         "id": 3,
@@ -46,12 +38,9 @@
         "immagine": "https://www.hotel-splendid.it/media/slide/homepage/01.jpg",
         "prezzo": 1500,
         "descrizione": "questa è la maremma maiala",
-        "in_evidenza": true,
+        "in_evidenza": false,
         "disponibilita": 4,
-        "indirizzo": "via mascara 58"
-
-
-
+        "indirizzo": "via mascara, 58"
     },
     {
         "id": 4,
@@ -62,11 +51,162 @@
         "descrizione": "questa è la descrizione jesus",
         "in_evidenza": false,
         "disponibilita": 17,
-        "indirizzo": "via dei gesuiti 4"
-
-
-
+        "indirizzo": "via dei gesuiti, 4"
+    },
+    {
+        "id": 5,
+        "titolo": "Hotel Major Aventinus",
+        "citta": "roma",
+        "immagine": "https://worhot.com/_next/image?url=https%3A%2F%2Fassets.worhot.com%2Fimages%2Fhotels%2F5f58983b7a49a50445f77bca%2Fphotos%2Fdf0c5a1461fa05ad.original.jpg&w=1920&q=75",
+        "prezzo": 134,
+        "descrizione": "Situato a 600 metri dalla zona di Testaccio e a pochi passi da Trastevere, dall'altra parte del fiume Tevere, l'Hotel Major Aventinus vanta camere con vista sul giardino o sulla strada e la connessione Wi-Fi gratuita nell'intera struttura.",
+        "in_evidenza": true,
+        "disponibilita": 17,
+        "indirizzo": "Via di Sant'Anselmo, 10"
+    },
+    {
+        "id": 6,
+        "titolo": "Blue Globe Hotels",
+        "citta": "roma",
+        "immagine": "https://media.blastness.info/267/Hive-gallery/full/1024gallery09.jpg",
+        "prezzo": 646,
+        "descrizione": "Storia, tradizione, modernità: tre concetti che riassumono l’anima della Roma antica e contemporanea, quella da visitare per la sua storia e quella da vivere per l’arte moderna, gli eventi e i musei a cielo aperto, quella che non tradirà mai il suo tipico lifestyle.",
+        "in_evidenza": false,
+        "disponibilita": 10,
+        "indirizzo": "Via Torino, 6"
+    },
+    {
+        "id": 7,
+        "titolo": "Millennium Gold Hotel",
+        "citta": "napoli",
+        "immagine": "https://www.millenniumgoldhotel.it/files-sbbasic/sr_millenniumgoldhotel_com/hotel-millenium-gold-7854.jpg?w=2048",
+        "prezzo": 80,
+        "descrizione": "l MillenniuM Gold Hotel è a soli 600mt “walking distance” dai terminal dell’Aeroporto Internazionale di Napoli Capodichino (NAP). Ne è il punto di riferimento alberghiero anche grazie ai suoi servizi quali ristorante, lounge bar, parcheggio gratuito e free wi-fi internet.",
+        "in_evidenza": true,
+        "disponibilita": 40,
+        "indirizzo": "Via Comandante Umberto Maddalena, 192"
+    },
+    {
+        "id": 8,
+        "titolo": "Hotel Royal Continental",
+        "citta": "napoli",
+        "immagine": "https://www.royalgroup.it/royalcontinental/assets/media/banquets/location-matrimoni-sul-mare-napoli.jpg",
+        "prezzo": 80,
+        "descrizione": "Il Royal Continental è sul lungomare di Napoli. Sarà facile perdersi tra il mare e i simboli della città: di fronte all'hotel, il leggendario Castel dell'Ovo e il Borgo Marinari, a pochi minuti di cammino, Piazza del Plebiscito e, poco più avanti, il Maschio Angioino.",
+        "in_evidenza": true,
+        "disponibilita": 17,
+        "indirizzo": "Via Partenope 38"
+    },
+    {
+        "id": 9,
+        "titolo": "BnB Hotel Milano San Siro",
+        "citta": "milano",
+        "immagine": "https://res.cloudinary.com/hzekpb1cg/image/upload/c_fill,h_363,w_815/q_auto:low,f_auto/s3/public/prod/s3fs-public/SanSiro_esterno_0219.jpg",
+        "prezzo": 80,
+        "descrizione": "A San Siro, con vista Stadio Giuseppe Meazza, il B&B Hotel Milano San Siro è un hotel tre stelle. L'albergo è facile da raggiungere dalle stazioni e dagli aeroporti grazie alla fermata della Metropolitana M5 San Siro Stadio (linea lilla) ad appena 200 metri dall'hotel.",
+        "in_evidenza": true,
+        "disponibilita": 10,
+        "indirizzo": "Via san siro 3"
+    },
+    {
+        "id": 10,
+        "titolo": "BnB Hotel Milano Central Station",
+        "citta": "milano",
+        "immagine": "https://res.cloudinary.com/hzekpb1cg/image/upload/c_fill,h_363,w_815/q_auto:low,f_auto/s3/public/prod/s3fs-public/SanSiro_esterno_0219.jpg",
+        "prezzo": 90,
+        "descrizione": "Il B&B Hotel Milano Central Station è un hotel tre stelle che ti permette di soggiornare a Milano in pieno centro cittò a pochi passi dalla stazione Centrale di Milano.",
+        "in_evidenza": false,
+        "disponibilita": 15,
+        "indirizzo": "Via della stazione 32"
+    },
+    {
+        "id": 11,
+        "titolo": "NH Venezia Rio Novo",
+        "citta": "venezia",
+        "immagine": "https://img.nh-hotels.net/naaz/7Lw9g/original/F_NH_venezia-rio-novo_052.jpg",
+        "prezzo": 215,
+        "descrizione": "L'hotel NH Venezia Rio Novo si trova nel cuore del quartiere Dorsoduro, un'area da cui notoriamente si può ammirare la vera Venezia, ricca di ristoranti, negozi, boutique artigianali e luoghi importanti come l'Università Ca' Foscari e la Collezione Peggy Guggenheim.",
+        "in_evidenza": false,
+        "disponibilita": 30,
+        "indirizzo": "Calle Larga Ragusei Dorsoduro 3489"
+    },
+    {
+        "id": 12,
+        "titolo": "Hotel ai Mori d'Oriente",
+        "citta": "venezia",
+        "immagine": "https://www.morihotel.com/wp-content/uploads/2022/03/home2.jpg",
+        "prezzo": 287,
+        "descrizione": "Hotel di charme in una Venezia dall’ineffabile fascino, affacciato al Rio della Sensa nel sestiere di Cannaregio, dove pittoresche corti nascoste sussurrano antiche leggende e dove le camere vi culleranno nel lusso e nel comfort.",
+        "in_evidenza": false,
+        "disponibilita": 30,
+        "indirizzo": "Fondamenta della Sensa Cannaregio 3319"
+    },
+    {
+        "id": 13,
+        "titolo": "Mercure Bergamo Centro Palazzo Dolci",
+        "citta": "bergamo",
+        "immagine": "https://www.ahstatic.com/photos/3653_ho_03_p_1024x768.jpg",
+        "prezzo": 120,
+        "descrizione": "Il Mercure Bergamo Centro Palazzo Dolci è un elegante hotel 4 stelle nel centro di Bergamo bassa. Costituito da 40 camere dal design elegante, in cui l'attenzione al dettaglio e i colori vivaci degli arredi si fondono ai più moderni comfort di ospitalità, quali WiFi gratuito, cassaforte, TV LCD, creando un'atmosfera accogliente e sofisticata.",
+        "in_evidenza": true,
+        "disponibilita": 80,
+        "indirizzo": "Viale Papa Giovanni XXIII, 100"
+    },
+    {
+        "id": 14,
+        "titolo": "BnB Hotel Torino",
+        "citta": "torino",
+        "immagine": "https://res.cloudinary.com/hzekpb1cg/image/upload/c_fill,h_363,w_815/q_auto:low,f_auto/s3/public/prod/s3fs-public/Torino_esterno_0219_0.jpg",
+        "prezzo": 83,
+        "descrizione": "Situato nel cuore del centro commerciale e industriale di Torino e a due passi dallo Stadio Olimpico, l'hotel di Torino è strategico anche per chi vuole visitare la città muovendosi con i mezzi pubblici. Questo hotel a Torino è una giusta soluzione perché coniuga comodità e ottimi servizi, compresa la fermata dei tram nelle sue immediate vicinanze.",
+        "in_evidenza": false,
+        "disponibilita": 8,
+        "indirizzo": "Corso Orbassano, 470"
+    },
+    {
+        "id": 15,
+        "titolo": "Turin Palace Hotel",
+        "citta": "torino",
+        "immagine": "https://www.turinpalacehotel.com/images/content/99500_11828_2_N_0_800_0_1605473/turin-palace-hotel-gallery-generale-16-9-1.jpg",
+        "prezzo": 250,
+        "descrizione": "Al Turin Palace Hotel vivrete un indimenticabile soggiorno immersi in un’atmosfera unica, ricca di charme e comfort assoluto. Il nostro hotel vicino a Torino Porta Nuova si trova nel centro della città da cui si può ammirare una vista spettacolare dal nostro meraviglioso terrazzo.",
+        "in_evidenza": false,
+        "disponibilita": 65,
+        "indirizzo": "Via Paolo Sacchi, 8"
+    },
+    {
+        "id": 16,
+        "titolo": "Bolumn Palace Hotel",
+        "citta": "bologna",
+        "immagine": "https://www.turinpalacehotel.com/images/content/99500_11828_2_N_0_800_0_1605473/turin-palace-hotel-gallery-generale-16-9-1.jpg",
+        "prezzo": 250,
+        "descrizione": "Al Turin Palace Hotel vivrete un indimenticabile soggiorno immersi in un’atmosfera unica, ricca di charme e comfort assoluto. Il nostro hotel vicino a Torino Porta Nuova si trova nel centro della città da cui si può ammirare una vista spettacolare dal nostro meraviglioso terrazzo.",
+        "in_evidenza": false,
+        "disponibilita": 65,
+        "indirizzo": "Via Paolo Sacchi, 8"
+    },
+    {
+        "id": 17,
+        "titolo": "Hotel Panorama",
+        "citta": "bologna",
+        "immagine": "https://media-cdn.tripadvisor.com/media/photo-s/07/95/7a/4a/panorama.jpg",
+        "prezzo": 35,
+        "descrizione": "A pochi passi dai luoghi di maggior interesse del centro città, il nostro piccolo albergo a conduzione familiare e gestito direttamente dalla proprietà, vanta una posizione centralissima",
+        "in_evidenza": true,
+        "disponibilita": 8,
+        "indirizzo": "Via Giovanni Livraghi 1 "
+    },
+    {
+        "id": 18,
+        "titolo": "Starhotels Excelsior",
+        "citta": "bologna",
+        "immagine": "https://www.starhotels.com/assets/components/phpthumbof/cache/Starhotels%20Excelsior_Bo_Exterior%20View_1.970b4fe608a8e58d8d627f682168d98f.jpg",
+        "prezzo": 200,
+        "descrizione": "Unici, ma accomunati da uno stesso stile. Perfetta sintesi di eleganza e comfort, i nostri 30 hotel 4 e 5 stelle in Italia, Londra, Parigi e New York fanno dell'autentica ospitalità italiana una questione di stile.",
+        "in_evidenza": false,
+        "disponibilita": 65,
+        "indirizzo": "Via Paolo Sacchi, 8"
     }
 
-
+     
 ]
