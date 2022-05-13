@@ -81,7 +81,7 @@
                     <nav class="shadow container p-3 rounded-3" style="background-color: #e3f2fd;">
                         <form class="row" method="post" action="/ricerca">
                             <div class="col-md-12 mb-2">
-                                <input type="text" class="active form-control" id="testo_ricerca" name="testo_ricerca" placeholder="Cerca per Hotel o per Città" required>
+                                <input type="text" class="active form-control" id="testo_ricerca" name="testo_ricerca" value="<%=query[0]%>" placeholder="Cerca per Hotel o per Città" required>
                             </div>
                             <div class="col-md-3 mt-2">
                                 <label class="active" for="dateStandard">Check-in:</label>
@@ -155,7 +155,7 @@
                                                 </h5>
                                                 <h6 class="card-subtitle">
                                                     <%=item.prezzo%> €</h6>
-                                                <p class="card-text">
+                                                <p class="card-text desc">
                                                     <%=item.descrizione%>
                                                 </p>
                                                 <a class="btn btn-primary" href="/offerta?id=<%=item.id%>">Scopri di più</a>
@@ -167,7 +167,7 @@
         </div>
         <div style="padding: 30pt;"></div>
 
-        <%- include('../footer.html'); -%>
+        <%- include('footer'); -%>
 
 
             <script>

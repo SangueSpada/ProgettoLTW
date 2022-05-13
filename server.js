@@ -424,7 +424,7 @@ app.get('/signin', function(req, res) {
         res.redirect('/');
     } else {
         console.log('get /signin');
-        res.sendFile(path.join(__dirname, '/sigin.html'));
+        res.render('sigin.ejs', { success: '' });
     }
 });
 
