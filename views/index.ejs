@@ -10,141 +10,164 @@
     <link rel="stylesheet" href="../personal_dist/our.css">
     <script type="application/javascript" src="..\bootstrap-5.1.3\dist\js\bootstrap.bundle.min.js"></script>
     <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
-    
+
 
     <script src="https://unpkg.com/scrollreveal"></script>
-    
+
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
     <title>Anulare</title>
     <style>
+<<<<<<< HEAD
 
        
+=======
+        .ui-autocomplete-category {
+            font-weight: bold;
+            padding: .2em .4em;
+            margin: .8em 0 .2em;
+            line-height: 1.5;
+        }
+        
+        body {
+            background: linear-gradient(to bottom, transparent, rgb(45, 44, 44), transparent), url('../media/sunset-over-vernazza.jpg');
+            background-size: cover, cover;
+            background-repeat: no-repeat;
+        }
+        
+        h3 {
+            color: rgb(178, 172, 172);
+        }
+>>>>>>> 898bc65d3be568e3f0ad5d9a71e9002c9e834de9
     </style>
 
 </head>
 
 <body>
     <% var hotels=[]; var citt=[]; %>
-    <% data.forEach(item => {hotels.push(item.titolo)}) %>
-    <% cittas.forEach(item => {citt.push(item)}) %>
-    <script>
-        var hot="<%=hotels%>".split(',');
-        var ci="<%=citt%>".split(',');
-        var db_string="[";
-        hot.forEach(item => {db_string+='{"label":"'+item+'", "category":"HOTELS"},' });
-        ci.forEach(item => {db_string+='{"label":"'+item+'", "category":"CITTÀ"},' });
-        db_string=db_string.slice(0,-1);
-        db_string+=']';
-        var db=JSON.parse(db_string);
-        
-        $( function() {
-            $.widget( "custom.catcomplete", $.ui.autocomplete, {
-              _create: function() {
-                this._super();
-                this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
-              },
-              _renderMenu: function( ul, items ) {
-                var that = this,
-                  currentCategory = "";
-                $.each( items, function( index, item ) {
-                  var li;
-                  if ( item.category != currentCategory ) {
-                    ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
-                    currentCategory = item.category;
-                  }
-                  li = that._renderItemData( ul, item );
-                  if ( item.category ) {
-                    li.attr( "aria-label", item.category + " : " + item.label );
-                  }
-                });
-              }
-            });
+        <% data.forEach(item => {hotels.push(item.titolo)}) %>
+            <% cittas.forEach(item => {citt.push(item)}) %>
+                <script>
+                    var hot = "<%=hotels%>".split(',');
+                    var ci = "<%=citt%>".split(',');
+                    var db_string = "[";
+                    hot.forEach(item => {
+                        db_string += '{"label":"' + item + '", "category":"HOTELS"},'
+                    });
+                    ci.forEach(item => {
+                        db_string += '{"label":"' + item + '", "category":"CITTÀ"},'
+                    });
+                    db_string = db_string.slice(0, -1);
+                    db_string += ']';
+                    var db = JSON.parse(db_string);
 
-            $( "#testo_ricerca" ).catcomplete({
-              delay: 0,
-              source: db
-            });
-        });
+                    $(function() {
+                        $.widget("custom.catcomplete", $.ui.autocomplete, {
+                            _create: function() {
+                                this._super();
+                                this.widget().menu("option", "items", "> :not(.ui-autocomplete-category)");
+                            },
+                            _renderMenu: function(ul, items) {
+                                var that = this,
+                                    currentCategory = "";
+                                $.each(items, function(index, item) {
+                                    var li;
+                                    if (item.category != currentCategory) {
+                                        ul.append("<li class='ui-autocomplete-category'>" + item.category + "</li>");
+                                        currentCategory = item.category;
+                                    }
+                                    li = that._renderItemData(ul, item);
+                                    if (item.category) {
+                                        li.attr("aria-label", item.category + " : " + item.label);
+                                    }
+                                });
+                            }
+                        });
 
-    </script>
+                        $("#testo_ricerca").catcomplete({
+                            delay: 0,
+                            source: db
+                        });
+                    });
+                </script>
 
-    <div class="multi-bg">
-        <%- include('navbar')%>
-            <div style="padding: 40pt;"></div>
-            <div class="container">
-                <div class="row">
-                    <div class="col"></div>
-                    <div class="col-auto">
-                        <nav class="shadow container p-3 rounded-3" style="background-color: #e3f2fd;">
-                            <form class="row" method="post" action="/ricerca">
-                                <div class="col-md-12 mb-2">
-                                    <input type="text" class="active form-control" id="testo_ricerca" name="testo_ricerca" placeholder="Cerca per Hotel o per Città">
-                                </div>
-                                <div class="col-md-3 mt-2">
-                                    <label class="active" for="dateStandard">Check-in:</label>
-                                    <input type="date" id="CheckInDate" onchange="checkin_fun();" name="CheckIn" required>
-                                </div>
-                                <div class="col-md-3 mt-2">
-                                    <label class="active" for="dateStandard">Check-out:</label>
-                                    <input type="date" id="CheckOutDate" onchange="checkout_fun();" name="CheckOut" required>
-                                </div>
-                                <div class="col-md-3 mt-2">
-                                    <label class="active">Partecipanti:</label>
-                                    <div class="btn-group">
-                                        <button type="button" id="lessBtn" class="btn btn-light rounded-circle" onclick="lessBtnRange()">-</button>
-                                        <input type="number" value="1" name="partecipants" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
-                                        <button type="button" id="moreBtn" class="btn btn-light rounded-circle" onclick="moreBtnRange()">+</button>
-                                    </div>
-                                </div>
-                                <div class="col-md-1"></div>
-                                <div class="col-md-2 mt-2">
-                                    <button class="btn rounded-3 fw-bold" onclick="validSearch()" style="background-color: #68d7f3;">Cerca <i class="ms-2 bi bi-search"></i></button>
-                                </div>
-                            </form>
+                <div class="multi-bg">
+                    <%- include('navbar')%>
+                        <div style="padding: 40pt;"></div>
+                        <div class="container">
                             <div class="row">
+                                <div class="col"></div>
+                                <div class="col-auto">
+                                    <nav class="shadow container p-3 rounded-3" style="background-color: #e3f2fd;">
+                                        <form class="row" method="post" action="/ricerca">
+                                            <div class="col-md-12 mb-2">
+                                                <input type="text" class="active form-control" id="testo_ricerca" name="testo_ricerca" placeholder="Cerca per Hotel o per Città">
+                                            </div>
+                                            <div class="col-md-3 mt-2">
+                                                <label class="active" for="dateStandard">Check-in:</label>
+                                                <input type="date" id="CheckInDate" onchange="checkin_fun();" name="CheckIn" required>
+                                            </div>
+                                            <div class="col-md-3 mt-2">
+                                                <label class="active" for="dateStandard">Check-out:</label>
+                                                <input type="date" id="CheckOutDate" onchange="checkout_fun();" name="CheckOut" required>
+                                            </div>
+                                            <div class="col-md-3 mt-2">
+                                                <label class="active">Partecipanti:</label>
+                                                <div class="btn-group">
+                                                    <button type="button" id="lessBtn" class="btn btn-light rounded-circle" onclick="lessBtnRange()">-</button>
+                                                    <input type="number" value="1" name="partecipants" id="partecipants" class="form-control-plaintext text-center" readonly style="width: 25pt;">
+                                                    <button type="button" id="moreBtn" class="btn btn-light rounded-circle" onclick="moreBtnRange()">+</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-2 mt-2">
+                                                <button class="btn rounded-3 fw-bold" onclick="validSearch()" style="background-color: #68d7f3;">Cerca <i class="ms-2 bi bi-search"></i></button>
+                                            </div>
+                                        </form>
+                                        <div class="row">
 
+                                        </div>
+                                    </nav>
+                                </div>
+                                <div class="col"></div>
                             </div>
-                        </nav>
-                    </div>
-                    <div class="col"></div>
-                </div>
-                <div class="text-center mt-5 mb-3">
-                    <h2>Le offerte del momento</h2>
-                </div>
+                            <div class="text-center mt-5 mb-3">
+                                <h2>Le offerte del momento</h2>
+                            </div>
 
-                <div class="row d-flex justify-content-around ">
-                    <% var count=0 %>
-                        <% data.forEach(item => {%>
-                            <% if(item.in_evidenza){ %>
-                                <div class="showcase-left col-md-2 mt-2" style="width: 18rem;">
-                                    <div class="card " style=" background-color: rgb(162, 255, 128);">
+                            <div class="row d-flex justify-content-around ">
+                                <% var count=0 %>
+                                    <% data.forEach(item => {%>
+                                        <% if(item.in_evidenza){ %>
+                                            <div class="showcase-left col-md-2 mt-2" style="width: 18rem;">
+                                                <div class="card " style=" background-color: rgb(162, 255, 128);">
 
-                                        <svg class="bd-placeholder-img card-img-top mt-1 rounded-3" width="150" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                                    <svg class="bd-placeholder-img card-img-top mt-1 rounded-3" width="150" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
                         <title>Placeholder</title>
                        <!-- <rect width="100%" height="100%" fill="#20c997"></rect> -->
                         <image href="<%=item.immagine%>" height="100%" width="100%"/>
                     </svg>
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <%=item.titolo%>
-                                            </h5>
-                                            <h6 class="card-subtitle">
-                                                a partire da <%=item.prezzo%> € per 1 <i class="bi bi-person-fill"></i></h6> 
-                                            <p class="card-text desc">
-                                                <%=item.descrizione%>
-                                            </p>
-                                            <div class="showcase-btn">
-                                                <a href="/offerta?id=<%=item.id%>" class="btn btn-primary">Scopri di più</a>
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">
+                                                            <%=item.titolo%>
+                                                        </h5>
+                                                        <h6 class="card-subtitle">
+                                                            a partire da
+                                                            <%=item.prezzo%> € per 1 <i class="bi bi-person-fill"></i></h6>
+                                                        <p class="card-text desc">
+                                                            <%=item.descrizione%>
+                                                        </p>
+                                                        <div class="showcase-btn">
+                                                            <a href="/offerta?id=<%=item.id%>" class="btn btn-primary">Scopri di più</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <% } %>
-                                    <%});%>
+                                            <% } %>
+                                                <%});%>
 
 
-                                        <!--<div class="card col-md-2 mt-2" style="width: 18rem;" aria-hidden="true">
+                                                    <!--<div class="card col-md-2 mt-2" style="width: 18rem;" aria-hidden="true">
                                     <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
                     <title>Placeholder</title>
                     <rect width="100%" height="100%" fill="#868e96"></rect>
@@ -163,248 +186,248 @@
                                         <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>
                                     </div>
                                 </div>-->
+                            </div>
+                            <div class="text-center mt-5 mb-5">
+                                <a name="zona_scopri"></a>
+
+                                <h2>Scopri le regioni più belle d'Italia</h2>
+                            </div>
+
+
+                            <div class="container">
+                                <section id="piemonte">
+
+                                    <div class="container">
+                                        <div class="row">
+
+                                            <div class="col-md-6 col-sm-6">
+
+                                                <div class="info-left">
+                                                    <img src="https://images.treccani.it/enc/media/share/images/orig/system/galleries/NPT/VOL_7/IMMAGINI/Piemonte_fig_01.jpg" style="max-width: 70%;">
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="info-right">
+                                                    <h1 style="color: blue;">Piemonte</h1>
+                                                    <h3>è situato nella zona nord-occidentale della penisola ed è una della cinque Regioni italiane a non avere alcun sbocco sul mare. La storia di questa terra è indissolubilmente legata allo sviluppo del Regno
+                                                        d’Italia, che ha avuto origine proprio da quello Sardo-Piemontese. Torino è stata infatti la prima capitale italiana, dall’anno dell’unità fino al 1865. Come suggerisce il nome stesso, il Piemonte
+                                                        occupa un territorio prevalentemente montuoso (la punta più alta è il Nordend con i suoi 4609 metri) ed è ricco di fiumi e laghi. Il clima è temperato-freddo, con inverni piuttosto rigidi ed estate
+                                                        afose. Il capoluogo Torino è ovviamente la città più importante: conta un ‘area metropolitana di circa 2 milioni di abitanti che comprende poli industriali, culturali e artistici di livello nazionale.
+                                                        Sono molte le aziende storiche nate in questa città: FIAT, Iveco, Cirio, Lavazza, Einaudi, solo per citarne alcune.
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="padding: 20px;"></div>
+                                </section>
+
+
+                                <section id="lombardia">
+
+                                    <div class="container">
+                                        <div class="row">
+
+                                            <div class="col-md-6 col-sm-6">
+
+                                                <div class="info-left">
+                                                    <img src="https://i.pinimg.com/originals/55/c4/8e/55c48e4745363ec6a1eed32ff77b8ce8.jpg" style="max-width: 70%;">
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="info-right">
+                                                    <h1 style="color: blue;">Lombardia</h1>
+                                                    <h3>Tra le Regioni italiane, è quella con il maggior numero di abitanti: un italiano su sei risiede infatti sul territorio regionale lombardo. I 10 milioni di residenti sono concentrati nell’area intorno
+                                                        a Milano, capoluogo regionale e fulcro della finanza e dell’economia nazionale. Il resto degli abitanti è distribuito nelle altre province di Sondrio, Como, Lecco, Monza e Brianza, Varese, Bergamo,
+                                                        Brescia, Pavia, Lodi, Cremona e Mantova, su una superficie di quasi 24 mila km². Il nome della Regione deriva da quello dei Longobardi, la popolazione germanica che nel VI secolo a.C. occupò gran
+                                                        parte della penisola, stabilendo la sede del regno a Ticinum, l’attuale Pavia. La Lombardia è una terra ricca di splendidi laghi, tra i quali ricorderai sicuramente il Lago Maggiore, il Lago di Como,
+                                                        il Lago d’Iseo e il Lago di Garda. L’economia lombarda è trainata dalle numerose imprese, che operano soprattutto nel settore industriale, tessile e chimico. Se hai intenzione di raggiungere questa
+                                                        Regione in aereo, hai solo l’imbarazzo della scelta: il suo sistema aeroportuale è il migliore in Italia, grazie agli scali di Malpensa, Linate, Orio al Serio e Montichiari.
+
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="padding: 20px;"></div>
+
+                                </section>
+
+                                <section id="toscana">
+
+                                    <div class="container">
+                                        <div class="row">
+
+                                            <div class="col-md-6 col-sm-6">
+
+                                                <div class="info-left">
+                                                    <img src="https://i.pinimg.com/originals/a2/5b/37/a25b37e855179401ebcc8c73c920b89e.jpg" style="max-width: 70%;">
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="info-right">
+                                                    <h1 style="color: blue;">Toscana</h1>
+                                                    <h3>Il suo nome deriva dall’antica denominazione della Regione etrusca, ossia Tuscia. Dopo il crollo dell’Impero Romano ed il dominio bizantino, le città toscane hanno conosciuto un periodo di progressiva
+                                                        crescita, testimoniato dall’avvento di Pisa, la Repubblica Marinara che ha esteso il proprio dominio sul Tirreno. La Toscana è stata la culla del Rinascimento: nel Trecento e nel Quattrocento, centri
+                                                        come Firenze e Siena hanno attirato i migliori artisti dell’epoca, che hanno creato opere d’arte inimitabili. Allo stesso tempo, in queste città si è sviluppato un florido commercio, che ha contribuito
+                                                        allo nascita del settore bancario moderno. La Toscana è oggi divisa nelle province di Firenze (capoluogo regionale), Siena, Prato, Pistoia, Pisa, Massa, Lucca, Livorno, Grosseto e Arezzo, che ospitano
+                                                        3 milioni e 700 mila abitanti su una superficie di circa 23 mila km². L’economia della regione si basa su vari distretti industriali, sulle produzioni agricole e sul turismo, attività che attira
+                                                        circa 6 milioni di presenze ogni anno.
+
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="padding: 20px;"></div>
+
+                                </section>
+
+                                <section id="lazio">
+
+                                    <div class="container">
+                                        <div class="row">
+
+                                            <div class="col-md-6 col-sm-6">
+
+                                                <div class="info-left">
+                                                    <img src="https://i.pinimg.com/originals/01/51/bb/0151bbd70a06e704c044f12008030511.jpg" style="max-width: 70%;">
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="info-right">
+                                                    <h1 style="color: blue;">Lazio</h1>
+                                                    <h3>Seconda Regione italiana per popolazione con circa 5 milioni 900 mila abitanti, il Lazio ha la particolarità di ospitare al suo interno un intero Stato, ovvero la Città del Vaticano. Questo fa si che
+                                                        la città di Roma sia particolarmente ricca di ambasciate: molti Stati ne dispongono due, una per i rapporti con l’Italia, l’altra per quelli con lo Stato Pontificio. Il nome della Regione deriva
+                                                        da Latium, un’area che, ancor prima della comparsa di Roma, ospitava un popolo latino. La storia del Lazio è fortemente legata a quella dell’Impero Romano, che dopo aver raggiunto la massima espansione
+                                                        con Traiano nel 117 d.C. si è dissolto sul finire del V secolo. Dopo essere stato parte del Sacro Romano Impero, il territorio laziale è stato gradualmente incluso nello Stato della Chiesa, fino
+                                                        alla presa di Porta Pia nel 1870, che ne ha sancito l’appartenenza al Regno d’Italia. Gran parte della popolazione regionale risiede nella capitale, città che ospita le sedi istituzionali dello Stato.
+
+
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="padding: 20px;"></div>
+
+                                </section>
+
+                                <section id="campania">
+
+                                    <div class="container">
+                                        <div class="row">
+
+                                            <div class="col-md-6 col-sm-6">
+
+                                                <div class="info-left">
+                                                    <img src="https://www.italiadascoprire.net/wp-content/uploads/sites/15/mappa_campania.jpg" style="max-width: 70%;">
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="info-right">
+                                                    <h1 style="color: blue;">Campania</h1>
+                                                    <h3>Al tempo dei Romani, il litorale tirrenico campano era denominato Agro Capuano, nome che si è progressivamente modificato fino a diventare Campania. L’area occupata dall’attuale Regione è stata oggetto
+                                                        di diverse dominazioni, per opera dei Longobardi, dei Bizantini, dei Normanni, dagli Spagnoli e dai Borboni. Proprio durante il periodo borbonico, fu parte del Regno delle Due Sicilie, prima dell’annessione
+                                                        al Regno d’Italia. Grazie alla presenza del capoluogo Napoli, che da solo conta quasi un milione di abitanti, la Campania è la tra le Regioni italiane più popolose del Mezzogiorno e la terza in Italia,
+                                                        con i suoi 5 milioni 827 mila abitanti. Oltre a Napoli, le province campane includono Benevento, Caserta, Avellino e Salerno. Geograficamente, la Campania è molto varia, in quanto presenta catene
+                                                        montuose e zone costiere con piccole isole, come Ischia, Capri e Procida. I suoi innumerevoli tesori artistici ed architettonici rendono questa Regione una delle più importanti del nostro Paese dal
+                                                        punto di vista culturale, come testimoniato dai 6 siti UNESCO presenti nel territorio regionale.
+
+
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="padding: 20px;"></div>
+
+                                </section>
+                            </div>
+
+
+                        </div>
+                        <%- include('footer'); -%>
+
                 </div>
-                <div class="text-center mt-5 mb-5">
-                    <a name="zona_scopri"></a>
+                <script>
+                    window.sr = ScrollReveal();
+                    sr.reveal('.navbar', {
+                        duration: 2000,
+                        origin: 'bottom'
+                    });
+                    sr.reveal('.showcase-left', {
+                        duration: 2000,
+                        origin: 'top',
+                        distance: '300px'
+                    });
 
-                    <h2>Scopri le regioni più belle d'Italia</h2>
-                </div>
+                    sr.reveal('.showcase-btn', {
+                        duration: 2000,
+                        delay: 500,
+                        origin: 'bottom',
+                        distance: '300px'
 
-
-                <div class="container">
-                    <section id="piemonte">
-
-                        <div class="container">
-                            <div class="row">
-
-                                <div class="col-md-6 col-sm-6">
-
-                                    <div class="info-left">
-                                        <img src="https://images.treccani.it/enc/media/share/images/orig/system/galleries/NPT/VOL_7/IMMAGINI/Piemonte_fig_01.jpg" style="max-width: 70%;">
-                                    </div>
-
-                                </div>
-                                <div class="col-md-6 col-sm-6">
-                                    <div class="info-right">
-                                        <h1 style="color: blue;">Piemonte</h1>
-                                        <h3>è situato nella zona nord-occidentale della penisola ed è una della cinque Regioni italiane a non avere alcun sbocco sul mare. La storia di questa terra è indissolubilmente legata allo sviluppo del Regno d’Italia,
-                                            che ha avuto origine proprio da quello Sardo-Piemontese. Torino è stata infatti la prima capitale italiana, dall’anno dell’unità fino al 1865. Come suggerisce il nome stesso, il Piemonte occupa un territorio
-                                            prevalentemente montuoso (la punta più alta è il Nordend con i suoi 4609 metri) ed è ricco di fiumi e laghi. Il clima è temperato-freddo, con inverni piuttosto rigidi ed estate afose. Il capoluogo Torino è ovviamente
-                                            la città più importante: conta un ‘area metropolitana di circa 2 milioni di abitanti che comprende poli industriali, culturali e artistici di livello nazionale. Sono molte le aziende storiche nate in questa
-                                            città: FIAT, Iveco, Cirio, Lavazza, Einaudi, solo per citarne alcune.
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="padding: 20px;"></div>
-                    </section>
-
-
-                    <section id="lombardia">
-
-                        <div class="container">
-                            <div class="row">
-
-                                <div class="col-md-6 col-sm-6">
-
-                                    <div class="info-left">
-                                        <img src="https://i.pinimg.com/originals/55/c4/8e/55c48e4745363ec6a1eed32ff77b8ce8.jpg" style="max-width: 70%;">
-                                    </div>
-
-                                </div>
-                                <div class="col-md-6 col-sm-6">
-                                    <div class="info-right">
-                                        <h1 style="color: blue;">Lombardia</h1>
-                                        <h3>Tra le Regioni italiane, è quella con il maggior numero di abitanti: un italiano su sei risiede infatti sul territorio regionale lombardo. I 10 milioni di residenti sono concentrati nell’area intorno a Milano, capoluogo
-                                            regionale e fulcro della finanza e dell’economia nazionale. Il resto degli abitanti è distribuito nelle altre province di Sondrio, Como, Lecco, Monza e Brianza, Varese, Bergamo, Brescia, Pavia, Lodi, Cremona
-                                            e Mantova, su una superficie di quasi 24 mila km². Il nome della Regione deriva da quello dei Longobardi, la popolazione germanica che nel VI secolo a.C. occupò gran parte della penisola, stabilendo la sede
-                                            del regno a Ticinum, l’attuale Pavia. La Lombardia è una terra ricca di splendidi laghi, tra i quali ricorderai sicuramente il Lago Maggiore, il Lago di Como, il Lago d’Iseo e il Lago di Garda. L’economia lombarda
-                                            è trainata dalle numerose imprese, che operano soprattutto nel settore industriale, tessile e chimico. Se hai intenzione di raggiungere questa Regione in aereo, hai solo l’imbarazzo della scelta: il suo sistema
-                                            aeroportuale è il migliore in Italia, grazie agli scali di Malpensa, Linate, Orio al Serio e Montichiari.
-
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="padding: 20px;"></div>
-
-                    </section>
-
-                    <section id="toscana">
-
-                        <div class="container">
-                            <div class="row">
-
-                                <div class="col-md-6 col-sm-6">
-
-                                    <div class="info-left">
-                                        <img src="https://i.pinimg.com/originals/a2/5b/37/a25b37e855179401ebcc8c73c920b89e.jpg" style="max-width: 70%;">
-                                    </div>
-
-                                </div>
-                                <div class="col-md-6 col-sm-6">
-                                    <div class="info-right">
-                                        <h1 style="color: blue;">Toscana</h1>
-                                        <h3>Il suo nome deriva dall’antica denominazione della Regione etrusca, ossia Tuscia. Dopo il crollo dell’Impero Romano ed il dominio bizantino, le città toscane hanno conosciuto un periodo di progressiva crescita,
-                                            testimoniato dall’avvento di Pisa, la Repubblica Marinara che ha esteso il proprio dominio sul Tirreno. La Toscana è stata la culla del Rinascimento: nel Trecento e nel Quattrocento, centri come Firenze e Siena
-                                            hanno attirato i migliori artisti dell’epoca, che hanno creato opere d’arte inimitabili. Allo stesso tempo, in queste città si è sviluppato un florido commercio, che ha contribuito allo nascita del settore bancario
-                                            moderno. La Toscana è oggi divisa nelle province di Firenze (capoluogo regionale), Siena, Prato, Pistoia, Pisa, Massa, Lucca, Livorno, Grosseto e Arezzo, che ospitano 3 milioni e 700 mila abitanti su una superficie
-                                            di circa 23 mila km². L’economia della regione si basa su vari distretti industriali, sulle produzioni agricole e sul turismo, attività che attira circa 6 milioni di presenze ogni anno.
-
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="padding: 20px;"></div>
-
-                    </section>
-
-                    <section id="lazio">
-
-                        <div class="container">
-                            <div class="row">
-
-                                <div class="col-md-6 col-sm-6">
-
-                                    <div class="info-left">
-                                        <img src="https://i.pinimg.com/originals/01/51/bb/0151bbd70a06e704c044f12008030511.jpg" style="max-width: 70%;">
-                                    </div>
-
-                                </div>
-                                <div class="col-md-6 col-sm-6">
-                                    <div class="info-right">
-                                        <h1 style="color: blue;">Lazio</h1>
-                                        <h3>Seconda Regione italiana per popolazione con circa 5 milioni 900 mila abitanti, il Lazio ha la particolarità di ospitare al suo interno un intero Stato, ovvero la Città del Vaticano. Questo fa si che la città di
-                                            Roma sia particolarmente ricca di ambasciate: molti Stati ne dispongono due, una per i rapporti con l’Italia, l’altra per quelli con lo Stato Pontificio. Il nome della Regione deriva da Latium, un’area che,
-                                            ancor prima della comparsa di Roma, ospitava un popolo latino. La storia del Lazio è fortemente legata a quella dell’Impero Romano, che dopo aver raggiunto la massima espansione con Traiano nel 117 d.C. si è
-                                            dissolto sul finire del V secolo. Dopo essere stato parte del Sacro Romano Impero, il territorio laziale è stato gradualmente incluso nello Stato della Chiesa, fino alla presa di Porta Pia nel 1870, che ne ha
-                                            sancito l’appartenenza al Regno d’Italia. Gran parte della popolazione regionale risiede nella capitale, città che ospita le sedi istituzionali dello Stato.
-
-
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="padding: 20px;"></div>
-
-                    </section>
-
-                    <section id="campania">
-
-                        <div class="container">
-                            <div class="row">
-
-                                <div class="col-md-6 col-sm-6">
-
-                                    <div class="info-left">
-                                        <img src="https://www.italiadascoprire.net/wp-content/uploads/sites/15/mappa_campania.jpg" style="max-width: 70%;">
-                                    </div>
-
-                                </div>
-                                <div class="col-md-6 col-sm-6">
-                                    <div class="info-right">
-                                        <h1 style="color: blue;">Campania</h1>
-                                        <h3>Al tempo dei Romani, il litorale tirrenico campano era denominato Agro Capuano, nome che si è progressivamente modificato fino a diventare Campania. L’area occupata dall’attuale Regione è stata oggetto di diverse
-                                            dominazioni, per opera dei Longobardi, dei Bizantini, dei Normanni, dagli Spagnoli e dai Borboni. Proprio durante il periodo borbonico, fu parte del Regno delle Due Sicilie, prima dell’annessione al Regno d’Italia.
-                                            Grazie alla presenza del capoluogo Napoli, che da solo conta quasi un milione di abitanti, la Campania è la tra le Regioni italiane più popolose del Mezzogiorno e la terza in Italia, con i suoi 5 milioni 827
-                                            mila abitanti. Oltre a Napoli, le province campane includono Benevento, Caserta, Avellino e Salerno. Geograficamente, la Campania è molto varia, in quanto presenta catene montuose e zone costiere con piccole
-                                            isole, come Ischia, Capri e Procida. I suoi innumerevoli tesori artistici ed architettonici rendono questa Regione una delle più importanti del nostro Paese dal punto di vista culturale, come testimoniato dai
-                                            6 siti UNESCO presenti nel territorio regionale.
-
-
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="padding: 20px;"></div>
-
-                    </section>
-                </div>
-
-
-            </div>
-            <%- include('footer'); -%>
-
-    </div>
-    <script>
-
-        window.sr = ScrollReveal();
-        sr.reveal('.navbar', {
-            duration: 2000,
-            origin: 'bottom'
-        });
-        sr.reveal('.showcase-left', {
-            duration: 2000,
-            origin: 'top',
-            distance: '300px'
-        });
-
-        sr.reveal('.showcase-btn', {
-            duration: 2000,
-            delay: 500,
-            origin: 'bottom',
-            distance: '300px'
-
-        });
-        if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
+                    });
+                    if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
 
 
 
-            sr.reveal('.info-left', {
-                duration: 2000,
-                origin: 'left',
-                distance: '300px',
-                viewFactor: 0.2
-            });
+                        sr.reveal('.info-left', {
+                            duration: 2000,
+                            origin: 'left',
+                            distance: '300px',
+                            viewFactor: 0.2
+                        });
 
-            sr.reveal('.info-right', {
-                duration: 2000,
-                origin: 'right',
-                distance: '300px',
-                viewFactor: 0.2
-            });
-        }
-    </script>
-
-
-
-    <script>
-        //effetto scroll rallentato
-        $(function() {
-
-            $('a[href*="#"]:not([href="#"])').click(function() {
-
-                if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-
-                    var target = $(this.hash);
-                    target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-                    if (target.length) {
-
-                        $('html,body').animate({
-
-                            scrollTop: target.offset().top
-                        }, 10);
-                        return false;
-
+                        sr.reveal('.info-right', {
+                            duration: 2000,
+                            origin: 'right',
+                            distance: '300px',
+                            viewFactor: 0.2
+                        });
                     }
-
-
-                }
-
-
-
-            });
+                </script>
 
 
 
+                <script>
+                    //effetto scroll rallentato
+                    $(function() {
 
-        });
-    </script>
+                        $('a[href*="#"]:not([href="#"])').click(function() {
+
+                            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+
+                                var target = $(this.hash);
+                                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                                if (target.length) {
+
+                                    $('html,body').animate({
+
+                                        scrollTop: target.offset().top
+                                    }, 10);
+                                    return false;
+
+                                }
+
+
+                            }
+
+
+
+                        });
+
+
+
+
+                    });
+                </script>
 
 
 
@@ -412,12 +435,12 @@
 
 </body>
 <script>
-    function validSearch(){ 
-        var search= document.getElementById("testo_ricerca");
-        var hot="<%=hotels%>".split(',');
-        var ci="<%=citt%>".split(',');
-        var db=hot.concat(ci);
-        if(!db.includes(search.value) && search.value!=''){
+    function validSearch() {
+        var search = document.getElementById("testo_ricerca");
+        var hot = "<%=hotels%>".split(',');
+        var ci = "<%=citt%>".split(',');
+        var db = hot.concat(ci);
+        if (!db.includes(search.value) && search.value != '') {
             console.log(search.value);
             alert("Attenzione, l'hotel o la città inseriti non sono validi");
             event.stopPropagation();
@@ -509,8 +532,8 @@
     }
 
     $('.desc').each(function() {
-        var str50=$(this).text().substr(0,100);
-        $(this).html(str50+'...');
+        var str50 = $(this).text().substr(0, 100);
+        $(this).html(str50 + '...');
     });
 </script>
 

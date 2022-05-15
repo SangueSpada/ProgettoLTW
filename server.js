@@ -404,14 +404,14 @@ app.post('/signin', urlencodedParser, function(req, res) {
 
         if (error) {
             if (error.code === '23505') {
-                res.send("<p>mail gia presa clicca <a href='/sigin'>qui<a> per tornare alla sigin </p> ");
+                res.status(504).send("<p>mail gia presa clicca <a href='/sigin'>qui<a> per tornare alla sigin </p> ");
                 res.end();
                 // res.sendFile(path.join(__dirname, '/sigin.html'));
             } else {
                 throw error;
             }
         } else {
-            res.send("<p>Registrazione eseguita correttamente, clicca <a href='/'>qui<a> per tornare all'homepage </p> ");
+            res.status(200).send('');
         }
 
     });

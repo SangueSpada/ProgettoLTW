@@ -19,7 +19,11 @@
         $("#nav-placeholder").load("views/navbar.ejs");
     </script>
     <div style="padding: 40pt;"></div>
-    <div class="container">
+
+    <div class="container" id="cont_f">
+
+        <div class="text-center" id="result" hidden="true"></div>
+
         <div class="py-5 text-center">
             <img class="d-block mx-auto mb-4" src="media/pizza_005.jpg" alt="" width="72" height="72">
             <h2>Iscriviti ad Italia in viaggio</h2>
@@ -28,7 +32,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <form name="registrazione" method="POST" action="/signin" class="needs-validation" novalidate>
+                <form name="registrazione" class="needs-validation" novalidate>
                     <div class="row g-3">
 
                         <div class="col-sm-1 pt-4">
@@ -103,9 +107,11 @@
                                 Inserisci l'indirizzo
                             </div>
                         </div>
+
+
                         <hr class="my-4 ">
 
-                        <button class="w-100 btn btn-primary btn-lg " type="submit ">Registrati NOW!!!</button>
+                        <button class="w-100 btn btn-primary btn-lg " id="reg_btn" class="button">Registrati NOW!!!</button>
 
                 </form>
                 </div>
@@ -113,50 +119,124 @@
         </div>
     </div>
     <div style="padding: 20pt;"></div>
+
     <div id="foot-placeholder"></div>
-    <%- include('footer'); -%>
+    <script>
+        $("#foot-placeholder").load("views/footer.ejs");
+    </script>
+
+
+
 </body>
 
 <script>
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
-        'use strict'
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.querySelectorAll('.needs-validation')
+    //gestione form signin con ajax
 
-        // Loop over them and prevent submission
-        Array.prototype.slice.call(forms)
-            .forEach(function(form) {
-                form.addEventListener('submit', function(event) {
-                    let email = document.registrazione.email;
-                    let emailConf = document.registrazione.emailConf;
-                    let pass = document.registrazione.password;
-                    let passConf = document.registrazione.passwordConf;
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-                    form.classList.add('was-validated');
+    var reg_btn = document.getElementById("reg_btn");
+    reg_btn.onclick = registrati;
 
-                    if (email.value != emailConf.value) {
-                        document.getElementById("invalid-emailConf").hidden = false;
-                        event.preventDefault()
-                        event.stopPropagation()
-                    } else {
-                        document.getElementById("invalid-emailConf").hidden = true;
-                    }
-                    if (pass.value != passConf.value) {
-                        document.getElementById("invalid-passConf").hidden = false;
-                        event.preventDefault()
-                        event.stopPropagation()
-                    } else {
-                        document.getElementById("invalid-passConf").hidden = true;
-                    }
 
-                }, false)
-            })
-    })()
-    //effetto scroll rallentato
+    function registrati(e) {
+        e.preventDefault()
+        e.stopPropagation()
+        let err = 0;
+        //controllo campi
+        //var forms = document.querySelectorAll('.needs-validation');
+        // var form = Array.prototype.slice.call(forms)[0];
+        var forms = document.getElementsByName("registrazione");
+        var form = forms[0];
+
+        let email = document.registrazione.email;
+        let emailConf = document.registrazione.emailConf;
+        let pass = document.registrazione.password;
+        let passConf = document.registrazione.passwordConf;
+        if (!form.checkValidity()) {
+            e.preventDefault()
+            e.stopPropagation()
+        }
+        form.classList.add('was-validated');
+
+        if (email.value != emailConf.value) {
+            document.getElementById("invalid-emailConf").hidden = false;
+            e.preventDefault()
+            e.stopPropagation()
+            err = 1;
+        } else {
+            document.getElementById("invalid-emailConf").hidden = true;
+
+        }
+        if (pass.value != passConf.value) {
+            document.getElementById("invalid-passConf").hidden = false;
+            e.preventDefault()
+            e.stopPropagation()
+            err = 1;
+        } else {
+            document.getElementById("invalid-passConf").hidden = true;
+        }
+
+        //fine controllo campi
+
+
+
+
+        if (!err) {
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.onreadystatechange = gestiscisignin;
+            httpRequest.open("POST", '/signin', true);
+
+            var n = document.getElementById('firstName').value;
+            var c = document.getElementById('lastName').value;
+            // var e = document.getElementById('emailConf').value;
+            // var p = document.getElementById('password').value;
+            var i = document.getElementById('address').value;
+            var s = document.getElementsByName('sesso');
+            var sesso;
+            if (s[0].checked) {
+                sesso = s[0].value;
+            } else {
+                sesso = s[1].value;
+            }
+
+
+
+
+            var data = 'firstName=' + n + '&lastName=' + c + '&email=' + email.value + '&password=' + pass.value + '&address=' + i + '&sesso=' + sesso;
+
+            httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            httpRequest.send(data);
+
+        }
+
+    }
+
+    function gestiscisignin(e) {
+        var text = document.getElementById('result');
+        text.hidden = false;
+
+
+        if (e.target.readyState == 4 && e.target.status == 200) {
+
+            document.getElementById("nav_").hidden = true;
+            document.getElementById("cont_f").innerHTML = '<div class="container"><div class="py-5 text-center"><h2>registrato correttamente</h2></div></div>';
+
+            setTimeout(function() {
+                window.location.href = "/";
+            }, 3000);
+
+
+        } else if (e.target.readyState == 4 && e.target.status == 504) {
+
+
+            text.textContent = "questa mail è stata già presa, riprovi con un' altra";
+
+        }
+
+
+
+
+
+    }
 </script>
 
 </html>
