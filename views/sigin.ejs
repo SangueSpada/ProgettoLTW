@@ -22,7 +22,7 @@
 
     <div class="container" id="cont_f">
 
-        <div class="text-center" id="result" hidden="true"></div>
+        <div class=" h2 text-center " style="color: red;" id="result" hidden="true"></div>
 
         <div class="py-5 text-center">
             <img class="d-block mx-auto mb-4" src="media/pizza_005.jpg" alt="" width="72" height="72">
@@ -139,6 +139,10 @@
     function registrati(e) {
         e.preventDefault()
         e.stopPropagation()
+        var text = document.getElementById('result');
+        text.textContent = '';
+        text.hidden = true;
+
         let err = 0;
         //controllo campi
         //var forms = document.querySelectorAll('.needs-validation');
@@ -153,6 +157,7 @@
         if (!form.checkValidity()) {
             e.preventDefault()
             e.stopPropagation()
+            err = 1;
         }
         form.classList.add('was-validated');
 
@@ -217,8 +222,9 @@
 
         if (e.target.readyState == 4 && e.target.status == 200) {
 
-            document.getElementById("nav_").hidden = true;
-            document.getElementById("cont_f").innerHTML = '<div class="container"><div class="py-5 text-center"><h2>registrato correttamente</h2></div></div>';
+            document.getElementById("nav-placeholder").hidden = true;
+            //document.getElementById("foot-placeholder").hidden = true;
+            document.getElementById("cont_f").innerHTML = '<div class="container"><div class="py-5 text-center"><h2 style="color:green;">registrato correttamente</h2></div></div>';
 
             setTimeout(function() {
                 window.location.href = "/";
