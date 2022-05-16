@@ -19,10 +19,9 @@
         $("#nav-placeholder").load("views/navbar.ejs");
     </script>
     <div style="padding: 40pt;"></div>
-
     <div class="container" id="cont_f">
 
-        <div class="text-center" id="result" hidden="true"></div>
+        
 
         <div class="py-5 text-center">
             <img class="d-block mx-auto mb-4" src="media/pizza_005.jpg" alt="" width="72" height="72">
@@ -107,6 +106,7 @@
                                 Inserisci l'indirizzo
                             </div>
                         </div>
+                        <div class="text-center alert-danger" id="result" hidden="true"></div>
 
 
                         <hr class="my-4 ">
@@ -217,18 +217,18 @@
 
         if (e.target.readyState == 4 && e.target.status == 200) {
 
-            document.getElementById("nav_").hidden = true;
-            document.getElementById("cont_f").innerHTML = '<div class="container"><div class="py-5 text-center"><h2>registrato correttamente</h2></div></div>';
+            //document.getElementById("nav_").hidden = true;
+            document.getElementById("cont_f").innerHTML = '<div class="container"><div style="padding: 20pt;"></div><div class="py-5 text-center"><h2>Sei stato registrato correttamente.</h2><h2>Stai per essere spostato sulla homepage fra 10 secondi</h2></div><div style="padding: 110pt;"></div></div>';
 
             setTimeout(function() {
                 window.location.href = "/";
-            }, 3000);
+            }, 10000);
 
 
         } else if (e.target.readyState == 4 && e.target.status == 504) {
 
 
-            text.textContent = "questa mail è stata già presa, riprovi con un' altra";
+            text.textContent = "Questa mail è già registrata nei nostri sistemi, riprova con un'altra";
 
         }
 
