@@ -21,7 +21,11 @@
     <div style="padding: 40pt;"></div>
     <div class="container" id="cont_f">
 
+<<<<<<< HEAD
         
+=======
+        <div class=" h2 text-center " style="color: red;" id="result" hidden="true"></div>
+>>>>>>> b3b93216d9973da0ce1eb49587e9a0279a2b40ac
 
         <div class="py-5 text-center">
             <img class="d-block mx-auto mb-4" src="media/pizza_005.jpg" alt="" width="72" height="72">
@@ -139,6 +143,10 @@
     function registrati(e) {
         e.preventDefault()
         e.stopPropagation()
+        var text = document.getElementById('result');
+        text.textContent = '';
+        text.hidden = true;
+
         let err = 0;
         //controllo campi
         //var forms = document.querySelectorAll('.needs-validation');
@@ -153,6 +161,7 @@
         if (!form.checkValidity()) {
             e.preventDefault()
             e.stopPropagation()
+            err = 1;
         }
         form.classList.add('was-validated');
 
