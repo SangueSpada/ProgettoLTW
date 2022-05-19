@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="..\bootstrap-5.1.3\dist\css\bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../personal_dist/our.css">
+    <link href="https://fonts.googleapis.com/css?family=Georgia" rel="stylesheet">
     <script type="application/javascript" src="..\bootstrap-5.1.3\dist\js\bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
     <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -24,36 +25,31 @@
         <div class="container">
             <div class="row d-flex justify-content-around">
                 <% data.forEach(item => {%>
-                    <div class="showcase-left col-md-2 mt-2" style="width: 18rem;">
-
+                    <div class="showcase-left col-md-2 mt-2" style="width: 20rem;">
                         <div class="card">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"> 
-
-                            <title>Placeholder</title>
-                    <!-- <rect width="100%" height="100%" fill="#20c997"></rect>-->
-                      <image href="<%=item.immagine%>" height="100%" width="100%"/>
-
-                    </svg>
+                            <svg  xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <image href="<%=item.immagine%>" class="card-img-top"></image>
+                            </svg>
                             <div class="card-body">
-                                <h5 class="card-title">
+                                <h4 class="card-title">
                                     <%=item.titolo%>
-                                </h5>
+                                </h4>
                                 <h6 class="card-subtitle">
-                                    a partire da <%=item.prezzo%> € per 1 <i class="bi bi-person-fill"></i></h6>
-                                <p class="card-text desc">
+                                    a partire da <span class=" h4 fw-bold"><%=item.prezzo%> €</span>  per 1 <i class="bi bi-person-fill"></i></h6> 
+                                <p class="card-text desc pt-2">
                                     <%=item.descrizione%>
                                 </p>
-                                <div class="showcase-btn">
-
-                                    <a class="btn btn-primary" href="/offerta?id=<%=item.id%>">Scopri di più</a>
-                                </div>
                             </div>
+                                <div class="showcase-btn text-lg-end d-flex ms-2 mb-2">
+                                    <a href="/offerta?id=<%=item.id%>" class="btn btn-primary">Scopri di più</a>
+                                </div>
+                            
                         </div>
                     </div>
                     <%});%>
             </div>
         </div>
-        <<div style="padding: 20pt;"></div>
+        <div style="padding: 20pt;"></div>
         <%- include('footer'); -%>
 
 </body>

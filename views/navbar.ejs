@@ -14,7 +14,7 @@
 
 <body onload="SessionHandler();">
 
-    <nav id="nav_" class="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
+    <nav id="nav_" class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a href="/" class="navbar-brand">
                 <img src="/media/pizza_005.jpg" alt="" width="32" height="32">
@@ -36,7 +36,7 @@
                     </li>
 
                 </ul>
-                <ul class="navbar-nav me-1" id="profile" hidden="true">
+                <ul class="navbar-nav d-flex visually-hidden" id="profile">
                     <li class="nav-item dropdown">
                         <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                             <img id="profilo_imm" src="<%=profilo%>" alt="mdo" width="32" height="32" class="rounded-circle">
@@ -51,9 +51,9 @@
                     </li>
 
                 </ul>
-                <ul class="navbar-nav me-1" id="login_sigin">
+                <ul class="navbar-nav d-flex" id="login_sigin">
                     <li class="nav-item dropdown">
-                        <button class=" btn btn-outline-light dropdown-toggle me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="true">
+                        <button class=" btn btn-outline-light dropdown-toggle me-2 mb-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="true">
                         Login
                     </button>
                         <div id="accedi_form" class="dropdown-menu p-4 needs-validation" aria-labelledby="dropdownMenuButton" novalidate>
@@ -111,14 +111,14 @@
                 let profile_btn = document.getElementById("profile");
                 //LS_btn.style.visibility="show";
                 //profile_btn.style.visibility="hidden";
-                LS_btn.hidden = false;
-                profile_btn.hidden = true;
+                LS_btn.classList.remove("visually-hidden");
+                profile_btn.classList.add("visually-hidden");
 
             } else {
                 let LS_btn = document.getElementById("login_sigin");
                 let profile_btn = document.getElementById("profile");
-                LS_btn.hidden = true;
-                profile_btn.hidden = false;
+                LS_btn.classList.add("visually-hidden");
+                profile_btn.classList.remove("visually-hidden");
 
             }
 
@@ -158,8 +158,8 @@
 
                 let LS_btn = document.getElementById("login_sigin");
                 let profile_btn = document.getElementById("profile");
-                LS_btn.hidden = false;
-                profile_btn.hidden = true;
+                LS_btn.classList.remove("visually-hidden");
+                profile_btn.classList.add("visually-hidden");
 
                 if (window.location.pathname === '/offerta') {
 
@@ -211,8 +211,8 @@
                 document.getElementById("profilo_imm").src = profilo;
                 let LS_btn = document.getElementById("login_sigin");
                 let profile_btn = document.getElementById("profile");
-                LS_btn.hidden = true;
-                profile_btn.hidden = false;
+                LS_btn.classList.add("visually-hidden");
+                profile_btn.classList.remove("visually-hidden");
                 var txt = document.getElementById("area_errori");
                 txt.textContent = "";
                 try {

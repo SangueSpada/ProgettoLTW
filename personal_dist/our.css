@@ -1,4 +1,9 @@
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: Georgia;
+  }
+
+
 
 .ui-autocomplete-category {
     font-weight: bold;
@@ -40,19 +45,29 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    min-width: 0;
+    width: 210pt;
+    height: 300pt;
     word-wrap: break-word;
     background-color: #fff;
     background-clip: border-box;
     border: 0 solid rgba(0, 0, 0, .125);
     border-radius: .25rem;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.img-card{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+    width: auto;
+
 }
 
 .card-body {
     flex: 1 1 auto;
-    min-height: 1px;
     padding: 1rem;
+    min-height: 1;
 }
 
 .gutters-sm {
@@ -82,6 +97,16 @@
 .shadow-none {
     box-shadow: none!important;
 }
-
+body {
+    display: flex;
+    flex-direction: column;
+  }
+footer {
+    color: #999;
+    background-color: #f9f9f9;
+    margin-top: auto;
+    /*text-align: center;*/
+    /*border-top: .05rem solid #e5e5e5;*/
+}
 
 
