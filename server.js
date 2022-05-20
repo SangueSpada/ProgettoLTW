@@ -449,12 +449,13 @@ app.get('/profilo', urlencodedParser, function(req, res) {
             let row = result.rows[0]
             dati_profilo = [row.nome, row.cognome, row.foto_profilo, row.indirizzo, row.sesso];
 
-            client.query('with range as (select timestamp, hotel_id, partecipanti, min(data_pernotto) as checkin, max(data_pernotto) as checkout from prenotazioni where user_email=\'' + email_cookie + '\' group by (timestamp, hotel_id, partecipanti)  )  select * from range', function(error, result) {
+            client.query('with range as (select timestamp, hotel_id, partecipanti, min(data_pernotto) as checkin, max(data_pernotto) as checkout from prenotazioni where user_email=\'' + email_cookie + '\' group by (timestamp, hotel_id, partecipanti)  )  select * from range order by timestamp', function(error, result) {
                 if (error) {
                     console.log(error);
                     return;
                 }
                 result.rows.forEach(tupla => {
+                    let id = tupla.hotel_id;
                     let titolo = database[tupla.hotel_id].titolo;
                     let immagine = database[tupla.hotel_id].immagine;
                     let checkin = tupla.checkin;
@@ -466,7 +467,7 @@ app.get('/profilo', urlencodedParser, function(req, res) {
                     let prezzo = parseInt(database[tupla.hotel_id].prezzo) * giorni * parseInt(partecipanti);
                     let timestamp = tupla.timestamp;
                     console.log(timestamp);
-                    let prenotazione = [immagine, titolo, Cin.toISOString().split('T')[0], Cout.toISOString().split('T')[0], partecipanti, prezzo, timestamp];
+                    let prenotazione = [immagine, titolo, Cin.toISOString().split('T')[0], Cout.toISOString().split('T')[0], partecipanti, prezzo, timestamp, id];
                     dati_prenotazioni.add(prenotazione);
                 });
                 res.render('profile.ejs', { d_profilo: dati_profilo, dati_book: dati_prenotazioni, mail: email_cookie, profilo: profilo_cookie });
