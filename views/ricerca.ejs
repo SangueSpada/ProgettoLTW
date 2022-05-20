@@ -15,6 +15,36 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
     <title>Offerte del momento</title>
+    <style>
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            width: 210pt;
+            height: 300pt;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 0 solid rgba(0, 0, 0, .125);
+            border-radius: .25rem;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+    
+        .img-card{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            height: 100%;
+            width: auto;
+        
+        }
+        
+        .card-body {
+            flex: 1 1 auto;
+            padding: 1rem;
+            min-height: 1;
+        }
+    </style>
 </head>
 
 <body  class="bg1">
@@ -63,7 +93,7 @@
     </script>
     <%- include('navbar')%>
         <div style="padding: 40pt;"></div>
-        <div class="container">
+        <div class="container cont">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <nav class="shadow container p-3 rounded-3" style="background-color: #e3f2fd;">
@@ -99,15 +129,15 @@
                 <% if(results.size==0){ %>
                     <% if(query[0] == ''){ %> //non è stato inserito alcun luogo
                         <div class="col-lg-12 text-center" style="color:red;">
-                            <h2>Non ci sono hotel disponibili per le date inserite</h2>
+                            <h1 class="display-3">Non ci sono hotel disponibili per le date inserite</h2>
                             
                         </div>
                     <% } else{ %>
                             <div class="col-lg-12 text-center" style="color:red;">
                                 <% if(res != ''){ %>
-                                    <%=res%>
+                                    <h1 class="display-3"><%=res%></h1>
                                 <% } else { %>
-                                Errore.
+                                    <h1 class="display-3">Errore</h1>
                                 <% } %>
                             </div>
 
@@ -115,9 +145,9 @@
                     <% } else{ %>
                         <div class="col-lg-12 text-center" style="color:green;">
                             <% if(results.size==1){%>
-                            <h2>L'hotel selezionato è disponibile:</h2>
+                                <h1 class="display-3"style="color:green;">L'hotel selezionato è disponibile:</h1>
                             <% } else{ %>
-                                <h2>La ricerca ha prodotto <%=results.size%> risultati:</h2>
+                                <h1 class="display-3"style="color:green;">La ricerca ha prodotto <%=results.size%> risultati:</h1>
                             <% } %>
                         </div>
 
@@ -150,7 +180,6 @@
                                             <% } %>
             </div>
         </div>
-        <div style="padding: 30pt;"></div>
 
         <%- include('footer'); -%>
 

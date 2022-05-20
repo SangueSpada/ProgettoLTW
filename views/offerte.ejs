@@ -14,15 +14,45 @@
     <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <title>Offerte del momento</title>
+    <style>
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            width: 210pt;
+            height: 300pt;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 0 solid rgba(0, 0, 0, .125);
+            border-radius: .25rem;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+    
+        .img-card{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            height: 100%;
+            width: auto;
+        
+        }
+        
+        .card-body {
+            flex: 1 1 auto;
+            padding: 1rem;
+            min-height: 1;
+        }
+    </style>
 </head>
 
 <body class="bg1">
     <%- include('navbar')%>
         <div style="padding: 40pt;"></div>
         <div class="col-lg-12 text-center">
-            <h3>Tutte le offerte attive</h3>
+            <h1 class="display-3 index-subtitle">Tutte le offerte attive</h1>
         </div>
-        <div class="container">
+        <div class="container cont">
             <div class="row d-flex justify-content-around">
                 <% data.forEach(item => {%>
                     <div class="showcase-left col-md-2 mt-2" style="width: 20rem;">
@@ -49,7 +79,6 @@
                     <%});%>
             </div>
         </div>
-        <div style="padding: 20pt;"></div>
         <%- include('footer'); -%>
 
 </body>

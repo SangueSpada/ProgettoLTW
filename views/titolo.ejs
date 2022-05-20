@@ -10,50 +10,153 @@
     <link rel="stylesheet" href="../personal_dist/our.css">
     <link href="https://fonts.googleapis.com/css?family=Georgia" rel="stylesheet">
     <script type="application/javascript" src="..\bootstrap-5.1.3\dist\js\bootstrap.bundle.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
     <title>Offerta cercata</title>
+<style>
+    #myImg:hover {opacity: 0.7;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 1000px;
+}
+
+/* Caption of Modal Image */
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation */
+.modal-content, #caption {  
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {transform: scale(0.1)} 
+  to {transform: scale(1)}
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+  .modal-content {
+    width: 100%;
+  }
+}
+</style>
 </head>
 
 <body class="bg2">
     <%- include('navbar')%>
         <div style="padding: 40pt;"></div>
 
-        <div class="container">
+        <div class="container cont">
 
 
             <div class="row">
                 <div class="col-md-8">
 
-                    <image class="img-fluid" width="100%" src="<%=offerta.immagine%>"> </image>
-
+                    <image class="img-fluid" id="myImg" width="100%" src="<%=offerta.immagine%>" alt="<%=offerta.titolo%>"> </image>
+                    <div id="myModal" class="modal">
+                        <span class="close">&times;</span>
+                        <img class="modal-content" id="img01">
+                        <div id="caption"></div>
+                    </div>
 
                 </div>
 
                 <div class="col-md-4">
-                    <div style="padding: 15pt;"></div>
+                    <!--<table class="table" style="min-height: 100pt;">
+                        <tbody>
+                            <tr>
+                                <th class="h3">nome&#160hotel:</th>
+                                <td class="h5"><%=offerta.titolo%></td>
+                            </tr>
+                            <tr>
+                                <th class="h3">indirizzo:</th>
+                                <td class="h5"><%=offerta.indirizzo%></td>
+                            </tr>
+                            <tr>
+                                <th class="h3">città:</th>
+                                <td class="h5"><%=offerta.citta%></td>
+                            </tr>
+                            <tr>
+                                <th class="h3">prezzo&#160per&#160notte::</th>
+                                <td class="h5"><%=offerta.prezzo%></td>
+                            </tr>
+                            <tr>
+                                <th class="h3">posti&#160letto:</th>
+                                <td class="h5"><%=offerta.disponibilita%></td>
+                            </tr>
+                        </tbody>
+                    </table>-->
 
                     <div class="row">
                         <div class="col-md-6">
-                            <h3 class="lead"> nome&#160hotel:
-                            </h3>
+                            <h4 class="fw-bold"> nome&#160hotel:
+                            </h4>
                         </div>
                         <div class="col-md-6 ">
-                            <h4 class="mb-0">
+                            <h4 class="mb-0 lead">
                                 <%=offerta.titolo%>
                             </h4>
                         </div>
+            
                     </div>
 
                     <hr>
 
                     <div class="row">
                         <div class="col-md-6">
-                            <h3 class="lead"> indirizzo:
-                            </h3>
+                            <h4 class="fw-bold"> indirizzo:
+                            </h4>
                         </div>
                         <div class="col-md-6 ">
-                            <h4 class="mb-0">
+                            <h4 class="mb-0 lead">
                                 <%=offerta.indirizzo%>
                             </h4>
                         </div>
@@ -62,12 +165,12 @@
 
 
                     <div class="row">
-                        <div class="col-md-6">
-                            <h3 class="lead"> città:
-                            </h3>
-                        </div>
                         <div class="col-md-6 ">
-                            <h4 class="mb-0">
+                            <h4 class="fw-bold"> città:
+                            </h4>
+                        </div>
+                        <div class="col-md-6">
+                            <h4 class="mb-0 lead">
                                 <%=offerta.citta%>
                             </h4>
                         </div>
@@ -76,12 +179,12 @@
                     <div class="row">
 
                         <div class="col-md-6">
-                            <h3 class="lead">prezzo&#160per&#160notte:</h3>
+                            <h4 class="fw-bold">prezzo&#160per&#160notte:</h4>
 
 
                         </div>
                         <div class="col-md-6">
-                            <h4 class="mb-0">
+                            <h4 class="mb-0 lead">
                                 <%=offerta.prezzo%> €
                             </h4>
                         </div>
@@ -91,39 +194,24 @@
                     <div class="row">
 
                         <div class="col-md-6">
-                            <h3 class="lead">posti&#160letto:</h3>
+                            <h4 class="fw-bold">posti&#160letto:</h4>
 
 
                         </div>
                         <div class="col-md-6">
-                            <h4 class="mb-0">
+                            <h4 class="mb-0 lead">
                                 <%=offerta.disponibilita%>
                             </h4>
                         </div>
                     </div>
-
                     <hr>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h3 class="lead"> descrizione:
-                            </h3>
-                        </div>
-                        <div class="col-md-6 ">
-                            <h4 class="mb-0">
-                                <%=offerta.descrizione%>
-                            </h4>
-                        </div>
-                    </div>
-
-                    <hr>
-
-
-
-
 
 
                 </div>
+            </div>
+            <div class="row pt-2">
+                <h3 style="color:bisque; font-weight: bold;">descrizione:</h3>
+                <h4 style="color: antiquewhite; font-style: italic;"><%=offerta.descrizione%></h4>
             </div>
             <div style="padding: 40pt;"></div>
             <div class="row">
@@ -132,23 +220,23 @@
                     <nav class="shadow container p-3 rounded-3" style="background-color: #e3f2fd;">
                         <form method="post"  class="row" action="/prenota">
                                 <input type="text" id="testo_ricerca" name="testo_ricerca" value="<%=offerta.titolo%>" hidden>
-                                <div class="col-lg-3 mt-2 d-flex justify-content-center">
+                                <div class="col-lg-3 mt-2 d-flex">
                                     <label class="active me-2 mt-2" for="dateStandard">Check-in:</label>
-                                    <input type="date" id="CheckInDate" name="CheckIn" onchange="checkin_fun();" value="<%= search[1] || '' %>" required>
+                                    <input type="date" id="CheckInDate" name="CheckIn" onchange="checkin_fun();"  value="<%= search[1] || '' %>" required>
                                 </div>
-                                <div class="col-lg-3 mt-2 d-flex justify-content-center">
+                                <div class="col-lg-3 mt-2 d-flex">
                                     <label class="active me-2 mt-2" for="dateStandard">Check-out:</label>
                                     <input type="date" id="CheckOutDate" name="CheckOut" onchange="checkout_fun();" value="<%=search[2] || ''%>" required>
                                 </div>
-                                <div class="col-lg-3 mt-2 d-flex justify-content-center">
+                                <div class="col-lg-3 mt-2 d-flex">
                                     <label class="active me-2 mt-2">Partecipanti:</label>
                                     <div class="btn-group">
                                         <button type="button" id="lessBtn" class="btn btn-light rounded-circle" onclick="lessBtnRange()">-</button>
-                                        <input type="number" value="1" name="partecipants" id="partecipants" class="card text-center mx-1" readonly style="max-width: 60pt;">
+                                        <input type="number" value="1" name="partecipants" id="partecipants" class="form-control-plaintext text-center" readonly style="max-width: 30pt;">
                                         <button type="button" id="moreBtn" class="btn btn-light rounded-circle"  onclick="moreBtnRange()">+</button>
                                     </div>
                                 </div>
-                                <div class="col-lg-3 mt-2 d-flex justify-content-center">
+                                <div class="col-lg-3 mt-2 d-flex">
                                     <label class="active">Prezzo calcolato:</label>
                                     <input type="text" value="0 €" style="text-align:center;" readonly="readonly" id="prezzo_finale" name="prezzo_finale" class="form-control" aria-label="Recipient's username" required>
                                 </div>
@@ -177,8 +265,6 @@
                 </div>
             </div>
         </div>
-
-
         <%- include('footer'); -%>
 </body>
 <script>
@@ -366,6 +452,26 @@
 
 
     });
+
+    var modal = document.getElementById('myModal');
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+    var img = document.getElementById('myImg');
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+    img.onclick = function(){
+    modal.style.display = "block";
+    modalImg.src = this.src;
+    captionText.innerHTML = this.alt;
+    }
+
+// Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
 </script>
 
 </html>

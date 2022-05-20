@@ -18,7 +18,36 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
     <title>Anulare</title>
+<style>
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 210pt;
+        height: 300pt;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid rgba(0, 0, 0, .125);
+        border-radius: .25rem;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
 
+    .img-card{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 100%;
+        width: auto;
+
+    }
+
+    .card-body {
+        flex: 1 1 auto;
+        padding: 1rem;
+        min-height: 1;
+    }
+</style>
 </head>
 
 <body class="bg1">
@@ -69,7 +98,7 @@
     <div class="multi-bg">
         <%- include('navbar')%>
             <div style="padding: 40pt;"></div>
-            <div class="container">
+            <div class="container cont">
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         <nav class="shadow container p-3 rounded-3 " style="background-color: #e3f2fd;">
@@ -94,14 +123,14 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 mt-2 d-flex justify-content-center">
-                                    <button class="btn rounded-3 fw-bold" onclick="validSearch()" style="background-color: #68d7f3;">Cerca <i class="ms-2 bi bi-search"></i></button>
+                                    <button class="btn btn-primary rounded-3 fw-bold" onclick="validSearch()" style="">Cerca <i class="ms-2 bi bi-search"></i></button>
                                 </div>
                             </form>
                         </nav>
                     </div>
                 </div>
                 <div class="text-center mt-5 mb-3">
-                    <h2>Le offerte del momento</h2>
+                    <h1 class="display-3 index-subtitle">Le offerte del momento</h1>
                 </div>
 
                 <div class="row d-flex justify-content-around ">
@@ -109,7 +138,7 @@
                         <% data.forEach(item => {%>
                             <% if(item.in_evidenza){ %>
                                 <div class="showcase-left col-md-2 mt-2" style="width: 20rem;">
-                                    <div class="card" style=" background-color: rgb(162, 255, 128);">
+                                    <div class="card" style=" background-color: rgb(216, 230, 255);">
                                         <svg  xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
                                         <image href="<%=item.immagine%>" class="card-img-top"></image>
                                         </svg>
@@ -136,7 +165,7 @@
                 <div class="text-center mt-5 mb-5">
                     <a name="zona_scopri"></a>
 
-                    <h2>Scopri le regioni più belle d'Italia</h2>
+                    <h1 class="index-subtitle">Scopri le regioni più belle d'Italia</h1>
                 </div>
 
 
@@ -149,13 +178,13 @@
                                 <div class="col-md-6 col-sm-6">
 
                                     <div class="info-left">
-                                        <img src="https://images.treccani.it/enc/media/share/images/orig/system/galleries/NPT/VOL_7/IMMAGINI/Piemonte_fig_01.jpg" style="max-width: 70%;">
+                                        <img src="https://images.treccani.it/enc/media/share/images/orig/system/galleries/NPT/VOL_7/IMMAGINI/Piemonte_fig_01.jpg" class="cartina">
                                     </div>
 
                                 </div>
                                 <div class="col-md-6 col-sm-6">
                                     <div class="info-right">
-                                        <h1 style="color: blue;">Piemonte</h1>
+                                        <h1 class="title-paragraph">Piemonte</h1>
                                         <h3 class="paragraph">è situato nella zona nord-occidentale della penisola ed è una della cinque Regioni italiane a non avere alcun sbocco sul mare. La storia di questa terra è indissolubilmente legata allo sviluppo del Regno d’Italia,
                                             che ha avuto origine proprio da quello Sardo-Piemontese. Torino è stata infatti la prima capitale italiana, dall’anno dell’unità fino al 1865. Come suggerisce il nome stesso, il Piemonte occupa un territorio
                                             prevalentemente montuoso (la punta più alta è il Nordend con i suoi 4609 metri) ed è ricco di fiumi e laghi. Il clima è temperato-freddo, con inverni piuttosto rigidi ed estate afose. Il capoluogo Torino è ovviamente
@@ -178,13 +207,13 @@
                                 <div class="col-md-6 col-sm-6">
 
                                     <div class="info-left">
-                                        <img src="https://i.pinimg.com/originals/55/c4/8e/55c48e4745363ec6a1eed32ff77b8ce8.jpg" style="max-width: 70%;">
+                                        <img src="https://i.pinimg.com/originals/55/c4/8e/55c48e4745363ec6a1eed32ff77b8ce8.jpg" class="cartina" >
                                     </div>
 
                                 </div>
                                 <div class="col-md-6 col-sm-6">
                                     <div class="info-right">
-                                        <h1 style="color: blue;">Lombardia</h1>
+                                        <h1 class="title-paragraph">Lombardia</h1>
                                         <h3 class="paragraph">Tra le Regioni italiane, è quella con il maggior numero di abitanti: un italiano su sei risiede infatti sul territorio regionale lombardo. I 10 milioni di residenti sono concentrati nell’area intorno a Milano, capoluogo
                                             regionale e fulcro della finanza e dell’economia nazionale. Il resto degli abitanti è distribuito nelle altre province di Sondrio, Como, Lecco, Monza e Brianza, Varese, Bergamo, Brescia, Pavia, Lodi, Cremona
                                             e Mantova, su una superficie di quasi 24 mila km². Il nome della Regione deriva da quello dei Longobardi, la popolazione germanica che nel VI secolo a.C. occupò gran parte della penisola, stabilendo la sede
@@ -209,13 +238,13 @@
                                 <div class="col-md-6 col-sm-6">
 
                                     <div class="info-left">
-                                        <img src="https://i.pinimg.com/originals/a2/5b/37/a25b37e855179401ebcc8c73c920b89e.jpg" style="max-width: 70%;">
+                                        <img src="https://i.pinimg.com/originals/a2/5b/37/a25b37e855179401ebcc8c73c920b89e.jpg" class="cartina">
                                     </div>
 
                                 </div>
                                 <div class="col-md-6 col-sm-6">
                                     <div class="info-right">
-                                        <h1 style="color: blue;">Toscana</h1>
+                                        <h1 class="title-paragraph">Toscana</h1>
                                         <h3 class="paragraph">Il suo nome deriva dall’antica denominazione della Regione etrusca, ossia Tuscia. Dopo il crollo dell’Impero Romano ed il dominio bizantino, le città toscane hanno conosciuto un periodo di progressiva crescita,
                                             testimoniato dall’avvento di Pisa, la Repubblica Marinara che ha esteso il proprio dominio sul Tirreno. La Toscana è stata la culla del Rinascimento: nel Trecento e nel Quattrocento, centri come Firenze e Siena
                                             hanno attirato i migliori artisti dell’epoca, che hanno creato opere d’arte inimitabili. Allo stesso tempo, in queste città si è sviluppato un florido commercio, che ha contribuito allo nascita del settore bancario
@@ -239,13 +268,13 @@
                                 <div class="col-md-6 col-sm-6">
 
                                     <div class="info-left">
-                                        <img src="https://i.pinimg.com/originals/01/51/bb/0151bbd70a06e704c044f12008030511.jpg" style="max-width: 70%;">
+                                        <img src="https://i.pinimg.com/originals/01/51/bb/0151bbd70a06e704c044f12008030511.jpg" class="cartina" >
                                     </div>
 
                                 </div>
                                 <div class="col-md-6 col-sm-6">
                                     <div class="info-right">
-                                        <h1 style="color: blue;">Lazio</h1>
+                                        <h1 class="title-paragraph">Lazio</h1>
                                         <h3 class="paragraph">Seconda Regione italiana per popolazione con circa 5 milioni 900 mila abitanti, il Lazio ha la particolarità di ospitare al suo interno un intero Stato, ovvero la Città del Vaticano. Questo fa si che la città di
                                             Roma sia particolarmente ricca di ambasciate: molti Stati ne dispongono due, una per i rapporti con l’Italia, l’altra per quelli con lo Stato Pontificio. Il nome della Regione deriva da Latium, un’area che,
                                             ancor prima della comparsa di Roma, ospitava un popolo latino. La storia del Lazio è fortemente legata a quella dell’Impero Romano, che dopo aver raggiunto la massima espansione con Traiano nel 117 d.C. si è
@@ -270,13 +299,13 @@
                                 <div class="col-md-6 col-sm-6">
 
                                     <div class="info-left">
-                                        <img src="https://www.italiadascoprire.net/wp-content/uploads/sites/15/mappa_campania.jpg" style="max-width: 70%;">
+                                        <img src="https://www.italiadascoprire.net/wp-content/uploads/sites/15/mappa_campania.jpg" class="cartina" >
                                     </div>
 
                                 </div>
                                 <div class="col-md-6 col-sm-6">
                                     <div class="info-right">
-                                        <h1 style="color: blue;">Campania</h1>
+                                        <h1 class="title-paragraph">Campania</h1>
                                         <h3 class="paragraph">Al tempo dei Romani, il litorale tirrenico campano era denominato Agro Capuano, nome che si è progressivamente modificato fino a diventare Campania. L’area occupata dall’attuale Regione è stata oggetto di diverse
                                             dominazioni, per opera dei Longobardi, dei Bizantini, dei Normanni, dagli Spagnoli e dai Borboni. Proprio durante il periodo borbonico, fu parte del Regno delle Due Sicilie, prima dell’annessione al Regno d’Italia.
                                             Grazie alla presenza del capoluogo Napoli, che da solo conta quasi un milione di abitanti, la Campania è la tra le Regioni italiane più popolose del Mezzogiorno e la terza in Italia, con i suoi 5 milioni 827
