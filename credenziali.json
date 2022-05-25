@@ -1,8 +1,0 @@
-{
-    "user": "postgres",
-    "host": "localhost",
-    "database": "Anulare",
-    "password": "root",
-    "port": 5432
-
-}
