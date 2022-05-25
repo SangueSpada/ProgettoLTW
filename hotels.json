@@ -4,7 +4,7 @@
         "citta": "roma",
         "immagine": "https://www.gardenhotelterni.it/wp-content/uploads/2015/06/Senza-titolo-12-Copia.jpg",
         "prezzo": 500,
-        "descrizione": "questa è la descrizione esempio",
+        "descrizione": "questa è la descrizione dell'Hotel Esempio",
         "in_evidenza": true,
         "disponibilita": 30,
         "indirizzo": "via esempio, 26"
@@ -15,7 +15,7 @@
         "citta": "milano",
         "immagine": "https://www.hotel-aroma.com/media/LDC-Hotels-AROMA_Piscina_006_%E2%88%8F-2019-Giovanni-Marchesi.jpg",
         "prezzo": 800,
-        "descrizione": "questa è la descrizione plaza",
+        "descrizione": "questa è la descrizione dell'Hotel Plaza",
         "in_evidenza": false,
         "disponibilita": 5,
         "indirizzo": "via piazza, 90"
@@ -26,7 +26,7 @@
         "citta": "roma",
         "immagine": "https://www.hotel-rudolf.com/fileadmin/user_upload/Headerbilder-1920x1080/N_20160807_Hotel_Rudolf_M01_A.jpg",
         "prezzo": 200,
-        "descrizione": "questa è la descrizione christus",
+        "descrizione": "questa è la descrizione dell'Hotel Christus",
         "in_evidenza": true,
         "disponibilita": 8,
         "indirizzo": "via cristoforo colombo, 3"
@@ -37,7 +37,7 @@
         "citta": "firenze",
         "immagine": "https://www.hotel-splendid.it/media/slide/homepage/01.jpg",
         "prezzo": 1500,
-        "descrizione": "questa è la maremma maiala",
+        "descrizione": "questa è la descrizione dell'Hotel Maremma",
         "in_evidenza": false,
         "disponibilita": 4,
         "indirizzo": "via mascara, 58"
@@ -57,7 +57,7 @@
         "id": 5,
         "titolo": "Hotel Major Aventinus",
         "citta": "roma",
-        "immagine": "https://worhot.com/_next/image?url=https%3A%2F%2Fassets.worhot.com%2Fimages%2Fhotels%2F5f58983b7a49a50445f77bca%2Fphotos%2Fdf0c5a1461fa05ad.original.jpg&w=1920&q=75",
+        "immagine": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/6908912.jpg?k=2edb5cbc675636a1c5588bb41d925aabbb76cd5230e66cd9e2316e8f387e089c&o=&hp=1",
         "prezzo": 134,
         "descrizione": "Situato a 600 metri dalla zona di Testaccio e a pochi passi da Trastevere, dall'altra parte del fiume Tevere, l'Hotel Major Aventinus vanta camere con vista sul giardino o sulla strada e la connessione Wi-Fi gratuita nell'intera struttura.",
         "in_evidenza": true,

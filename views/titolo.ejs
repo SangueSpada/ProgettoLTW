@@ -247,14 +247,14 @@
                                         </span>
                                     </div>
                                     <div id="ConfDiv" hidden>
-                                        <label style="color: red;">Sei Sicuro di voler effettuare la prenotazione?</label>
+                                        <label style="color: red; ;">Sei Sicuro di voler effettuare la prenotazione?</label>
                                         <button type="button" id="btnConfirm" class="btn btn-secondary" onclick="reset_fun()">Annulla</button>
                                         <button type="submit" class="btn rounded-3 fw-bold" style="background-color: #68d7f3;">Conferma</button>
                                     </div>
                                 </div>
                         </form>
                     </nav>
-                    <div id="invalid-dates" style="color:red;" hidden>
+                    <div id="invalid-dates"  class="alert-danger" hidden>
                         <% if(res != ''){ %>
                             <%=res%>
                         <% } else { %>

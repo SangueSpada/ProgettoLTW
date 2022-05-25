@@ -128,22 +128,22 @@
                 <div style="padding: 30pt;"></div>
                 <% if(results.size==0){ %>
                     <% if(query[0] == ''){ %> //non è stato inserito alcun luogo
-                        <div class="col-lg-12 text-center" style="color:red;">
+                        <div class="col-lg-12 text-center search-subtitle-danger" style="color:red;">
                             <h1 class="display-3">Non ci sono hotel disponibili per le date inserite</h2>
                             
                         </div>
                     <% } else{ %>
-                            <div class="col-lg-12 text-center" style="color:red;">
-                                <% if(res != ''){ %>
-                                    <h1 class="display-3"><%=res%></h1>
+                            <div class="col-lg-12 text-center search-subtitle-danger" style="color:red;">
+                                <% if(results != ''){ %>
+                                    <h1 class="display-3">Non ci sono hotel disponibili per queste date e questi partecipanti</h1>
                                 <% } else { %>
                                     <h1 class="display-3">Errore</h1>
                                 <% } %>
                             </div>
 
                     <% } %>
-                    <% } else{ %>
-                        <div class="col-lg-12 text-center" style="color:green;">
+                <% } else{ %>
+                        <div class="col-lg-12 text-center search-subtitle-success" style="color:green;">
                             <% if(results.size==1){%>
                                 <h1 class="display-3"style="color:green;">L'hotel selezionato è disponibile:</h1>
                             <% } else{ %>

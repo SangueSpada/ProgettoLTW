@@ -13,10 +13,10 @@ const { response } = require('express');
 const { md5 } = require('pg/lib/utils');
 const { Console } = require('console');
 const { redirect } = require('express/lib/response');
-var port = 3334;
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname)); //per elaborare il css
 var utils = require('./utils');
+const { resolve } = require('path');
 
 var database = JSON.parse(fs.readFileSync('hotels.json')); //legge il contenuto di offerte json
 var credenziali = JSON.parse(fs.readFileSync('credenziali.json'));
@@ -234,24 +234,41 @@ app.post('/prenota', urlencodedParser, function(req, res) {
 
             p2.then(value => {
                 var timestamp = new Date().toISOString();
-                var flag = false;
-                rangeDate.forEach(giorno_pern => {
-                    client.query('insert into prenotazioni values (' + '\'' + email_cookie + '\',' + '\'' + id_booking + '\',' + '\'' + hotel.id + '\',' + '\'' + persone + '\',' + '\'' + giorno_pern + '\',' + '\'' + timestamp + '\');', function(error, result) {
-                        if (error) {
-                            flag = true;
-                            console.log(error);
-                        }
-                    })
-                    id_booking++;
+                var flag;
+                const p3 = new Promise((resolve, reject) => {
+                    resolve(flag != undefined);
+                    rangeDate.forEach(giorno_pern => {
+                            client.query('insert into prenotazioni values (' + '\'' + email_cookie + '\',' + '\'' + id_booking + '\',' + '\'' + hotel.id + '\',' + '\'' + persone + '\',' + '\'' + giorno_pern + '\',' + '\'' + timestamp + '\');', function(error, result) {
+                                if (error) {
+                                    console.log(error);
+                                    if(error.code == 23505){
+                                        resp="Non è possibile effettuare più di una prenotazione avente almeno una data prenotata in comune con la precedente. Cancella la vecchia prenotazione o cambia le data per favore."
+                                        flag = true;
+                                    }
+                                    else{
+                                        flag = true;
+                                        console.log(error);
+                                        resp=error.detail;
+                                    }
+                                }
+                                flag=false;
+                            });
+                            id_booking++;
+                    });
+                    console.log(flag);
+                    
                 });
-                if (flag) { //la prenotazione è avvenuta in modo parziale o nulla
-                    res.render('titolo.ejs', { offerta: database[hotel.id], profilo: profilo_cookie, search: ricerca });
-                } else {
-                    console.log("Prenotazione registrata correttamente nel sistema!");
-                    res.redirect('/profilo');
-                }
-                res.end();
-                return;
+                p3.then(value => {
+                    console.log(value+' '+flag);
+                    if (flag) { //la prenotazione è avvenuta in modo parziale o nulla
+                        res.render('titolo.ejs', { offerta: database[hotel.id], profilo: profilo_cookie, search: ricerca, res: resp });
+                    } else {
+                        console.log("Prenotazione registrata correttamente nel sistema!");
+                        res.redirect('/profilo');
+                    }
+                    res.end();
+                    return;
+                });
             });
 
         } else { //altrimenti rimanda la ricerca (da ampliare con gli errori eventuali)
