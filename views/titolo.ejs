@@ -14,80 +14,96 @@
 
 
     <title>Offerta cercata</title>
-<style>
-    #myImg:hover {opacity: 0.7;}
-
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-}
-
-/* Modal Content (image) */
-.modal-content {
-  margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 1000px;
-}
-
-/* Caption of Modal Image */
-#caption {
-  margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 700px;
-  text-align: center;
-  color: #ccc;
-  padding: 10px 0;
-  height: 150px;
-}
-
-/* Add Animation */
-.modal-content, #caption {  
-  animation-name: zoom;
-  animation-duration: 0.6s;
-}
-
-@keyframes zoom {
-  from {transform: scale(0.1)} 
-  to {transform: scale(1)}
-}
-
-/* The Close Button */
-.close {
-  position: absolute;
-  top: 15px;
-  right: 35px;
-  color: #f1f1f1;
-  font-size: 40px;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.close:hover,
-.close:focus {
-  color: #bbb;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/* 100% Image Width on Smaller Screens */
-@media only screen and (max-width: 700px){
-  .modal-content {
-    width: 100%;
-  }
-}
-</style>
+    <style>
+        #myImg:hover {
+            opacity: 0.7;
+        }
+        /* The Modal (background) */
+        
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.9);
+            /* Black w/ opacity */
+        }
+        /* Modal Content (image) */
+        
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 1000px;
+        }
+        /* Caption of Modal Image */
+        
+        #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 150px;
+        }
+        /* Add Animation */
+        
+        .modal-content,
+        #caption {
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+        
+        @keyframes zoom {
+            from {
+                transform: scale(0.1)
+            }
+            to {
+                transform: scale(1)
+            }
+        }
+        /* The Close Button */
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* 100% Image Width on Smaller Screens */
+        
+        @media only screen and (max-width: 700px) {
+            .modal-content {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body class="bg2">
@@ -110,52 +126,29 @@
                 </div>
 
                 <div class="col-md-4">
-                    <!--<table class="table" style="min-height: 100pt;">
-                        <tbody>
-                            <tr>
-                                <th class="h3">nome&#160hotel:</th>
-                                <td class="h5"><%=offerta.titolo%></td>
-                            </tr>
-                            <tr>
-                                <th class="h3">indirizzo:</th>
-                                <td class="h5"><%=offerta.indirizzo%></td>
-                            </tr>
-                            <tr>
-                                <th class="h3">città:</th>
-                                <td class="h5"><%=offerta.citta%></td>
-                            </tr>
-                            <tr>
-                                <th class="h3">prezzo&#160per&#160notte::</th>
-                                <td class="h5"><%=offerta.prezzo%></td>
-                            </tr>
-                            <tr>
-                                <th class="h3">posti&#160letto:</th>
-                                <td class="h5"><%=offerta.disponibilita%></td>
-                            </tr>
-                        </tbody>
-                    </table>-->
+
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <h4 class="fw-bold"> nome&#160hotel:
                             </h4>
                         </div>
-                        <div class="col-md-6 ">
+                        <div class="col-lg-6 ">
                             <h4 class="mb-0 lead">
                                 <%=offerta.titolo%>
                             </h4>
                         </div>
-            
+
                     </div>
 
                     <hr>
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <h4 class="fw-bold"> indirizzo:
                             </h4>
                         </div>
-                        <div class="col-md-6 ">
+                        <div class="col-lg-6 ">
                             <h4 class="mb-0 lead">
                                 <%=offerta.indirizzo%>
                             </h4>
@@ -165,11 +158,11 @@
 
 
                     <div class="row">
-                        <div class="col-md-6 ">
+                        <div class="col-lg-6 ">
                             <h4 class="fw-bold"> città:
                             </h4>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <h4 class="mb-0 lead">
                                 <%=offerta.citta%>
                             </h4>
@@ -178,12 +171,12 @@
                     <hr>
                     <div class="row">
 
-                        <div class="col-md-6">
-                            <h4 class="fw-bold">prezzo&#160per&#160notte:</h4>
+                        <div class="col-lg-6">
+                            <h4 class="fw-bold">prezzo&#160notte:</h4>
 
 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <h4 class="mb-0 lead">
                                 <%=offerta.prezzo%> €
                             </h4>
@@ -193,12 +186,12 @@
                     <hr>
                     <div class="row">
 
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <h4 class="fw-bold">posti&#160letto:</h4>
 
 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <h4 class="mb-0 lead">
                                 <%=offerta.disponibilita%>
                             </h4>
@@ -211,55 +204,57 @@
             </div>
             <div class="row pt-2">
                 <h3 style="color:bisque; font-weight: bold;">descrizione:</h3>
-                <h4 style="color: antiquewhite; font-style: italic;"><%=offerta.descrizione%></h4>
+                <h4 style="color: antiquewhite; font-style: italic;">
+                    <%=offerta.descrizione%>
+                </h4>
             </div>
             <div style="padding: 40pt;"></div>
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    
+
                     <nav class="shadow container p-3 rounded-3" style="background-color: #e3f2fd;">
-                        <form method="post"  class="row" action="/prenota">
-                                <input type="text" id="testo_ricerca" name="testo_ricerca" value="<%=offerta.titolo%>" hidden>
-                                <div class="col-lg-3 mt-2 d-flex">
-                                    <label class="active me-2 mt-2" for="dateStandard">Check-in:</label>
-                                    <input type="date" id="CheckInDate" name="CheckIn" onchange="checkin_fun();"  value="<%= search[1] || '' %>" required>
+                        <form method="post" class="row" action="/prenota">
+                            <input type="text" id="testo_ricerca" name="testo_ricerca" value="<%=offerta.titolo%>" hidden>
+                            <div class="col-lg-3 mt-2 d-flex">
+                                <label class="active me-2 mt-2" for="dateStandard">Check-in:</label>
+                                <input type="date" id="CheckInDate" name="CheckIn" onchange="checkin_fun();" value="<%= search[1] || '' %>" required>
+                            </div>
+                            <div class="col-lg-3 mt-2 d-flex">
+                                <label class="active me-2 mt-2" for="dateStandard">Check-out:</label>
+                                <input type="date" id="CheckOutDate" name="CheckOut" onchange="checkout_fun();" value="<%=search[2] || ''%>" required>
+                            </div>
+                            <div class="col-lg-3 mt-2 d-flex">
+                                <label class="active me-2 mt-2">Partecipanti:</label>
+                                <div class="btn-group">
+                                    <button type="button" id="lessBtn" class="btn btn-light rounded-circle" onclick="lessBtnRange()">-</button>
+                                    <input type="number" value="1" name="partecipants" id="partecipants" class="form-control-plaintext text-center" readonly style="max-width: 30pt;">
+                                    <button type="button" id="moreBtn" class="btn btn-light rounded-circle" onclick="moreBtnRange()">+</button>
                                 </div>
-                                <div class="col-lg-3 mt-2 d-flex">
-                                    <label class="active me-2 mt-2" for="dateStandard">Check-out:</label>
-                                    <input type="date" id="CheckOutDate" name="CheckOut" onchange="checkout_fun();" value="<%=search[2] || ''%>" required>
-                                </div>
-                                <div class="col-lg-3 mt-2 d-flex">
-                                    <label class="active me-2 mt-2">Partecipanti:</label>
-                                    <div class="btn-group">
-                                        <button type="button" id="lessBtn" class="btn btn-light rounded-circle" onclick="lessBtnRange()">-</button>
-                                        <input type="number" value="1" name="partecipants" id="partecipants" class="form-control-plaintext text-center" readonly style="max-width: 30pt;">
-                                        <button type="button" id="moreBtn" class="btn btn-light rounded-circle"  onclick="moreBtnRange()">+</button>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 mt-2 d-flex">
-                                    <label class="active">Prezzo calcolato:</label>
-                                    <input type="text" value="0 €" style="text-align:center;" readonly="readonly" id="prezzo_finale" name="prezzo_finale" class="form-control" aria-label="Recipient's username" required>
-                                </div>
-                                <div class="col-lg-12 mt-2 text-center">
-                                    <div id="PrenotaDiv">
-                                        <span class="d-inline-block" id="popover" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Per poter proseguire con la prenotazione è necessario essere loggati">
+                            </div>
+                            <div class="col-lg-3 mt-2 d-flex">
+                                <label class="active">Prezzo calcolato:</label>
+                                <input type="text" value="0 €" style="text-align:center;" readonly="readonly" id="prezzo_finale" name="prezzo_finale" class="form-control" aria-label="Recipient's username" required>
+                            </div>
+                            <div class="col-lg-12 mt-2 text-center">
+                                <div id="PrenotaDiv">
+                                    <span class="d-inline-block" id="popover" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Per poter proseguire con la prenotazione è necessario essere loggati">
                                         <button  type="button" class="btn rounded-3 fw-bold" id="prenota" style="background-color: #68d7f3;"  onclick="conf_fun()" disabled>Prenota ora!!!</button>
                                         </span>
-                                    </div>
-                                    <div id="ConfDiv" hidden>
-                                        <label style="color: red; ;">Sei Sicuro di voler effettuare la prenotazione?</label>
-                                        <button type="button" id="btnConfirm" class="btn btn-secondary" onclick="reset_fun()">Annulla</button>
-                                        <button type="submit" class="btn rounded-3 fw-bold" style="background-color: #68d7f3;">Conferma</button>
-                                    </div>
                                 </div>
+                                <div id="ConfDiv" hidden>
+                                    <label style="color: red; ;">Sei Sicuro di voler effettuare la prenotazione?</label>
+                                    <button type="button" id="btnConfirm" class="btn btn-secondary" onclick="reset_fun()">Annulla</button>
+                                    <button type="submit" class="btn rounded-3 fw-bold" style="background-color: #68d7f3;">Conferma</button>
+                                </div>
+                            </div>
                         </form>
                     </nav>
-                    <div id="invalid-dates"  class="alert-danger" hidden>
+                    <div id="invalid-dates" class="alert-danger" hidden>
                         <% if(res != ''){ %>
                             <%=res%>
-                        <% } else { %>
-                        Errore, riprova a prenotare.
-                        <% } %>
+                                <% } else { %>
+                                    Errore, riprova a prenotare.
+                                    <% } %>
                     </div>
                     <div style="padding: 20pt;"></div>
                 </div>
@@ -455,20 +450,20 @@
 
     var modal = document.getElementById('myModal');
 
-// Get the image and insert it inside the modal - use its "alt" text as a caption
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
     var img = document.getElementById('myImg');
     var modalImg = document.getElementById("img01");
     var captionText = document.getElementById("caption");
-    img.onclick = function(){
-    modal.style.display = "block";
-    modalImg.src = this.src;
-    captionText.innerHTML = this.alt;
+    img.onclick = function() {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
     }
 
-// Get the <span> element that closes the modal
+    // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks on <span> (x), close the modal
+    // When the user clicks on <span> (x), close the modal
     span.onclick = function() {
         modal.style.display = "none";
     }
