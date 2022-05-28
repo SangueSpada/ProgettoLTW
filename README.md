@@ -17,14 +17,16 @@ All’interno della propria pagina profilo è possibile successivamente cancella
 
 ### Tools e framework utilizzati ###
 
-Tools e framework utilizzati
 - NodeJs (v.16.14.0) - back-end
-- Express
+- Express 
 - Ejs
 - Jquery
 - Bootstrap
-- Postgresql
 - Ajax
+- Postgresql (database relazionale)
+- JSON (database non relazionale)
+
+
 
 ### Installazione e avvio del sito ###
 
